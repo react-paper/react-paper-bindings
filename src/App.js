@@ -1,38 +1,140 @@
-import React, { Component } from 'react';
-import { NICE, SUPER_NICE } from './colors';
+import React, { Component, PropTypes } from 'react';
+import paper from 'paper';
 
-class Counter extends Component {
+class Paper extends Component {
   constructor(props) {
     super(props);
-    this.state = { counter: 0 };
-    this.interval = setInterval(() => this.tick(), 1000);
+    this.paper = null;
   }
-
-  tick() {
-    this.setState({
-      counter: this.state.counter + this.props.increment
-    });
+  getChildContext() {
+    return {
+      paper: this.paper
+    };
   }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
+  getDefaultState() {
+    return {
+      ready: false
+    }
   }
-
+  componentDidMount() {
+    console.log('componentDidMount paper');
+    if (!this.paper) {
+      console.log('create paper');
+      const { canvas } = this.refs;
+      this.paper = new paper.PaperScope();
+      this.paper.setup(canvas);
+      this.paper.view.play();
+      this.setState({
+        ready: true
+      });
+    }
+  }
+  componentDidUpdate() {
+    console.log('componentDidUpdate paper');
+  }
   render() {
+    console.log('render paper');
     return (
-      <h1 style={{ color: this.props.color }}>
-        Counter ({this.props.increment}): {this.state.counter}
-      </h1>
+      <canvas ref="canvas">{this.props.children}</canvas>
     );
   }
 }
+
+class Layer extends Component {
+  constructor(props) {
+    super(props);
+    this.layer = null;
+  }
+  getChildContext() {
+    return {
+      paper: this.context.paper,
+      layer: this.layer
+    };
+  }
+  getDefaultState() {
+    return {
+      ready: false
+    }
+  }
+  componentDidMount() {
+    //console.log('componentDidMount layer');
+  }
+  componentDidUpdate() {
+    console.log('componentDidUpdate layer');
+    if (!this.layer) {
+      console.log('create layer');
+      this.layer = new this.context.paper.Layer();
+      this.setState({
+        ready: true
+      });
+    }
+  }
+  render() {
+    //console.log('render layer');
+    return this.props.children || false;
+  }
+}
+
+class Circle extends Component {
+  constructor(props) {
+    super(props);
+    this.circle = null;
+  }
+  getDefaultState() {
+    return {
+      ready: false
+    }
+  }
+  componentDidMount() {
+    //console.log('componentDidMount circle');
+  }
+  componentDidUpdate() {
+    console.log('componentDidUpdate circle');
+    if (this.context.paper && this.context.layer && !this.circle) {
+      console.log('create circle');
+      this.circle = new this.context.paper.Path.Circle(this.props);
+      this.setState({
+        ready: true
+      });
+    }
+  }
+  render() {
+    //console.log('render circle');
+    return false;
+  }
+}
+
+Paper.childContextTypes = {
+  paper: PropTypes.object
+};
+
+Layer.contextTypes = {
+  paper: PropTypes.object
+};
+
+Layer.childContextTypes = {
+  paper: PropTypes.object,
+  layer: PropTypes.object
+};
+
+Circle.contextTypes = {
+  paper: PropTypes.object,
+  layer: PropTypes.object
+};
 
 export class App extends Component {
   render() {
     return (
       <div>
-        <Counter increment={1} color={NICE} />
-        <Counter increment={5} color={SUPER_NICE} />
+        <h1>Hello world</h1>
+        <Paper>
+          <Layer>
+            <Circle
+              center={[80, 50]}
+              radius={30}
+              strokeColor={'red'} />
+          </Layer>
+        </Paper>
       </div>
     );
   }

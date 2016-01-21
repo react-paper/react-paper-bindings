@@ -5,16 +5,10 @@ class Paper extends Component {
   constructor(props) {
     super(props);
     this.paper = null;
+    this.state = { ready: false };
   }
   getChildContext() {
-    return {
-      paper: this.paper
-    };
-  }
-  getDefaultState() {
-    return {
-      ready: false
-    }
+    return { paper: this.paper };
   }
   componentDidMount() {
     console.log('componentDidMount paper');
@@ -24,9 +18,7 @@ class Paper extends Component {
       this.paper = new paper.PaperScope();
       this.paper.setup(canvas);
       this.paper.view.play();
-      this.setState({
-        ready: true
-      });
+      this.setState({ ready: true });
     }
   }
   componentDidUpdate() {
@@ -44,17 +36,13 @@ class Layer extends Component {
   constructor(props) {
     super(props);
     this.layer = null;
+    this.state = { ready: false };
   }
   getChildContext() {
     return {
       paper: this.context.paper,
       layer: this.layer
     };
-  }
-  getDefaultState() {
-    return {
-      ready: false
-    }
   }
   componentDidMount() {
     //console.log('componentDidMount layer');
@@ -79,11 +67,9 @@ class Circle extends Component {
   constructor(props) {
     super(props);
     this.circle = null;
-  }
-  getDefaultState() {
-    return {
+    this.state = {
       ready: false
-    }
+    };
   }
   componentDidMount() {
     //console.log('componentDidMount circle');
@@ -123,6 +109,17 @@ Circle.contextTypes = {
 };
 
 export class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state
+    this.interval = setInterval(() => this.tick(), 1);
+  }
+  tick() {
+    this.set
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   render() {
     return (
       <div>

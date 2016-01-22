@@ -1,33 +1,36 @@
 import React, { Component, PropTypes } from 'react';
-import paper from 'paper';
+import paperjs from 'paper';
 
 class Paper extends Component {
   constructor(props) {
     super(props);
     this.paper = null;
-    this.state = { ready: false };
+    //this.state = { ready: false };
   }
   getChildContext() {
     return { paper: this.paper };
   }
   componentDidMount() {
-    console.log('componentDidMount paper');
+    //console.log('componentDidMount paper');
     if (!this.paper) {
-      console.log('create paper');
+      //console.log('create paper');
       const { canvas } = this.refs;
-      this.paper = new paper.PaperScope();
+      this.paper = new paperjs.PaperScope();
       this.paper.setup(canvas);
       this.paper.view.play();
-      this.setState({ ready: true });
+      this.forceUpdate();
+      //this.setState({ ready: true });
     }
   }
   componentDidUpdate() {
-    console.log('componentDidUpdate paper');
+    //console.log('componentDidUpdate paper');
   }
   render() {
-    console.log('render paper');
+    //console.log('render paper');
     return (
-      <canvas ref="canvas">{this.props.children}</canvas>
+      <canvas ref="canvas">
+        {this.paper ? this.props.children : false}
+      </canvas>
     );
   }
 }
@@ -36,7 +39,7 @@ class Layer extends Component {
   constructor(props) {
     super(props);
     this.layer = null;
-    this.state = { ready: false };
+    //this.state = { ready: false };
   }
   getChildContext() {
     return {
@@ -46,20 +49,22 @@ class Layer extends Component {
   }
   componentDidMount() {
     //console.log('componentDidMount layer');
+    if (!this.layer) {
+      const { paper } = this.context;
+      //console.log('create layer');
+      this.layer = new paper.Layer();
+      this.forceUpdate();
+      //this.setState({ ready: true });
+    }
   }
   componentDidUpdate() {
-    console.log('componentDidUpdate layer');
-    if (!this.layer) {
-      console.log('create layer');
-      this.layer = new this.context.paper.Layer();
-      this.setState({
-        ready: true
-      });
-    }
+    //console.log('componentDidUpdate layer');
   }
   render() {
     //console.log('render layer');
-    return this.props.children || false;
+    return (
+      this.layer ? this.props.children : false
+    );
   }
 }
 
@@ -67,21 +72,23 @@ class Circle extends Component {
   constructor(props) {
     super(props);
     this.circle = null;
-    this.state = {
-      ready: false
-    };
+    //this.state = { ready: false };
   }
   componentDidMount() {
     //console.log('componentDidMount circle');
+    const { paper, layer } = this.context;
+    if (paper && layer && !this.circle) {
+      //console.log('create circle');
+      this.circle = new paper.Path.Circle(this.props);
+      console.log(this.circle);
+      this.forceUpdate();
+      //this.setState({ ready: true });
+    }
   }
   componentDidUpdate() {
-    console.log('componentDidUpdate circle');
-    if (this.context.paper && this.context.layer && !this.circle) {
-      console.log('create circle');
-      this.circle = new this.context.paper.Path.Circle(this.props);
-      this.setState({
-        ready: true
-      });
+    //console.log('componentDidUpdate circle');
+    if (this.circle) {
+      this.circle.center = new this.context.paper.Point(this.props.center);
     }
   }
   render() {
@@ -111,11 +118,14 @@ Circle.contextTypes = {
 export class App extends Component {
   constructor(props) {
     super(props);
-    this.state
-    this.interval = setInterval(() => this.tick(), 1);
+    this.state = { x: 0, y: 0 };
+    this.interval = setInterval(this.tick.bind(this), 10);
   }
   tick() {
-    this.set
+    this.setState({
+      x: this.state.x + 0.1,
+      y: this.state.y + 0.1
+    });
   }
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -127,9 +137,9 @@ export class App extends Component {
         <Paper>
           <Layer>
             <Circle
-              center={[80, 50]}
+              center={[this.state.x, this.state.y]}
               radius={30}
-              strokeColor={'red'} />
+              fillColor={'red'} />
           </Layer>
         </Paper>
       </div>

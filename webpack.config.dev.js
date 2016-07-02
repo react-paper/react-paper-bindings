@@ -21,7 +21,13 @@ module.exports = {
     loaders: [{
       test: /\.jsx?/,
       loaders: ['babel'],
+      exclude: /(node_modules|bower_components)/,
       include: path.join(__dirname, 'src')
     }]
+  },
+  externals: {
+    'cheerio': 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true,
   }
 };

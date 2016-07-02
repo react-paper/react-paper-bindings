@@ -10,19 +10,19 @@ export default class Paper extends Component {
     return { paper: this.paper };
   }
   componentDidMount() {
-    if (!this.paper) {
+    /*if (!this.paper) {
       const { canvas } = this.refs;
       this.paper = new paperjs.PaperScope();
       this.paper.setup(canvas);
       this.paper.view.play();
       this.forceUpdate();
-    }
+    }*/
   }
   render() {
     return (
-      <canvas ref="canvas">
+      <div ref="canvas">
         {this.paper ? this.props.children : false}
-      </canvas>
+      </div>
     );
   }
 }

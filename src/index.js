@@ -1,5 +1,11 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { App } from './App';
-
-render(<App />, document.getElementById('root'));
+export {
+  View,
+  Layer,
+  Group,
+  Path,
+  Circle,
+  Ellipse,
+  Rectangle,
+  PointText,
+  Tool,
+} from './react-paper-bindings'

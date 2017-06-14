@@ -1,6 +1,6 @@
-# Paperjs bindings for React
+# Paper.js bindings for React
 
-Just an idea ... 
+Just an idea ...
 
 ```
 render() {

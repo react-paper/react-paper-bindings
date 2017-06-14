@@ -1,0 +1,8 @@
+.ToolButtons {
+  position: absolute;
+  z-index: 50;
+  width: 100%;
+  top: 17px;
+  left: 50%;
+  transform: translateX(-50%);
+}

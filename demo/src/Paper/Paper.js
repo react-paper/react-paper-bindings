@@ -10,7 +10,7 @@ import {
   View,
   Layer,
   Group,
-  Path,
+  //Path,
   Circle,
   Ellipse,
   Rectangle,
@@ -25,9 +25,9 @@ const COLORS = [
   'orange',
   'brown',
   'violet',
+  'purple',
+  'yellow',
 ]
-
-const SEGMENTS = JSON.parse('[{"point":{"x":484,"y":120},"handleIn":{"x":0,"y":0},"handleOut":{"x":18.977308308482463,"y":-37.95461661696493}},{"point":{"x":549,"y":125},"handleIn":{"x":-17.825939356897948,"y":-35.65187871379598},"handleOut":{"x":7.884957578851186,"y":15.7699151577024}},{"point":{"x":488,"y":196},"handleIn":{"x":8.849350288038295,"y":0},"handleOut":{"x":-7.516498095706652,"y":0}},{"point":{"x":463,"y":164},"handleIn":{"x":4.239613566449123,"y":6.359420349673655},"handleOut":{"x":-7.307810734692453,"y":-10.961716102038707}},{"point":{"x":437,"y":133},"handleIn":{"x":5.981165362327033,"y":11.962330724654095},"handleOut":{"x":-4.07301805833913,"y":-8.146036116678317}},{"point":{"x":434,"y":106},"handleIn":{"x":-4.053417030370952,"y":8.106834060741932},"handleOut":{"x":10.18742354746064,"y":-20.37484709492128}},{"point":{"x":485,"y":125},"handleIn":{"x":0,"y":-3.7218046005132663},"handleOut":{"x":0,"y":0}}]')
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
@@ -243,12 +243,12 @@ export default class Paper extends Component {
     }
 
     const centerX = width / 2
-    const centerY = height / 2 - 25
+    const centerY = height / 2 - 66
 
     return (
       <div className={'Paper'} ref={ref => this.box = ref}>
         <View {...viewProps}>
-          <Layer name={'circle'}>
+          <Layer>
             <Group>
               <Circle
                 center={[centerX, centerY]}
@@ -272,7 +272,7 @@ export default class Paper extends Component {
               <Circle key={circle.id} {...circle} />
             )}
           </Layer>
-          <Layer name={'rectangles'}>
+          <Layer>
             <Rectangle
               fillColor={'blue'}
               point={[centerX - 40, centerY + 70]}
@@ -297,7 +297,7 @@ export default class Paper extends Component {
               <Rectangle key={rectangle.id} {...rectangle} />
             )}
           </Layer>
-          <Layer name={'logo'}>
+          <Layer>
             <Group rotation={rotation}>
               <Ellipse
                 strokeWidth={2.5}
@@ -325,14 +325,6 @@ export default class Paper extends Component {
                 radius={7}
               />
             </Group>
-          </Layer>
-          <Layer name={'path'}>
-            <Path
-              segments={SEGMENTS}
-              strokeColor={'red'}
-              strokeScaling={false}
-              strokeWidth={2}
-            />
           </Layer>
           <Tool
             active={activeTool === 'move'}

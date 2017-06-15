@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
+import { ReactFiberReconciler } from 'react-dom'
 import PropTypes from 'prop-types'
-
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
-import { ReactFiberReconciler } from 'react-dom'
 
 import {
   Group,

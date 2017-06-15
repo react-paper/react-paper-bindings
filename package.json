@@ -21,8 +21,8 @@
   "dependencies": {
     "paper": "^0.11.4",
     "prop-types": "^15.5.10",
-    "react": "^15.6.0",
-    "react-dom": "^15.6.0"
+    "react": "file:react",
+    "react-dom": "file:react-dom"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

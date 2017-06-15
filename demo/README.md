@@ -1,4 +1,16 @@
-ln -s /home/bojan/www/react-paper-bindings/build /home/bojan/www/react-paper-bindings/demo_copy/src/node_modules/react-paper-bindings
+# Installation
+
+Symlink folders
+
+```
+ln -s /home/bojan/www/react-paper-bindings/build /home/bojan/www/react-paper-bindings/demo/src/node_modules/react-paper-bindings
+```
+```
+ln -s /home/bojan/www/react-paper-bindings/react /home/bojan/www/react-paper-bindings/demo/src/node_modules/react
+```
+```
+ln -s /home/bojan/www/react-paper-bindings/react-dom /home/bojan/www/react-paper-bindings/demo/src/node_modules/react-dom
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

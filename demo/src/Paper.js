@@ -5,6 +5,7 @@ import './Paper.css'
 
 import PaperButtons from './PaperButtons'
 import PaperButton from './PaperButton'
+import ReactLogo from './ReactLogo'
 
 import {
   View,
@@ -18,7 +19,7 @@ import {
   Tool,
 } from 'react-paper-bindings'
 
-const NUM_CIRCLES = 100
+const NUM_CIRCLES = 150
 
 const COLORS = [
   'green','greenyellow','orange','brown','gold','fuchsia','cyan','chartreuse',
@@ -165,6 +166,10 @@ export default class Paper extends Component {
 
   moveToolMouseDrag = (e) => {
     const { x, y } = this.state
+    if (this.movePending) {
+      return
+    }
+    this.movePending = true
     const d = this.point.subtract(e.point)
     const curr = getEventXY(e.event)
     const prev = getEventXY(this.event)
@@ -173,9 +178,11 @@ export default class Paper extends Component {
       dy: -d.y,
       x: x + (curr.x - prev.x),
       y: y + (curr.y - prev.y),
+    }, () => {
+      this.movePending = false
+      // do not set next point!
+      this.event = e.event
     })
-    // do not set next point!
-    this.event = e.event
   }
 
   moveToolMouseUp = (e) => {
@@ -238,6 +245,165 @@ export default class Paper extends Component {
     }
   }
 
+  touchStart = (e) => {
+    console.log('touchStart', e);
+    return
+
+    switch (e.touches.length) {
+      case 1:
+
+      // set touch action
+      this.touchAction = 'moving';
+
+      // get start touches
+      this.startX0 = e.touches[0].pageX;
+      this.startY0 = e.touches[0].pageY;
+
+      break;
+
+      case 2:
+
+      // set touch action
+      this.touchAction = 'zooming';
+
+      // get start touches
+      this.startX0 = e.touches[0].pageX;
+      this.startY0 = e.touches[0].pageY;
+      this.startX1 = e.touches[1].pageX;
+      this.startY1 = e.touches[1].pageY;
+
+      // get start center
+      this.startCenterX = (this.startX0 + this.startX1) / 2;
+      this.startCenterY = (this.startY0 + this.startY1) / 2;
+
+      // get start distance between fingers
+      this.startDistance = Math.sqrt(Math.pow((this.startX1 - this.startX0), 2) + Math.pow((this.startY1 - this.startY0), 2));
+
+      break;
+    }
+  }
+
+  touchMove = (e) => {
+    console.log('touchMove', e)
+    return
+
+    switch (this.touchAction) {
+      case 'moving':
+
+      // get end touches
+      var endX0 = e.touches[0].pageX;
+      var endY0 = e.touches[0].pageY;
+
+      var dx = endX0 - this.startX0;
+      var dy = endY0 - this.startY0;
+
+      this.translateLayers(dx, dy);
+
+      // calculate new translation points
+      var translateX = this.getTranslateX() + dx;
+      var translateY = this.getTranslateY() + dy;
+
+      // set transform properties
+      this.setTranslateX(translateX);
+      this.setTranslateY(translateY);
+
+      // apply transform
+      this.applyTransform();
+
+      // reset start touches
+      this.startX0 = endX0;
+      this.startY0 = endY0;
+
+      break;
+
+      case 'zooming':
+
+      // get end touches
+      var endX0 = e.touches[0].pageX;
+      var endY0 = e.touches[0].pageY;
+      var endX1 = e.touches[1].pageX;
+      var endY1 = e.touches[1].pageY;
+
+      // get end center
+      var endCenterX = (endX0 + endX1) / 2;
+      var endCenterY = (endY0 + endY1) / 2;
+
+      // get end distance between fingers
+      var endDistance = Math.sqrt(Math.pow((endX1 - endX0), 2) + Math.pow((endY1 - endY0), 2));
+
+      // get distance difference
+      var distanceDiff = endDistance / this.startDistance;
+
+      // calculate scale and ratio
+      var scale = this.getScale();
+      var startScale = this.getStartScale();
+      var newScale = startScale * distanceDiff;
+
+      var ratio = newScale / scale;
+
+      // get center position within image
+      var mx = endCenterX - this.getImage().getX();
+      var my = endCenterY - this.getImage().getY();
+
+      // get center position within image after resize
+      var nx = mx * ratio;
+      var ny = my * ratio;
+
+      // get translation difference because of zooming
+      var zx = mx - nx;
+      var zy = my - ny;
+
+      // get translation difference because of moving
+      var tx = endCenterX - this.startCenterX;
+      var ty = endCenterY - this.startCenterY;
+
+      // get total translation difference
+      var dx = zx + tx;
+      var dy = zy + ty;
+
+      // calculate new translation
+      var translateX = this.getTranslateX() + dx;
+      var translateY = this.getTranslateY() + dy;
+
+      // set transform properties
+      this.setScale(newScale);
+      this.setTranslateX(translateX);
+      this.setTranslateY(translateY);
+
+      // scale layers
+      var box = this.getCanvas().getBox();
+      var cx = endCenterX - box.x;
+      var cy = endCenterY - box.y;
+      this.scaleAndTranslateLayers(ratio, cx, cy, tx, ty);
+
+      // apply transform
+      this.applyTransform();
+
+      // reset start touches
+      this.startX0 = endX0;
+      this.startY0 = endY0;
+      this.startX1 = endX1;
+      this.startY1 = endY1;
+
+      // reset start center
+      this.startCenterX = endCenterX;
+      this.startCenterY = endCenterY;
+
+      break;
+    }
+  }
+
+  touchEnd = (e) => {
+    return
+    switch (this.touchAction) {
+      case 'zooming':
+      this.setStartScale(this.getScale());
+      break;
+    }
+
+    this.touchAction = null;
+  }
+
   render() {
     const {
       width,
@@ -266,13 +432,6 @@ export default class Paper extends Component {
       onWheel: this.mouseWheel,
     }
 
-    const rectangleWidth = 320
-    const rectangleHeight = 120
-    const reactLogoX = centerX-100
-    const reactLogoY = centerY
-    const paperTextX = centerX+37
-    const paperTextY = centerY+10
-
     return (
       <div className={'Paper'} ref={ref => this.box = ref}>
         <View {...viewProps}>
@@ -287,7 +446,7 @@ export default class Paper extends Component {
               center={[centerX, centerY]}
               fillColor={'#222222'}
               opacity={0.8}
-              size={[rectangleWidth, rectangleHeight]}
+              size={[320, 120]}
             />
             <PointText
               content={' + Paper.js'}
@@ -296,35 +455,13 @@ export default class Paper extends Component {
               fontSize={30}
               fontWeight={'bold'}
               justification={'center'}
-              point={[paperTextX, paperTextY]}
+              point={[centerX+37, centerY+10]}
             />
-            <Group name={'reactLogo'} rotation={rotation}>
-              <Ellipse
-                center={[reactLogoX, reactLogoY]}
-                size={[70, 25]}
-                strokeWidth={2.5}
-                strokeColor={'#61DAFB'}
-              />
-              <Ellipse
-                center={[reactLogoX, reactLogoY]}
-                rotation={120}
-                size={[70, 25]}
-                strokeWidth={2.5}
-                strokeColor={'#61DAFB'}
-              />
-              <Ellipse
-                center={[reactLogoX, reactLogoY]}
-                rotation={240}
-                size={[70, 25]}
-                strokeWidth={2.5}
-                strokeColor={'#61DAFB'}
-              />
-              <Circle
-                center={[reactLogoX, reactLogoY]}
-                fillColor={'#61DAFB'}
-                radius={7}
-              />
-            </Group>
+            <ReactLogo
+              rotation={rotation}
+              x={centerX-100}
+              y={centerY}
+            />
           </Layer>
           <Layer name={'draw'} active={true}>
           </Layer>

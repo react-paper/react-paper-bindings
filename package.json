@@ -9,10 +9,14 @@
     "type": "git",
     "url": "git+https://github.com/HriBB/react-paper-bindings.git"
   },
+  "bugs": {
+    "url": "https://github.com/HriBB/react-paper-bindings/issues"
+  },
+  "main": "index.js",
   "scripts": {
-    "build": "babel src -d lib",
-    "clean": "rimraf lib",
-    "lint": "eslint src/**"
+    "start": "NODE_ENV=development babel src -w -d build",
+    "build": "NODE_ENV=production babel src -d build",
+    "lint": "NODE_ENV=development eslint src/**"
   },
   "dependencies": {
     "paper": "^0.11.4",
@@ -20,8 +24,15 @@
     "react": "^15.6.0",
     "react-dom": "^15.6.0"
   },
-  "bugs": {
-    "url": "https://github.com/HriBB/react-paper-bindings/issues"
-  },
-  "main": "index.js"
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-react-app": "^3.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-react-app": "^1.0.4",
+    "eslint-plugin-flowtype": "^2.33.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1"
+  }
 }

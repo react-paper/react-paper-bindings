@@ -91,7 +91,7 @@ class View extends Component {
   componentDidMount() {
     const {
       activeTool, children, height, width,
-      normalize, x, y,
+      normalize, x, y, zoom,
     } = this.props
 
     this._paper = new PaperScope()
@@ -99,7 +99,7 @@ class View extends Component {
 
     const { project, tools, view } = this._paper
 
-    view.autoUpdate = false
+    //view.autoUpdate = false
 
     view.viewSize = new Size(width, height)
 
@@ -116,6 +116,10 @@ class View extends Component {
       project.layers.forEach(l => l.transform(nm))
     }
 
+    if (typeof zoom === 'number') {
+      view.zoom = zoom
+    }
+
     if (typeof x === 'number' && typeof y === 'number') {
       view.translate(x, y)
     }
@@ -125,8 +129,6 @@ class View extends Component {
         if (t.name === activeTool) t.activate()
       })
     }
-
-    view.update()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -152,8 +154,6 @@ class View extends Component {
     } else if (x !== prevProps.x || y !== prevProps.y) {
       view.translate(dx, dy)
     }
-
-    view.update()
   }
 
   componentWillUnmount() {

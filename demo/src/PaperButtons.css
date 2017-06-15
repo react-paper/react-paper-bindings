@@ -1,8 +1,10 @@
-.ToolButtons {
+.PaperButtons {
   position: absolute;
   z-index: 50;
   width: 100%;
-  top: 17px;
+  top: 0;
   left: 50%;
+  padding: 15px;
   transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
 }

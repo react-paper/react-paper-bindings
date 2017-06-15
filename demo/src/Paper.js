@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import paper from 'paper'
 import './Paper.css'
 
-import ToolButtons from './ToolButtons'
-import ToolButton from './ToolButton'
+import PaperButtons from './PaperButtons'
+import PaperButton from './PaperButton'
 
 import {
   View,
@@ -16,22 +16,38 @@ import {
   Rectangle,
   PointText,
   Tool,
-} from './react-paper-bindings'
+} from 'react-paper-bindings'
+
+const NUM_CIRCLES = 100
 
 const COLORS = [
-  'red',
-  'black',
-  'green',
-  'orange',
-  'brown',
-  'violet',
-  'purple',
-  'yellow',
+  'green','greenyellow','orange','brown','gold','fuchsia','cyan','chartreuse',
+  'violet','purple','yellow','red','blue','grey','pink','magenta','orangered',
 ]
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min
-}
+const getEventXY = (e) => ({
+  x: (e.touches) ? e.touches[0].pageX : e.pageX,
+  y: (e.touches) ? e.touches[0].pageY : e.pageY,
+})
+
+const getRandomInt = (min,max) =>
+  Math.floor(Math.random()*(max-min+1))+min
+
+const createCircle = (key, x, y) => ({
+  key, center: [x, y],
+  fillColor: COLORS[getRandomInt(0,COLORS.length-1)],
+  radius: getRandomInt(10,50),
+})
+
+const createRectangle = (key, x, y) => ({
+  key, center: [x, y],
+  fillColor: COLORS[getRandomInt(0,COLORS.length-1)],
+  size: getRandomInt(20,100),
+})
+
+const createCircles = (w, h) =>
+  [...Array(NUM_CIRCLES).keys()].map(i =>
+    createCircle(i, getRandomInt(0,w), getRandomInt(0,h)))
 
 export default class Paper extends Component {
 
@@ -44,17 +60,19 @@ export default class Paper extends Component {
     super(props)
     this.state = {
       activeTool: 'move',
-      animate: false,
+      animate: true,
       circles: [],
+      centerX: 0,
+      centerY: 0,
       rectangles: [],
       rotation: 0,
-      cx: 0,
-      cy: 0,
-      dx: 0,
-      dy: 0,
-      x: 0,
-      y: 0,
-      zoom: 1,
+      cx: 0,   // center x for zoom
+      cy: 0,   // center y for zoom
+      dx: 0,   // delta x for pan
+      dy: 0,   // delta y for pan
+      x: 0,    // view x
+      y: 0,    // view y
+      zoom: 1, // view zoom
     }
     this.box = null
     this.point = null
@@ -67,25 +85,18 @@ export default class Paper extends Component {
 
   addCircle = (e) => {
     const { x, y } = e.point
-    const circles = [...this.state.circles, {
-      id: this.state.circles.length + 1,
-      center: [x, y],
-      fillColor: COLORS[getRandomInt(0,COLORS.length-1)],
-      radius: getRandomInt(10,60),
-    }]
-    this.setState({ circles })
+    const { circles } = this.state
+    this.setState({
+      circles: [...circles, createCircle(circles.length+1, x, y)]
+    })
   }
 
   addRectangle = (e) => {
     const { x, y } = e.point
-    const size = getRandomInt(10,60)
-    const rectangles = [...this.state.rectangles, {
-      id: this.state.rectangles.length + 1,
-      fillColor: COLORS[getRandomInt(0,COLORS.length-1)],
-      point: [x - (size / 2), y - (size / 2)],
-      size: [size, size],
-    }]
-    this.setState({ rectangles })
+    const { rectangles } = this.state
+    this.setState({
+      rectangles: [...rectangles, createRectangle(rectangles.length+1, x, y)]
+    })
   }
 
   rotate = () => {
@@ -103,7 +114,7 @@ export default class Paper extends Component {
     }
   }
 
-  startAnimation() {
+  startAnimation = () => {
     this.setState({
       animate: requestAnimationFrame(this.rotate),
     })
@@ -155,12 +166,15 @@ export default class Paper extends Component {
   moveToolMouseDrag = (e) => {
     const { x, y } = this.state
     const d = this.point.subtract(e.point)
+    const curr = getEventXY(e.event)
+    const prev = getEventXY(this.event)
     this.setState({
       dx: -d.x,
       dy: -d.y,
-      x: x + (e.event.x - this.event.x),
-      y: y + (e.event.y - this.event.y),
+      x: x + (curr.x - prev.x),
+      y: y + (curr.y - prev.y),
     })
+    // do not set next point!
     this.event = e.event
   }
 
@@ -207,6 +221,12 @@ export default class Paper extends Component {
   }
 
   componentDidMount() {
+    const { width, height } = this.box.getBoundingClientRect()
+    this.setState({
+      circles: createCircles(width, height),
+      centerX: width/2,
+      centerY: height/2,
+    })
     if (this.state.animate) {
       this.startAnimation()
     }
@@ -228,10 +248,14 @@ export default class Paper extends Component {
       activeTool,
       animate,
       circles,
+      centerX,
+      centerY,
       rectangles,
       rotation,
-      cx, cy, dx, dy,
-      x, y, zoom,
+      cx, cy,
+      dx, dy,
+      x, y,
+      zoom,
     } = this.state
 
     const viewProps = {
@@ -242,89 +266,67 @@ export default class Paper extends Component {
       onWheel: this.mouseWheel,
     }
 
-    const centerX = width / 2
-    const centerY = height / 2 - 66
+    const rectangleWidth = 320
+    const rectangleHeight = 120
+    const reactLogoX = centerX-100
+    const reactLogoY = centerY
+    const paperTextX = centerX+37
+    const paperTextY = centerY+10
 
     return (
       <div className={'Paper'} ref={ref => this.box = ref}>
         <View {...viewProps}>
-          <Layer>
-            <Group>
-              <Circle
-                center={[centerX, centerY]}
-                fillColor={'red'}
-                radius={50}
-                strokeColor={'black'}
-                strokeScaling={false}
-                strokeWidth={2}
-              />
-              <PointText
-                content={'Paper.js'}
-                fillColor={'black'}
-                fontFamily={'Courier New'}
-                fontSize={18}
-                fontWeight={'bold'}
-                justification={'center'}
-                point={[centerX, centerY+3]}
-              />
-            </Group>
-            {circles.map(circle =>
-              <Circle key={circle.id} {...circle} />
-            )}
+          <Layer name={'circles'}>
+            {circles.map(circle => <Circle {...circle} />)}
           </Layer>
-          <Layer>
-            <Rectangle
-              fillColor={'blue'}
-              point={[centerX - 40, centerY + 70]}
-              size={[40,40]}
-            />
-            <Rectangle
-              fillColor={'purple'}
-              point={[centerX, centerY + 70]}
-              size={[40,40]}
-            />
-            <Rectangle
-              fillColor={'green'}
-              point={[centerX - 40, centerY + 110]}
-              size={[40,40]}
-            />
-            <Rectangle
-              fillColor={'orange'}
-              point={[centerX, centerY + 110]}
-              size={[40,40]}
-            />
-            {rectangles.map(rectangle =>
-              <Rectangle key={rectangle.id} {...rectangle} />
-            )}
+          <Layer name={'rectangles'}>
+            {rectangles.map(rectangle => <Rectangle {...rectangle} />)}
           </Layer>
-          <Layer>
-            <Group rotation={rotation}>
+          <Layer name={'logo'}>
+            <Rectangle
+              center={[centerX, centerY]}
+              fillColor={'#222222'}
+              opacity={0.8}
+              size={[rectangleWidth, rectangleHeight]}
+            />
+            <PointText
+              content={' + Paper.js'}
+              fillColor={'white'}
+              fontFamily={'Courier New'}
+              fontSize={30}
+              fontWeight={'bold'}
+              justification={'center'}
+              point={[paperTextX, paperTextY]}
+            />
+            <Group name={'reactLogo'} rotation={rotation}>
               <Ellipse
+                center={[reactLogoX, reactLogoY]}
+                size={[70, 25]}
                 strokeWidth={2.5}
                 strokeColor={'#61DAFB'}
-                point={[centerX - 35, centerY + 98]}
-                size={[70, 25]}
               />
               <Ellipse
-                strokeWidth={2.5}
-                strokeColor={'#61DAFB'}
-                point={[centerX - 35, centerY + 98]}
-                size={[70, 25]}
+                center={[reactLogoX, reactLogoY]}
                 rotation={120}
-              />
-              <Ellipse
+                size={[70, 25]}
                 strokeWidth={2.5}
                 strokeColor={'#61DAFB'}
-                point={[centerX - 35, centerY + 98]}
-                size={[70, 25]}
+              />
+              <Ellipse
+                center={[reactLogoX, reactLogoY]}
                 rotation={240}
+                size={[70, 25]}
+                strokeWidth={2.5}
+                strokeColor={'#61DAFB'}
               />
               <Circle
-                center={[centerX, centerY + 111]}
+                center={[reactLogoX, reactLogoY]}
                 fillColor={'#61DAFB'}
                 radius={7}
               />
             </Group>
+          </Layer>
+          <Layer name={'draw'} active={true}>
           </Layer>
           <Tool
             active={activeTool === 'move'}
@@ -351,37 +353,37 @@ export default class Paper extends Component {
             onMouseDown={this.addRectangle}
           />
         </View>
-        <ToolButtons>
-          <ToolButton
+        <PaperButtons>
+          <PaperButton
             active={activeTool === 'move'}
             onClick={this.setTool}
             tool={'move'}>
             Move
-          </ToolButton>
-          <ToolButton
+          </PaperButton>
+          <PaperButton
             active={activeTool === 'pen'}
             onClick={this.setTool}
             tool={'pen'}>
             Pen
-          </ToolButton>
-          <ToolButton
+          </PaperButton>
+          <PaperButton
             active={activeTool === 'circle'}
             onClick={this.setTool}
             tool={'circle'}>
             Circle
-          </ToolButton>
-          <ToolButton
+          </PaperButton>
+          <PaperButton
             active={activeTool === 'rectangle'}
             onClick={this.setTool}
             tool={'rectangle'}>
             Rectangle
-          </ToolButton>
-          <ToolButton
+          </PaperButton>
+          <PaperButton
             onClick={this.toggleAnimation}
             tool={'animation'}>
             {animate ? 'Stop animation' : 'Start animation'}
-          </ToolButton>
-        </ToolButtons>
+          </PaperButton>
+        </PaperButtons>
       </div>
     )
   }

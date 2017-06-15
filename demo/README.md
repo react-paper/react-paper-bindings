@@ -1,3 +1,5 @@
+ln -s /home/bojan/www/react-paper-bindings/build /home/bojan/www/react-paper-bindings/demo_copy/src/node_modules/react-paper-bindings
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

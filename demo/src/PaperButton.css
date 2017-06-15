@@ -1,0 +1,7 @@
+.PaperButton {
+  margin: 3px;
+}
+
+.PaperButton-active {
+  font-weight: bold;
+}

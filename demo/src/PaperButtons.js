@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './ToolButtons.css'
+import './PaperButtons.css'
 
-const ToolButtons = (props) => {
+const PaperButtons = (props) => {
   return (
-    <div className={'ToolButtons'}>
+    <div className={'PaperButtons'}>
       {props.children}
     </div>
   )
 }
 
-ToolButtons.propTypes = {
+PaperButtons.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default ToolButtons
+export default PaperButtons

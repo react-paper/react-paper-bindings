@@ -1,4 +1,4 @@
-# Paper.js bindings for React with ReactFiberReconciler
+# Paper.js bindings for React Fiber
 
 Demo coming soon ...
 

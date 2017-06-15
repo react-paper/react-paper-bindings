@@ -1,6 +1,33 @@
 # Paper.js bindings for React Fiber
 
-Demo coming soon ...
+## Development
+
+Clone repo
+```
+git clone https://github.com/HriBB/react-paper-bindings.git
+```
+
+Start watching `src` with babel
+```
+cd react-paper-bindings
+npm install
+npm start
+```
+
+Start demo with `create-react-app`
+```
+cd react-paper-bindings/demo
+npm install
+
+# symlink build folder into demo/src/node_modules/react-paper-bindings
+ln -s /path/to/react-paper-bindings/build /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
+
+npm start
+```
+
+## Examples
+
+Live demo coming soon ;)
 
 ```
 import React, { Component } from 'react'

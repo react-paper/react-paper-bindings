@@ -1,16 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  View,
-  Layer,
   Group,
-  //Path,
   Circle,
   Ellipse,
-  Rectangle,
-  PointText,
-  Tool,
 } from 'react-paper-bindings'
 
 const ReactLogo = ({ rotation, x, y }) => {

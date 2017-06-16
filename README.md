@@ -1,5 +1,9 @@
 # Paper.js bindings for React Fiber
 
+## Demo
+
+http://hribb.github.io/react-paper-bindings/
+
 ## Development
 
 Clone repo
@@ -19,15 +23,14 @@ Start demo with `create-react-app`
 cd react-paper-bindings/demo
 npm install
 
-# symlink build folder into demo/src/node_modules/react-paper-bindings
+# cra does not like sources from outside its root
+# we need to symlink build folder in development
 ln -s /path/to/react-paper-bindings/build /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
 
 npm start
 ```
 
-## Examples
-
-Live demo coming soon ;)
+## Example
 
 ```
 import React, { Component } from 'react'

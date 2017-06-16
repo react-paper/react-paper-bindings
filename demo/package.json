@@ -1,19 +1,22 @@
 {
-  "name": "demo",
-  "version": "0.1.0",
-  "private": true,
+  "name": "react-paper-bindings",
+  "version": "0.0.1",
+  "homepage": "http://hribb.github.io/react-paper-bindings/",
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "file:../react",
     "react-dom": "file:../react-dom"
   },
   "devDependencies": {
+    "gh-pages": "^1.0.0",
     "react-scripts": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }

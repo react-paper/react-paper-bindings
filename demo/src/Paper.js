@@ -10,10 +10,7 @@ import ReactLogo from './ReactLogo'
 import {
   View,
   Layer,
-  Group,
-  //Path,
   Circle,
-  Ellipse,
   Rectangle,
   PointText,
   Tool,
@@ -245,6 +242,7 @@ export default class Paper extends Component {
     }
   }
 
+  /*
   touchStart = (e) => {
     console.log('touchStart', e);
     return
@@ -403,6 +401,7 @@ export default class Paper extends Component {
 
     this.touchAction = null;
   }
+  */
 
   render() {
     const {

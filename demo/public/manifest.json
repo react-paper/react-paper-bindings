@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "React Paper.js",
+  "name": "Paper.js bindings for React",
   "icons": [
     {
       "src": "favicon.ico",

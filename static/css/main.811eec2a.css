@@ -1,0 +1,2 @@
+.Paper{position:relative;width:100%;height:100%}.PaperButtons{position:absolute;z-index:50;width:100%;top:0;left:50%;padding:15px;-webkit-transform:translateX(-50%);-ms-transform:translateX(-50%);transform:translateX(-50%);background:rgba(0,0,0,.8)}.PaperButton{margin:3px}.PaperButton-active{font-weight:700}.App{width:100%;height:100%;text-align:center;overflow:hidden}body,html{width:100%;height:100%}body{margin:0;padding:0;font-family:sans-serif}#root{width:100%;height:100%}
+/*# sourceMappingURL=main.811eec2a.css.map*/

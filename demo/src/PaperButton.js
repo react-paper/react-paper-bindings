@@ -16,10 +16,10 @@ export default class PaperButton extends Component {
   }
 
   render() {
-    const { active, children } = this.props
+    const { active, children, tool, ...rest } = this.props
     const className = `PaperButton ${active?'PaperButton-active':''}`
     return (
-      <button className={className} onClick={this.handleClick}>
+      <button {...rest} className={className} onClick={this.handleClick}>
         {children}
       </button>
     )

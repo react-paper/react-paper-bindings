@@ -3,6 +3,7 @@ export {
   Layer,
   Group,
   Path,
+  Raster,
   Circle,
   Ellipse,
   Rectangle,

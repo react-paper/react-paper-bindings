@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import Paper from './Paper'
+import PaperEditor from './PaperEditor'
 import './App.css'
 
 class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { mounted: false }
+    this.state = {
+      mounted: false,
+    }
   }
 
   handleResize = () => {
@@ -24,10 +26,16 @@ class App extends Component {
 
   render() {
     const { mounted } = this.state
-    const box = this.box && this.box.getBoundingClientRect()
+    const box = this._box && this._box.getBoundingClientRect()
     return (
-      <div className="App" ref={ref => this.box = ref}>
-        {mounted && <Paper width={box.width} height={box.height} />}
+      <div className="App" ref={ref => this._box = ref}>
+        {mounted &&
+          <PaperEditor
+            height={box.height}
+            left={box.left}
+            top={box.top}
+            width={box.width}
+          />}
       </div>
     )
   }

@@ -12,18 +12,20 @@ import {
   PaperScope,
   Path,
   PointText,
+  Raster,
   Size,
   Tool,
 } from 'paper'
 
 const TYPES = {
-  LAYER: 'Layer',
-  GROUP: 'Group',
-  PATH: 'Path',
   CIRCLE: 'Circle',
   ELLIPSE: 'Ellipse',
-  RECTANGLE: 'Rectangle',
+  GROUP: 'Group',
+  LAYER: 'Layer',
+  PATH: 'Path',
   POINTTEXT: 'PointText',
+  RASTER: 'Raster',
+  RECTANGLE: 'Rectangle',
   TOOL: 'Tool',
 }
 
@@ -31,60 +33,17 @@ class View extends Component {
 
   static propTypes = {
     activeTool: PropTypes.string,
-    cx: PropTypes.number,
-    cy: PropTypes.number,
-    dx: PropTypes.number,
-    dy: PropTypes.number,
     height: PropTypes.number.isRequired,
     normalize: PropTypes.number,
     onWheel: PropTypes.func,
     width: PropTypes.number.isRequired,
+    sx: PropTypes.number,
+    sy: PropTypes.number,
+    tx: PropTypes.number,
+    ty: PropTypes.number,
     x: PropTypes.number,
     y: PropTypes.number,
     zoom: PropTypes.number,
-  }
-
-  hitTest(point, options) {
-    return this._paper.project.hitTest(point, options)
-  }
-
-  exportActiveLayer(normalize) {
-    const { activeLayer } = this._paper.project
-    const { x, y } = this.props
-
-    // export paths, circles and icons
-    const paths = []
-    const circles = []
-    const icons = []
-
-    // get export matrix
-    const matrix = new Matrix()
-    matrix.scale(normalize)
-    matrix.translate(-x, -y)
-
-    // clone and normalize layer
-    const clone = activeLayer.clone()
-    clone.transform(matrix)
-
-    // export children
-    clone.children.forEach(child => {
-      if (child instanceof Path) {
-        const segments = child.segments.map(s => ({
-          point:     { x: s.point.x,     y: s.point.y },
-          handleIn:  { x: s.handleIn.x,  y: s.handleIn.y },
-          handleOut: { x: s.handleOut.x, y: s.handleOut.y },
-        }))
-        paths.push(segments)
-      }
-    })
-
-    // remove clone
-    clone.remove()
-
-    // reactivate layer
-    activeLayer.activate()
-
-    return { paths, circles, icons }
   }
 
   componentDidMount() {
@@ -97,8 +56,6 @@ class View extends Component {
     this._paper.setup(this._canvas)
 
     const { project, tools, view } = this._paper
-
-    //view.autoUpdate = false
 
     view.viewSize = new Size(width, height)
 
@@ -133,25 +90,25 @@ class View extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {
       children, height, width,
-      cx, cy, dx, dy, x, y, zoom,
+      sx, sy, tx, ty, x, y, zoom,
     } = this.props
-
-    PaperRenderer.updateContainer(
-      children,
-      this._mountNode,
-      this,
-    )
 
     const { view } = this._paper
 
     if (width !== prevProps.width || height !== prevProps.height) {
+      const center = view.center
       view.viewSize = new Size(width, height)
-    }
-
-    if (zoom !== prevProps.zoom) {
-      view.scale(zoom / prevProps.zoom, view.viewToProject(cx, cy))
+      view.translate(view.center.subtract(center))
+    } else if (zoom !== prevProps.zoom) {
+      view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
     } else if (x !== prevProps.x || y !== prevProps.y) {
-      view.translate(dx, dy)
+      view.translate(tx, ty)
+    } else {
+      PaperRenderer.updateContainer(
+        children,
+        this._mountNode,
+        this,
+      )
     }
   }
 
@@ -178,6 +135,23 @@ class View extends Component {
 
 }
 
+function applyCircleProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (props.radius !== prevProps.radius) {
+    instance.scale(props.radius / prevProps.radius)
+  }
+}
+function applyEllipseProps(instance, props, prevProps = {}) {
+  applyRectangleProps(instance, props, prevProps)
+}
+function applyGroupProps(instance, props, prevProps = {}) {
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotate(props.rotation - prevProps.rotation)
+  }
+  if (props.strokeColor !== prevProps.strokeColor) {
+    instance.strokeColor = props.strokeColor
+  }
+}
 function applyLayerProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
@@ -191,18 +165,9 @@ function applyLayerProps(instance, props, prevProps = {}) {
     })
   }
 }
-
-function applyGroupProps(instance, props, prevProps = {}) {
-  if (props.rotation !== prevProps.rotation) {
-    instance.rotate(props.rotation - prevProps.rotation)
-  }
-  if (props.strokeColor !== prevProps.strokeColor) {
-    instance.strokeColor = props.strokeColor
-  }
-}
-
 function applyPathProps(instance, props, prevProps = {}) {
   if (props.center !== prevProps.center) {
+    console.log('prev', prevProps.center, 'next', props.center);
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -216,6 +181,10 @@ function applyPathProps(instance, props, prevProps = {}) {
   }
   if (props.dashOffset !== prevProps.dashOffset) {
     instance.dashOffset = props.dashOffset
+  }
+  if (props.data !== prevProps.data) {
+    //console.log('set path data', props.data);
+    instance.setPathData(props.data)
   }
   if (props.fillColor !== prevProps.fillColor) {
     instance.fillColor = props.fillColor
@@ -245,14 +214,6 @@ function applyPathProps(instance, props, prevProps = {}) {
     instance.strokeWidth = props.strokeWidth
   }
 }
-
-function applyCircleProps(instance, props, prevProps = {}) {
-  applyPathProps(instance, props, prevProps)
-  if (props.radius !== prevProps.radius) {
-    instance.scale(props.radius / prevProps.radius)
-  }
-}
-
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyCircleProps(instance, props, prevProps)
   if (props.size !== prevProps.size) {
@@ -262,11 +223,9 @@ function applyRectangleProps(instance, props, prevProps = {}) {
     )
   }
 }
-
-function applyEllipseProps(instance, props, prevProps = {}) {
-  applyRectangleProps(instance, props, prevProps)
+function applyRasterProps(instance, props, prevProps = {}) {
+  // TODO
 }
-
 function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.content !== prevProps.content) {
     instance.content = props.content
@@ -290,7 +249,6 @@ function applyPointTextProps(instance, props, prevProps = {}) {
     ])
   }
 }
-
 function applyToolProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
@@ -327,60 +285,81 @@ const PaperRenderer = ReactFiberReconciler({
     // Noop
   },
 
-  commitUpdate(instance, updatePayload, type, oldProps, newProps, internalInstanceHandle) {
+  commitUpdate(instance, updatePayload, type, oldProps, newProps, paperScope) {
     instance._applyProps(instance, newProps, oldProps)
   },
 
-  createInstance(type, props, internalInstanceHandle) {
-    const { children, ...instanceProps } = props
+  createInstance(type, props, paperScope) {
+    const { children, ...paperProps } = props
     let instance
 
     switch (type) {
-      case TYPES.TOOL:
-        instance = new Tool(instanceProps)
-        instance._applyProps = applyToolProps
-        break
-      case TYPES.LAYER:
-        instance = new Layer(instanceProps)
-        instance._applyProps = applyLayerProps
-        break
-      case TYPES.GROUP:
-        instance = new Group(instanceProps)
-        instance._applyProps = applyGroupProps
-        break
-      case TYPES.PATH:
-        instance = new Path(instanceProps)
-        instance._applyProps = applyPathProps
-        break
       case TYPES.CIRCLE:
-        instance = new Path.Circle(instanceProps)
+        instance = new Path.Circle(paperProps)
         instance._applyProps = applyCircleProps
+        if (paperProps.data) {
+          instance.setPathData(paperProps.data)
+        }
         break
       case TYPES.ELLIPSE:
-        instance = new Path.Ellipse(instanceProps)
+        instance = new Path.Ellipse(paperProps)
         instance._applyProps = applyEllipseProps
         break
-      case TYPES.RECTANGLE:
-        instance = new Path.Rectangle(instanceProps)
-        instance._applyProps = applyRectangleProps
+      case TYPES.GROUP:
+        instance = new Group(paperProps)
+        instance._applyProps = applyGroupProps
+        break
+      case TYPES.LAYER:
+        instance = new Layer(paperProps)
+        instance._applyProps = applyLayerProps
+        break
+      case TYPES.PATH:
+        instance = new Path(paperProps)
+        instance._applyProps = applyPathProps
+        if (paperProps.data) {
+          instance.setPathData(paperProps.data)
+        }
         break
       case TYPES.POINTTEXT:
-        instance = new PointText(instanceProps)
+        instance = new PointText(paperProps)
         instance._applyProps = applyPointTextProps
+        break
+      case TYPES.RASTER:
+        instance = new Raster(paperProps)
+        instance._applyProps = applyRasterProps
+        instance.onLoad = () => {
+          if (paperProps.fitToView) {
+            instance.fitBounds(instance.view.bounds)
+          }
+          if (typeof paperProps.onLoad === 'function') {
+            paperProps.onLoad(...arguments)
+          }
+        }
+        break;
+      case TYPES.RECTANGLE:
+        instance = new Path.Rectangle(paperProps)
+        instance._applyProps = applyRectangleProps
+        if (paperProps.data) {
+          instance.setPathData(paperProps.data)
+        }
+        break
+      case TYPES.TOOL:
+        instance = new Tool(paperProps)
+        instance._applyProps = applyToolProps
         break
       default:
         invariant(instance, 'PaperReact does not support the type "%s"', type)
         break
     }
 
-    invariant(instance, 'PaperReact does not support the type "%s"', type)
+    instance.reactType = type
 
-    //instance._applyProps(instance, props)
+    invariant(instance, 'PaperReact does not support the type "%s"', type)
 
     return instance
   },
 
-  createTextInstance(text, rootContainerInstance, internalInstanceHandle) {
+  createTextInstance(text, rootContainerInstance, paperScope) {
     return text
   },
 
@@ -444,24 +423,26 @@ const PaperRenderer = ReactFiberReconciler({
 })
 
 const {
-  LAYER,
-  GROUP,
-  PATH,
   CIRCLE,
   ELLIPSE,
-  RECTANGLE,
+  GROUP,
+  LAYER,
+  PATH,
   POINTTEXT,
+  RASTER,
+  RECTANGLE,
   TOOL,
 } = TYPES
 
 export {
-  View,
-  LAYER as Layer,
-  GROUP as Group,
-  PATH as Path,
   CIRCLE as Circle,
   ELLIPSE as Ellipse,
-  RECTANGLE as Rectangle,
+  GROUP as Group,
+  LAYER as Layer,
+  PATH as Path,
   POINTTEXT as PointText,
+  RASTER as Raster,
+  RECTANGLE as Rectangle,
   TOOL as Tool,
+  View,
 }

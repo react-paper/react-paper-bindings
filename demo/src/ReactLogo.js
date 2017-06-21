@@ -2,18 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  Group,
   Circle,
   Ellipse,
+  Group,
 } from 'react-paper-bindings'
 
 const ReactLogo = ({ rotation, x, y }) => {
   return (
-    <Group name={'reactLogo'} rotation={rotation}>
+    <Group name={'ReactLogo'} rotation={rotation}>
       <Ellipse
         center={[x, y]}
         size={[70, 25]}
-        strokeWidth={2.5}
+        strokeWidth={2}
         strokeColor={'#61DAFB'}
       />
       <Ellipse

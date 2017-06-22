@@ -1,28 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'recompose'
-
 import {
-  Circle,
-  Layer,
-  Path,
-  //PointText,
-  Raster,
-  Rectangle,
-  Tool,
-  View,
+  Circle, Layer, Path, Raster, Rectangle, Tool, View,
 } from 'react-paper-bindings'
 
 import ReactLogo from './ReactLogo'
-
-import PaperButtons from './PaperButtons'
 import PaperButton from './PaperButton'
+import PaperButtons from './PaperButtons'
 
 import withAnimation from './withAnimation'
 import withTools from './withTools'
-import withSelectTool from './withSelectTool'
 import withMoveTool from './withMoveTool'
+import withSelectTool from './withSelectTool'
 import withPenTool from './withPenTool'
+import withCircleTool from './withCircleTool'
+import withRectangleTool from './withRectangleTool'
 
 import MR_BUBBLES from './mr-bubbles.jpg'
 
@@ -53,12 +46,13 @@ class Paper extends Component {
   }
 
   save = () => {
-    console.log('save');
+    console.log('TODO: export canvas');
   }
 
   render() {
     const {
-      activeTool, animate, circles, paths, rectangles,
+      activeTool, animate,
+      circles, paths, rectangles,
       width, height, rotation,
       sx, sy, tx, ty, x, y, zoom,
     } = this.props
@@ -75,7 +69,6 @@ class Paper extends Component {
 
     return (
       <div className={'Paper'}>
-
         <View {...viewProps}>
           <Layer name={'Raster'}>
             <Raster
@@ -86,11 +79,12 @@ class Paper extends Component {
             />
           </Layer>
           {imageLoaded &&
-          <Layer name={'Path'}>
+          <Layer name={'Path'} active={activeTool === 'pen'}>
             {paths.map(path =>
               <Path
                 {...path}
-                reactKey={path.key}
+                key={path.id}
+                reactId={path.id}
                 strokeColor={'red'}
                 strokeScaling={false}
                 strokeWidth={2}
@@ -98,42 +92,27 @@ class Paper extends Component {
             )}
           </Layer>}
           {imageLoaded &&
-          <Layer name={'Circle'}>
+          <Layer name={'Circle'} active={activeTool === 'circle'}>
             {circles.map(circle =>
               <Circle
                 {...circle}
-                reactKey={circle.key}
+                key={circle.id}
+                reactId={circle.id}
               />
             )}
           </Layer>}
           {imageLoaded &&
-          <Layer name={'Rectangle'}>
+          <Layer name={'Rectangle'} active={activeTool === 'rectangle'}>
             {rectangles.map(rectangle =>
               <Rectangle
                 {...rectangle}
-                reactKey={rectangle.key}
+                key={rectangle.id}
+                reactId={rectangle.id}
               />
             )}
           </Layer>}
           {imageLoaded &&
           <Layer name={'ReactLogo'}>
-            {/*
-            <Rectangle
-              center={[centerX, centerY]}
-              fillColor={'#222222'}
-              opacity={0.8}
-              size={[320, 120]}
-            />
-            <PointText
-              content={' + Paper.js'}
-              fillColor={'white'}
-              fontFamily={'Courier New'}
-              fontSize={30}
-              fontWeight={'bold'}
-              justification={'center'}
-              point={[centerX+37, centerY+10]}
-            />
-            */}
             <ReactLogo
               rotation={rotation}
               x={centerX}
@@ -165,68 +144,88 @@ class Paper extends Component {
           <Tool
             active={activeTool === 'circle'}
             name={'circle'}
-            onMouseDown={this.props.addCircle}
+            onMouseDown={this.props.circleToolMouseDown}
           />
           <Tool
             active={activeTool === 'rectangle'}
             name={'rectangle'}
-            onMouseDown={this.props.addRectangle}
+            onMouseDown={this.props.rectangleToolMouseDown}
           />
         </View>
         <PaperButtons>
           <PaperButton
             active={activeTool === 'select'}
             onClick={this.props.setTool}
+            title={'Select Tool'}
             tool={'select'}>
-            Select
+            <i className={'material-icons'}>touch_app</i>
           </PaperButton>
           <PaperButton
             active={activeTool === 'move'}
             onClick={this.props.setTool}
+            title={'Move Tool'}
             tool={'move'}>
-            Move
+            <i className={'material-icons'}>pan_tool</i>
           </PaperButton>
           <PaperButton
             active={activeTool === 'pen'}
             onClick={this.props.setTool}
+            title={'Pen Tool'}
             tool={'pen'}>
-            Pen
+            <i className={'material-icons'}>create</i>
           </PaperButton>
           <PaperButton
             active={activeTool === 'circle'}
             onClick={this.props.setTool}
+            title={'Circle Tool'}
             tool={'circle'}>
-            Circle
+            <i className={'material-icons'}>radio_button_unchecked</i>
           </PaperButton>
           <PaperButton
             active={activeTool === 'rectangle'}
             onClick={this.props.setTool}
+            title={'Rectangle Tool'}
             tool={'rectangle'}>
-            Rectangle
+            <i className={'material-icons'}>check_box_outline_blank</i>
           </PaperButton>
+          <span></span>
           <PaperButton
             active={activeTool === 'undo'}
             disabled={!this.props.canUndo}
             onClick={this.props.undo}
+            title={'Undo'}
             tool={'undo'}>
-            Undo
+            <i className={'material-icons'}>undo</i>
           </PaperButton>
           <PaperButton
             active={activeTool === 'redo'}
             disabled={!this.props.canRedo}
             onClick={this.props.redo}
+            title={'Redo'}
             tool={'redo'}>
-            Redo
+            <i className={'material-icons'}>redo</i>
+          </PaperButton>
+          <span></span>
+          <PaperButton
+            onClick={this.props.resetView}
+            title={'Reset View'}
+            tool={'reset'}>
+            <i className={'material-icons'}>clear</i>
           </PaperButton>
           <PaperButton
             onClick={this.props.toggleAnimation}
+            title={animate ? 'Stop Animation' : 'Start Animation'}
             tool={'animation'}>
-            {animate ? 'Stop animation' : 'Start animation'}
+            <i className={'material-icons'}>
+              {animate ? 'pause' : 'play_arrow'}
+            </i>
           </PaperButton>
+          <span></span>
           <PaperButton
             onClick={this.save}
+            title={'Save'}
             tool={'save'}>
-            Save
+            <i className={'material-icons'}>save</i>
           </PaperButton>
         </PaperButtons>
       </div>
@@ -235,6 +234,8 @@ class Paper extends Component {
 }
 
 export default compose(
+  withCircleTool,
+  withRectangleTool,
   withMoveTool,
   withPenTool,
   withSelectTool,

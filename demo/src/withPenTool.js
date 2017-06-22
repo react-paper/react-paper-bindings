@@ -18,8 +18,8 @@ export default function withPenTool(WrappedComponent) {
       if (!this._path) {
         // create temporary path
         this._path = new Path({
-          fullySelected: true,
           segments: [e.point],
+          selected: true,
           strokeColor: 'red',
           strokeScaling: false,
           strokeWidth: 2,
@@ -32,9 +32,9 @@ export default function withPenTool(WrappedComponent) {
     mouseUp = (e) => {
       if (this._path) {
         this._path.simplify(4)
-        this.props.addPath({
+        this.props.addItem('Path', {
           data: this._path.getPathData(),
-          fullySelected: true,
+          selected: true,
         }, () => {
           // remove temporary path
           this._path.remove()

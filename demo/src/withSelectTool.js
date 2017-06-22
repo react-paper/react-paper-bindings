@@ -6,8 +6,8 @@ export default function withSelectTool(WrappedComponent) {
 
     constructor(props) {
       super(props)
+      this._dragged = false
       this._item = null
-      this._itemDragged = false
       this._point = null
     }
 
@@ -16,14 +16,12 @@ export default function withSelectTool(WrappedComponent) {
         const { key, modifiers: { shift } } = e
         switch (key) {
           case 'delete':
-            const fn = `remove${this._item.reactType}`
-            if (typeof this.props[fn] === 'function') {
-              this.props[fn](this._item.reactKey, () => {
-                this._item = null
-                this._itemDragged = false
-                this._point = null
-              })
-            }
+            const { reactId, reactType } = this._item
+            this.props.removeItem(reactType, reactId, () => {
+              this._dragged = false
+              this._item = null
+              this._point = null
+            })
             break
           case 'up':
             this._item.translate(0, shift ? -10 : -1)
@@ -43,16 +41,19 @@ export default function withSelectTool(WrappedComponent) {
     }
 
     mouseDown = (e) => {
-      const { view } = e.tool
-      const hit = view._project.hitTest(e.point, {
+      e.tool.view._project.deselectAll()
+      const hit = e.tool.view._project.hitTest(e.point, {
         segments: true,
         stroke: true,
         fill: true,
         tolerance: 12,
       })
-      view._project.deselectAll()
-      if (hit && hit.item && hit.item.reactType !== 'Raster' && hit.item.layer.name !== 'ReactLogo') {
-        hit.item.fullySelected = true
+      if (
+        hit && hit.item &&
+        hit.item.reactType !== 'Raster' &&
+        hit.item.layer.name !== 'ReactLogo'
+      ) {
+        hit.item.selected = true
         hit.item.bringToFront()
         this._item = hit.item
         this._point = e.point
@@ -66,41 +67,21 @@ export default function withSelectTool(WrappedComponent) {
       if (this._item && this._point) {
         const t = e.point.subtract(this._point)
         this._item.translate(t.x, t.y)
-        this._itemDragged = true
+        this._dragged = true
         this._point = e.point
       }
     }
 
     mouseUp = (e) => {
-      this._point = null
-      if (this._item && this._itemDragged) {
-        this._itemDragged = false
-        const { center, centerX, centerY } = this._item.bounds
-        switch (this._item.reactType) {
-          case 'Path':
-            this.props.updatePath(this._item.reactKey, {
-              data: this._item.getPathData(),
-              fullySelected: true,
-            })
-            break
-          case 'Circle':
-            this.props.updateCircle(this._item.reactKey, {
-              //data: this._item.getPathData(),
-              center: [center.x, center.y],
-              fullySelected: true,
-            })
-            break
-          case 'Rectangle':
-            this.props.updateRectangle(this._item.reactKey, {
-              key: this._item.reactKey,
-              center: [centerX, centerY],
-              size: this._item.size,
-              fillColor: this._item.fillColor,
-              fullySelected: true,
-            })
-            break
-        }
+      if (this._item && this._dragged) {
+        const { reactId, reactType } = this._item
+        this.props.updateItem(reactType, reactId, {
+          data: this._item.getPathData(),
+          selected: true,
+        })
       }
+      this._dragged = false
+      this._point = null
     }
 
     render() {

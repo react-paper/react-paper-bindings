@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PaperEditor from './PaperEditor'
+
 import './App.css'
 
 class App extends Component {

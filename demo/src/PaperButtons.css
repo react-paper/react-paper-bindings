@@ -7,4 +7,15 @@
   padding: 15px;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.8);
+  user-select: none;
+}
+
+.PaperButtons span {
+  position: relative;
+  bottom: 2px;
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  background: #fff;
+  margin: 0 10px;
 }

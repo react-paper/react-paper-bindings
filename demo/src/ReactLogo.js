@@ -1,11 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
-import {
-  Circle,
-  Ellipse,
-  Group,
-} from 'react-paper-bindings'
+import { Circle, Ellipse, Group } from 'react-paper-bindings'
 
 const ReactLogo = ({ rotation, x, y }) => {
   return (

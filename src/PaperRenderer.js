@@ -1,139 +1,13 @@
 import React, { Component } from 'react'
 import { ReactFiberReconciler } from 'react-dom'
-import PropTypes from 'prop-types'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
 
 import {
-  Group,
-  Item,
-  Layer,
-  Matrix,
-  PaperScope,
-  Path,
-  PointText,
-  Raster,
-  Size,
-  Tool,
+  Group, Item, Layer, Path, PointText, Raster, Tool,
 } from 'paper'
 
-const TYPES = {
-  CIRCLE: 'Circle',
-  ELLIPSE: 'Ellipse',
-  GROUP: 'Group',
-  LAYER: 'Layer',
-  PATH: 'Path',
-  POINTTEXT: 'PointText',
-  RASTER: 'Raster',
-  RECTANGLE: 'Rectangle',
-  TOOL: 'Tool',
-}
-
-class View extends Component {
-
-  static propTypes = {
-    activeTool: PropTypes.string,
-    height: PropTypes.number.isRequired,
-    normalize: PropTypes.number,
-    onWheel: PropTypes.func,
-    width: PropTypes.number.isRequired,
-    sx: PropTypes.number,
-    sy: PropTypes.number,
-    tx: PropTypes.number,
-    ty: PropTypes.number,
-    x: PropTypes.number,
-    y: PropTypes.number,
-    zoom: PropTypes.number,
-  }
-
-  componentDidMount() {
-    const {
-      activeTool, children, height, width,
-      normalize, x, y, zoom,
-    } = this.props
-
-    this._paper = new PaperScope()
-    this._paper.setup(this._canvas)
-
-    const { project, tools, view } = this._paper
-
-    view.viewSize = new Size(width, height)
-
-    this._mountNode = PaperRenderer.createContainer(this._paper)
-
-    PaperRenderer.updateContainer(
-      children,
-      this._mountNode,
-      this,
-    )
-
-    if (typeof normalize === 'number') {
-      const nm = new Matrix().scale(normalize)
-      project.layers.forEach(l => l.transform(nm))
-    }
-
-    if (typeof zoom === 'number') {
-      view.zoom = zoom
-    }
-
-    if (typeof x === 'number' && typeof y === 'number') {
-      view.translate(x, y)
-    }
-
-    if (typeof activeTool === 'string') {
-      tools.forEach(t => {
-        if (t.name === activeTool) t.activate()
-      })
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      children, height, width,
-      sx, sy, tx, ty, x, y, zoom,
-    } = this.props
-
-    const { view } = this._paper
-
-    if (width !== prevProps.width || height !== prevProps.height) {
-      const center = view.center
-      view.viewSize = new Size(width, height)
-      view.translate(view.center.subtract(center))
-    } else if (zoom !== prevProps.zoom) {
-      view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
-    } else if (x !== prevProps.x || y !== prevProps.y) {
-      view.translate(tx, ty)
-    } else {
-      PaperRenderer.updateContainer(
-        children,
-        this._mountNode,
-        this,
-      )
-    }
-  }
-
-  componentWillUnmount() {
-    PaperRenderer.updateContainer(
-      null,
-      this._mountNode,
-      this,
-    )
-  }
-
-  render() {
-    const { height, onWheel, width } = this.props
-    const canvasProps = {
-      ref: ref => this._canvas = ref,
-      height,
-      onWheel,
-      width,
-    }
-    return (
-      <canvas {...canvasProps} />
-    )
-  }
-
-}
+import TYPES from './types'
 
 function applyCircleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
@@ -141,9 +15,11 @@ function applyCircleProps(instance, props, prevProps = {}) {
     instance.scale(props.radius / prevProps.radius)
   }
 }
+
 function applyEllipseProps(instance, props, prevProps = {}) {
   applyRectangleProps(instance, props, prevProps)
 }
+
 function applyGroupProps(instance, props, prevProps = {}) {
   if (props.rotation !== prevProps.rotation) {
     instance.rotate(props.rotation - prevProps.rotation)
@@ -152,6 +28,7 @@ function applyGroupProps(instance, props, prevProps = {}) {
     instance.strokeColor = props.strokeColor
   }
 }
+
 function applyLayerProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
@@ -165,9 +42,9 @@ function applyLayerProps(instance, props, prevProps = {}) {
     })
   }
 }
+
 function applyPathProps(instance, props, prevProps = {}) {
   if (props.center !== prevProps.center) {
-    console.log('prev', prevProps.center, 'next', props.center);
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -214,6 +91,7 @@ function applyPathProps(instance, props, prevProps = {}) {
     instance.strokeWidth = props.strokeWidth
   }
 }
+
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyCircleProps(instance, props, prevProps)
   if (props.size !== prevProps.size) {
@@ -223,9 +101,11 @@ function applyRectangleProps(instance, props, prevProps = {}) {
     )
   }
 }
+
 function applyRasterProps(instance, props, prevProps = {}) {
   // TODO
 }
+
 function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.content !== prevProps.content) {
     instance.content = props.content
@@ -249,6 +129,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
     ])
   }
 }
+
 function applyToolProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
@@ -261,7 +142,10 @@ const PaperRenderer = ReactFiberReconciler({
     if (child.parentNode === parentInstance) {
       child.remove()
     }
-    if (parentInstance instanceof Group && child instanceof Item) {
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Item
+    ) {
       child.addTo(parentInstance)
     }
   },
@@ -372,9 +256,12 @@ const PaperRenderer = ReactFiberReconciler({
       child !== beforeChild,
       'PaperReact: Can not insert node before itself'
     )
-
-    if (child instanceof Item && beforeChild instanceof Item) {
-      //child.insertAbove(beforeChild)
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Path &&
+      beforeChild instanceof Path
+    ) {
+      child.insertAbove(beforeChild)
     }
   },
 
@@ -387,8 +274,6 @@ const PaperRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance, child) {
-    //destroyEventListeners(child)
-
     child.remove()
   },
 
@@ -422,27 +307,4 @@ const PaperRenderer = ReactFiberReconciler({
   useSyncScheduling: true,
 })
 
-const {
-  CIRCLE,
-  ELLIPSE,
-  GROUP,
-  LAYER,
-  PATH,
-  POINTTEXT,
-  RASTER,
-  RECTANGLE,
-  TOOL,
-} = TYPES
-
-export {
-  CIRCLE as Circle,
-  ELLIPSE as Ellipse,
-  GROUP as Group,
-  LAYER as Layer,
-  PATH as Path,
-  POINTTEXT as PointText,
-  RASTER as Raster,
-  RECTANGLE as Rectangle,
-  TOOL as Tool,
-  View,
-}
+export default PaperRenderer

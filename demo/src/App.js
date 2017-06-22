@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PaperEditor from './PaperEditor'
+import Paper from './Paper'
 
 import './App.css'
 
@@ -31,11 +31,11 @@ class App extends Component {
     return (
       <div className="App" ref={ref => this._box = ref}>
         {mounted &&
-          <PaperEditor
-            height={box.height}
-            left={box.left}
+          <Paper
             top={box.top}
+            left={box.left}
             width={box.width}
+            height={box.height-55}
           />}
       </div>
     )

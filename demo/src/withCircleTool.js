@@ -13,9 +13,10 @@ export default function withCircleTool(WrappedComponent) {
       const circle = new Path.Circle({
         center: e.point,
         fillColor: getRandomColor(),
-        radius: getRandomInt(5,20),
+        radius: getRandomInt(10,30),
         selected: true,
       })
+      //console.log(circle.getPathData());
       this.props.addItem('Circle', {
         data: circle.getPathData(),
         fillColor: circle.fillColor.toCSS(true),

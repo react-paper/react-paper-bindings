@@ -4,10 +4,11 @@
   width: 100%;
   top: 0;
   left: 50%;
-  padding: 15px;
+  padding: 10px 11px 12px 11px;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.8);
   user-select: none;
+  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
 }
 
 .PaperButtons span {
@@ -18,4 +19,9 @@
   height: 18px;
   background: #fff;
   margin: 0 10px;
+}
+
+.PaperButtons a {
+  display: inline-block;
+  margin-right: 3px;
 }

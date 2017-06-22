@@ -7,7 +7,7 @@ export default function withAnimation(WrappedComponent) {
     constructor(props) {
       super(props)
       this.state = {
-        animate: false,
+        animate: true,
         rotation: 0,
       }
     }
@@ -33,7 +33,7 @@ export default function withAnimation(WrappedComponent) {
       })
     }
 
-    stopAnimation() {
+    stopAnimation = () => {
       cancelAnimationFrame(this.state.animate)
       this.setState({ animate: false })
     }

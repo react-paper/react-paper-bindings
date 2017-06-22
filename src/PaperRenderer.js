@@ -33,6 +33,9 @@ function applyLayerProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
   }
+  if (props.visible !== prevProps.visible) {
+    instance.visible = props.visible
+  }
   if (props.strokeColor !== prevProps.strokeColor) {
     instance.strokeColor = props.strokeColor
     instance.children.forEach(child => {

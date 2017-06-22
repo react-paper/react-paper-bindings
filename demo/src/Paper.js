@@ -9,6 +9,7 @@ import ReactLogo from './ReactLogo'
 import PaperButton from './PaperButton'
 import PaperButtons from './PaperButtons'
 
+import withHistory from './withHistory'
 import withAnimation from './withAnimation'
 import withTools from './withTools'
 import withMoveTool from './withMoveTool'
@@ -17,7 +18,7 @@ import withPenTool from './withPenTool'
 import withCircleTool from './withCircleTool'
 import withRectangleTool from './withRectangleTool'
 
-import MR_BUBBLES from './mr-bubbles.jpg'
+import IMAGE from './image.jpg'
 
 import './Paper.css'
 
@@ -31,16 +32,17 @@ class Paper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      centerX: 0,
-      centerY: 0,
+      center: { x: 0, y: 0 },
       imageLoaded: false,
     }
   }
 
   imageLoaded = () => {
     this.setState({
-      centerX: this.props.width/2,
-      centerY: this.props.height/2,
+      center: {
+        x: this.props.width/2,
+        y: this.props.height/2,
+      },
       imageLoaded: true,
     })
   }
@@ -51,18 +53,21 @@ class Paper extends Component {
 
   render() {
     const {
-      activeTool, animate,
-      circles, paths, rectangles,
+      activeTool, animate, data,
       width, height, rotation,
       sx, sy, tx, ty, x, y, zoom,
     } = this.props
 
     const {
-      centerX, centerY, imageLoaded,
+      center, imageLoaded,
     } = this.state
 
+    const originalWidth = 640
+    const originalHeight = 731
+
     const viewProps = {
-      activeTool, height, width,
+      activeTool, width, height,
+      originalWidth, originalHeight,
       sx, sy, tx, ty, x, y, zoom,
       onWheel: this.props.moveToolMouseWheel,
     }
@@ -72,15 +77,13 @@ class Paper extends Component {
         <View {...viewProps}>
           <Layer name={'Raster'}>
             <Raster
+              source={IMAGE}
               fitToView={true}
               onLoad={this.imageLoaded}
-              position={[centerX, centerY]}
-              source={MR_BUBBLES}
             />
           </Layer>
-          {imageLoaded &&
-          <Layer name={'Path'} active={activeTool === 'pen'}>
-            {paths.map(path =>
+          <Layer name={'Path'} active={activeTool === 'pen'} visible={imageLoaded}>
+            {data.Path.map(path =>
               <Path
                 {...path}
                 key={path.id}
@@ -90,35 +93,32 @@ class Paper extends Component {
                 strokeWidth={2}
               />
             )}
-          </Layer>}
-          {imageLoaded &&
-          <Layer name={'Circle'} active={activeTool === 'circle'}>
-            {circles.map(circle =>
+          </Layer>
+          <Layer name={'Circle'} active={activeTool === 'circle'} visible={imageLoaded}>
+            {data.Circle.map(circle =>
               <Circle
                 {...circle}
                 key={circle.id}
                 reactId={circle.id}
               />
             )}
-          </Layer>}
-          {imageLoaded &&
-          <Layer name={'Rectangle'} active={activeTool === 'rectangle'}>
-            {rectangles.map(rectangle =>
+          </Layer>
+          <Layer name={'Rectangle'} active={activeTool === 'rectangle'} visible={imageLoaded}>
+            {data.Rectangle.map(rectangle =>
               <Rectangle
                 {...rectangle}
                 key={rectangle.id}
                 reactId={rectangle.id}
               />
             )}
-          </Layer>}
-          {imageLoaded &&
-          <Layer name={'ReactLogo'}>
+          </Layer>
+          <Layer name={'ReactLogo'} normalize={false}>
             <ReactLogo
               rotation={rotation}
-              x={centerX}
-              y={centerY}
+              x={center.x}
+              y={center.y}
             />
-          </Layer>}
+          </Layer>
           <Tool
             active={activeTool === 'select'}
             name={'select'}
@@ -154,79 +154,86 @@ class Paper extends Component {
         </View>
         <PaperButtons>
           <PaperButton
-            active={activeTool === 'select'}
-            onClick={this.props.setTool}
+            tool={'select'}
             title={'Select Tool'}
-            tool={'select'}>
+            active={activeTool === 'select'}
+            onClick={this.props.setTool}>
             <i className={'material-icons'}>touch_app</i>
           </PaperButton>
           <PaperButton
-            active={activeTool === 'move'}
-            onClick={this.props.setTool}
+            tool={'move'}
             title={'Move Tool'}
-            tool={'move'}>
+            active={activeTool === 'move'}
+            onClick={this.props.setTool}>
             <i className={'material-icons'}>pan_tool</i>
           </PaperButton>
           <PaperButton
-            active={activeTool === 'pen'}
-            onClick={this.props.setTool}
+            tool={'pen'}
             title={'Pen Tool'}
-            tool={'pen'}>
+            active={activeTool === 'pen'}
+            onClick={this.props.setTool}>
             <i className={'material-icons'}>create</i>
           </PaperButton>
           <PaperButton
-            active={activeTool === 'circle'}
-            onClick={this.props.setTool}
+            tool={'circle'}
             title={'Circle Tool'}
-            tool={'circle'}>
-            <i className={'material-icons'}>radio_button_unchecked</i>
+            active={activeTool === 'circle'}
+            onClick={this.props.setTool}>
+            <i className={'material-icons'}>add_circle</i>
           </PaperButton>
           <PaperButton
-            active={activeTool === 'rectangle'}
-            onClick={this.props.setTool}
+            tool={'rectangle'}
             title={'Rectangle Tool'}
-            tool={'rectangle'}>
-            <i className={'material-icons'}>check_box_outline_blank</i>
+            active={activeTool === 'rectangle'}
+            onClick={this.props.setTool}>
+            <i className={'material-icons'}>add_box</i>
           </PaperButton>
           <span></span>
           <PaperButton
+            tool={'undo'}
+            title={'Undo'}
             active={activeTool === 'undo'}
             disabled={!this.props.canUndo}
-            onClick={this.props.undo}
-            title={'Undo'}
-            tool={'undo'}>
+            onClick={this.props.undo}>
             <i className={'material-icons'}>undo</i>
           </PaperButton>
           <PaperButton
+            tool={'redo'}
+            title={'Redo'}
             active={activeTool === 'redo'}
             disabled={!this.props.canRedo}
-            onClick={this.props.redo}
-            title={'Redo'}
-            tool={'redo'}>
+            onClick={this.props.redo}>
             <i className={'material-icons'}>redo</i>
           </PaperButton>
           <span></span>
           <PaperButton
-            onClick={this.props.resetView}
+            tool={'reset'}
             title={'Reset View'}
-            tool={'reset'}>
+            onClick={this.props.clearHistory}
+            disabled={!this.props.canRedo && !this.props.canUndo}>
             <i className={'material-icons'}>clear</i>
           </PaperButton>
           <PaperButton
-            onClick={this.props.toggleAnimation}
+            tool={'animation'}
             title={animate ? 'Stop Animation' : 'Start Animation'}
-            tool={'animation'}>
+            onClick={this.props.toggleAnimation}>
             <i className={'material-icons'}>
               {animate ? 'pause' : 'play_arrow'}
             </i>
           </PaperButton>
           <span></span>
           <PaperButton
-            onClick={this.save}
+            tool={'save'}
             title={'Save'}
-            tool={'save'}>
+            onClick={this.save}>
             <i className={'material-icons'}>save</i>
           </PaperButton>
+          <span></span>
+          <a href={'https://github.com/HriBB/react-paper-bindings'}>
+            <svg width="22" height="22" version="1.1" viewBox="0 0 16 16">
+              <path fill="white" fillRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+          </a>
         </PaperButtons>
       </div>
     )
@@ -234,11 +241,12 @@ class Paper extends Component {
 }
 
 export default compose(
+  withHistory,
+  withAnimation,
+  withTools,
+  withPenTool,
+  withMoveTool,
+  withSelectTool,
   withCircleTool,
   withRectangleTool,
-  withMoveTool,
-  withPenTool,
-  withSelectTool,
-  withTools,
-  withAnimation,
 )(Paper)

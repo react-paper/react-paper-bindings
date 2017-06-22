@@ -13,9 +13,10 @@ export default function withRectangleTool(WrappedComponent) {
       const rectangle = new Path.Rectangle({
         center: e.point,
         fillColor: getRandomColor(),
-        size: getRandomInt(10,40),
+        size: getRandomInt(20,60),
         selected: true,
       })
+      //console.log(rectangle.getPathData());
       this.props.addItem('Rectangle', {
         data: rectangle.getPathData(),
         fillColor: rectangle.fillColor.toCSS(true),

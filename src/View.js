@@ -24,6 +24,7 @@ export default class View extends Component {
   componentDidMount() {
     const {
       activeTool, children, height, width,
+      originalWidth, originalHeight,
       normalize, x, y, zoom,
     } = this.props
 
@@ -42,10 +43,23 @@ export default class View extends Component {
       this,
     )
 
-    if (typeof normalize === 'number') {
-      const nm = new Matrix().scale(normalize)
-      project.layers.forEach(l => l.transform(nm))
+    /*
+    // normalize view for different sizes
+    if (typeof originalWidth === 'number' && typeof originalHeight === 'number') {
+      const tx = (width - originalWidth)/2
+      const ty = (height - originalHeight)/2
+      const wr = width / originalWidth
+      const hr = height / originalHeight
+      const scale = wr > hr ? wr : hr
+      const nm = new Matrix()
+        .scale(scale, view.center)
+        .translate(tx, ty)
+      project.layers
+        // skip layers that don't want to be normalized
+        .filter(l => l.normalize !== false)
+        .forEach(l => l.transform(nm))
     }
+    */
 
     if (typeof zoom === 'number') {
       view.zoom = zoom
@@ -71,9 +85,9 @@ export default class View extends Component {
     const { view } = this._paper
 
     if (width !== prevProps.width || height !== prevProps.height) {
-      const center = view.center
+      const prevCenter = view.center
       view.viewSize = new Size(width, height)
-      view.translate(view.center.subtract(center))
+      view.translate(view.center.subtract(prevCenter))
     } else if (zoom !== prevProps.zoom) {
       view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
     } else if (x !== prevProps.x || y !== prevProps.y) {

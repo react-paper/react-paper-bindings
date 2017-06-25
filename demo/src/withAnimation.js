@@ -7,7 +7,7 @@ export default function withAnimation(WrappedComponent) {
     constructor(props) {
       super(props)
       this.state = {
-        animate: true,
+        animate: false,
         rotation: 0,
       }
     }

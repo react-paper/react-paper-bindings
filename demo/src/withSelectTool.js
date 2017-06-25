@@ -49,9 +49,9 @@ export default function withSelectTool(WrappedComponent) {
         tolerance: 12,
       })
       if (
-        hit && hit.item &&
-        hit.item.reactType !== 'Raster' &&
-        hit.item.layer.name !== 'ReactLogo'
+        hit && hit.item
+        //hit.item.reactType !== 'Raster' &&
+        //hit.item.layer.name !== 'ReactLogo'
       ) {
         hit.item.selected = true
         hit.item.bringToFront()
@@ -73,7 +73,11 @@ export default function withSelectTool(WrappedComponent) {
     }
 
     mouseUp = (e) => {
-      if (this._item && this._dragged) {
+      if (
+        this._item &&
+        this._dragged &&
+        typeof this._item.getPathData === 'function'
+      ) {
         const { reactId, reactType } = this._item
         this.props.updateItem(reactType, reactId, {
           data: this._item.getPathData(),

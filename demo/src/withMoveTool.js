@@ -21,6 +21,29 @@ export default function withMoveTool(WrappedComponent) {
       this._point = null
     }
 
+    fitImage = (image) => {
+      const { width, height, x, y } = this.props
+      const wr = width / image.width
+      const hr = height / image.height
+      const zoom = wr < hr ? wr : hr
+
+      const tx = (width - (image.width * zoom)) / 2
+      const ty = (height - (image.height * zoom)) / 2
+
+      console.log(tx, ty);
+      /*
+      this.setState({
+        sx: 0,
+        sy: 0,
+        tx,
+        ty,
+        x: x + tx,
+        y: y + ty,
+        zoom,
+      })
+      */ 
+    }
+
     mouseWheel = (e) => {
       const { x, y, zoom } = this.state
       const { top, left } = this.props
@@ -241,6 +264,7 @@ export default function withMoveTool(WrappedComponent) {
         <WrappedComponent
           {...this.props}
           {...this.state}
+          fitImage={this.fitImage}
           moveToolMouseWheel={this.mouseWheel}
           moveToolMouseDown={this.mouseDown}
           moveToolMouseDrag={this.mouseDrag}

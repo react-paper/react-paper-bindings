@@ -43,24 +43,6 @@ export default class View extends Component {
       this,
     )
 
-    /*
-    // normalize view for different sizes
-    if (typeof originalWidth === 'number' && typeof originalHeight === 'number') {
-      const tx = (width - originalWidth)/2
-      const ty = (height - originalHeight)/2
-      const wr = width / originalWidth
-      const hr = height / originalHeight
-      const scale = wr > hr ? wr : hr
-      const nm = new Matrix()
-        .scale(scale, view.center)
-        .translate(tx, ty)
-      project.layers
-        // skip layers that don't want to be normalized
-        .filter(l => l.normalize !== false)
-        .forEach(l => l.transform(nm))
-    }
-    */
-
     if (typeof zoom === 'number') {
       view.zoom = zoom
     }
@@ -70,9 +52,7 @@ export default class View extends Component {
     }
 
     if (typeof activeTool === 'string') {
-      tools.forEach(t => {
-        if (t.name === activeTool) t.activate()
-      })
+      tools.find(t => t.name === activeTool).activate()
     }
   }
 
@@ -88,17 +68,22 @@ export default class View extends Component {
       const prevCenter = view.center
       view.viewSize = new Size(width, height)
       view.translate(view.center.subtract(prevCenter))
-    } else if (zoom !== prevProps.zoom) {
-      view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
-    } else if (x !== prevProps.x || y !== prevProps.y) {
-      view.translate(tx, ty)
-    } else {
-      PaperRenderer.updateContainer(
-        children,
-        this._mountNode,
-        this,
-      )
     }
+
+    if (zoom !== prevProps.zoom) {
+      const scaleCenter = sx && sy ? view.viewToProject(sx, sy) : null
+      view.scale(zoom / prevProps.zoom, scaleCenter)
+    }
+
+    if (x !== prevProps.x || y !== prevProps.y) {
+      view.translate(tx, ty)
+    }
+
+    PaperRenderer.updateContainer(
+      children,
+      this._mountNode,
+      this,
+    )
   }
 
   componentWillUnmount() {

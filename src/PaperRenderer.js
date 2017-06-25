@@ -107,6 +107,9 @@ function applyRectangleProps(instance, props, prevProps = {}) {
 
 function applyRasterProps(instance, props, prevProps = {}) {
   // TODO
+  if (props.position !== prevProps.position) {
+    instance.position = props.position[0]
+  }
 }
 
 function applyPointTextProps(instance, props, prevProps = {}) {
@@ -214,12 +217,15 @@ const PaperRenderer = ReactFiberReconciler({
       case TYPES.RASTER:
         instance = new Raster(paperProps)
         instance._applyProps = applyRasterProps
-        instance.onLoad = () => {
+        instance.onLoad = (...args) => {
+          instance.bounds.top = 0
+          instance.bounds.left = 0
+          instance.onLoad = () => {
           if (paperProps.fitToView) {
             instance.fitBounds(instance.view.bounds)
           }
           if (typeof paperProps.onLoad === 'function') {
-            paperProps.onLoad(...arguments)
+            paperProps.onLoad(instance)
           }
         }
         break;

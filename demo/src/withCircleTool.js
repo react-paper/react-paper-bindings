@@ -16,7 +16,7 @@ export default function withCircleTool(WrappedComponent) {
         radius: getRandomInt(10,30),
         selected: true,
       })
-      //console.log(circle.getPathData());
+      console.log(circle.getPathData());
       this.props.addItem('Circle', {
         data: circle.getPathData(),
         fillColor: circle.fillColor.toCSS(true),

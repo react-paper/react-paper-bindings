@@ -32,7 +32,7 @@ export default function withPenTool(WrappedComponent) {
     mouseUp = (e) => {
       if (this._path) {
         this._path.simplify(4)
-        //console.log(this._path.getPathData());
+        console.log(this._path.getPathData());
         this.props.addItem('Path', {
           data: this._path.getPathData(),
           selected: true,

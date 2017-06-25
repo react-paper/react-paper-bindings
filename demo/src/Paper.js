@@ -32,44 +32,49 @@ class Paper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      center: { x: 0, y: 0 },
+      center: {
+        x: 0,
+        y: 0,
+      },
       imageLoaded: false,
     }
+    this._view = null
+    this._originalWidth = 810
+    this._originalHeight = 786
+    this.imageLoaded = this.imageLoaded.bind(this)
   }
 
-  imageLoaded = () => {
+  imageLoaded(image) {
+    const { width, height, fitImage } = this.props
+    fitImage(image)
     this.setState({
       center: {
-        x: this.props.width/2,
-        y: this.props.height/2,
+        x: width/2,
+        y: height/2,
       },
-      imageLoaded: true,
+      imageLoaded: true
     })
   }
 
   save = () => {
-    console.log('TODO: export canvas');
+    console.log(this._view._paper.project.exportJSON());
+    return
   }
 
   render() {
     const {
-      activeTool, animate, data,
+      activeTool, animate, center, data,
       width, height, rotation,
       sx, sy, tx, ty, x, y, zoom,
     } = this.props
 
-    const {
-      center, imageLoaded,
-    } = this.state
-
-    const originalWidth = 640
-    const originalHeight = 731
+    const { imageLoaded } = this.state
 
     const viewProps = {
       activeTool, width, height,
-      originalWidth, originalHeight,
       sx, sy, tx, ty, x, y, zoom,
       onWheel: this.props.moveToolMouseWheel,
+      ref: ref => this._view = ref,
     }
 
     return (
@@ -78,7 +83,7 @@ class Paper extends Component {
           <Layer name={'Raster'}>
             <Raster
               source={IMAGE}
-              fitToView={true}
+              fit={true}
               onLoad={this.imageLoaded}
             />
           </Layer>
@@ -112,13 +117,25 @@ class Paper extends Component {
               />
             )}
           </Layer>
-          <Layer name={'ReactLogo'} normalize={false}>
-            <ReactLogo
-              rotation={rotation}
-              x={center.x}
-              y={center.y}
+          <Layer name={'ExtraStuff'}>
+            <Circle
+              center={[0,0]}
+              radius={20}
+              fillColor={'red'}
+              onClick={function(e){
+
+              }}
             />
           </Layer>
+          {/*
+          <Layer name={'ReactLogo'}>
+            <ReactLogo
+              rotation={rotation}
+              x={center.x - (this.initialWidth/100*2)}
+              y={center.y + (this.initialHeight/100*7)}
+            />
+          </Layer>
+          */}
           <Tool
             active={activeTool === 'select'}
             name={'select'}

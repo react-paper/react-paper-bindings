@@ -49,9 +49,9 @@ export default function withSelectTool(WrappedComponent) {
         tolerance: 12,
       })
       if (
-        hit && hit.item
-        //hit.item.reactType !== 'Raster' &&
-        //hit.item.layer.name !== 'ReactLogo'
+        hit && hit.item &&
+        hit.item.reactType !== 'Raster' &&
+        hit.item.layer.name !== 'ReactLogo'
       ) {
         hit.item.selected = true
         hit.item.bringToFront()

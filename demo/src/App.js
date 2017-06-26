@@ -3,6 +3,8 @@ import Paper from './Paper'
 
 import './App.css'
 
+const TOOLBAR_HEIGHT = 55
+
 class App extends Component {
 
   constructor(props) {
@@ -41,16 +43,14 @@ class App extends Component {
   render() {
     const { mounted } = this.state
     const box = this._box && this._box.getBoundingClientRect()
-
-    console.log(box);
     return (
       <div className="App" ref={ref => this._box = ref}>
         {mounted &&
           <Paper
-            top={box.top+55}
+            top={box.top+TOOLBAR_HEIGHT}
             left={box.left}
             width={box.width}
-            height={box.height-55}
+            height={box.height-TOOLBAR_HEIGHT}
           />}
       </div>
     )

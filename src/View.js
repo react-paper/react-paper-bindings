@@ -28,14 +28,14 @@ export default class View extends Component {
       normalize, x, y, zoom,
     } = this.props
 
-    this._paper = new PaperScope()
-    this._paper.setup(this._canvas)
+    this._scope = new PaperScope()
+    this._scope.setup(this._canvas)
 
-    const { project, tools, view } = this._paper
+    const { project, tools, view } = this._scope
 
     view.viewSize = new Size(width, height)
 
-    this._mountNode = PaperRenderer.createContainer(this._paper)
+    this._mountNode = PaperRenderer.createContainer(this._scope)
 
     PaperRenderer.updateContainer(
       children,
@@ -62,7 +62,9 @@ export default class View extends Component {
       sx, sy, tx, ty, x, y, zoom,
     } = this.props
 
-    const { view } = this._paper
+    const { view } = this._scope
+
+    let scaleOrTranslate = false
 
     if (width !== prevProps.width || height !== prevProps.height) {
       const prevCenter = view.center
@@ -72,10 +74,12 @@ export default class View extends Component {
 
     if (zoom !== prevProps.zoom) {
       view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
+      scaleOrTranslate = true
     }
 
     if (x !== prevProps.x || y !== prevProps.y) {
       view.translate(tx, ty)
+      scaleOrTranslate = true
     }
 
     PaperRenderer.updateContainer(

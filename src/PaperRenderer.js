@@ -220,7 +220,6 @@ const PaperRenderer = ReactFiberReconciler({
         instance.onLoad = (...args) => {
           instance.bounds.top = 0
           instance.bounds.left = 0
-          instance.onLoad = () => {
           if (paperProps.fitToView) {
             instance.fitBounds(instance.view.bounds)
           }

@@ -32,43 +32,35 @@ class Paper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      center: {
-        x: 0,
-        y: 0,
-      },
       imageLoaded: false,
+      initialWidth: props.width,
+      initialHeight: props.height,
     }
     this._view = null
-    this._originalWidth = 810
-    this._originalHeight = 786
     this.imageLoaded = this.imageLoaded.bind(this)
   }
 
   imageLoaded(image) {
-    const { width, height, fitImage } = this.props
-    fitImage(image)
-    this.setState({
-      center: {
-        x: width/2,
-        y: height/2,
-      },
-      imageLoaded: true
-    })
+    this.props.fitImage(image)
+    this.setState({ imageLoaded: true })
   }
 
   save = () => {
     console.log(this._view._paper.project.exportJSON());
-    return
   }
 
   render() {
     const {
-      activeTool, animate, center, data,
+      activeTool, animate, data,
       width, height, rotation,
       sx, sy, tx, ty, x, y, zoom,
     } = this.props
 
-    const { imageLoaded } = this.state
+    const {
+      imageLoaded,
+      initialWidth,
+      initialHeight,
+    } = this.state
 
     const viewProps = {
       activeTool, width, height,
@@ -83,7 +75,6 @@ class Paper extends Component {
           <Layer name={'Raster'}>
             <Raster
               source={IMAGE}
-              fit={true}
               onLoad={this.imageLoaded}
             />
           </Layer>
@@ -117,25 +108,13 @@ class Paper extends Component {
               />
             )}
           </Layer>
-          <Layer name={'ExtraStuff'}>
-            <Circle
-              center={[0,0]}
-              radius={20}
-              fillColor={'red'}
-              onClick={function(e){
-
-              }}
-            />
-          </Layer>
-          {/*
-          <Layer name={'ReactLogo'}>
+          <Layer name={'ReactLogo'} visible={imageLoaded}>
             <ReactLogo
               rotation={rotation}
-              x={center.x - (this.initialWidth/100*2)}
-              y={center.y + (this.initialHeight/100*7)}
+              x={initialWidth/2}
+              y={initialHeight/2}
             />
           </Layer>
-          */}
           <Tool
             active={activeTool === 'select'}
             name={'select'}

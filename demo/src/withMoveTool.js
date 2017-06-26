@@ -22,26 +22,21 @@ export default function withMoveTool(WrappedComponent) {
     }
 
     fitImage = (image) => {
-      const { width, height, x, y } = this.props
-      const wr = width / image.width
-      const hr = height / image.height
+      const { width, height } = this.props
+      const wr = width/image.width
+      const hr = height/image.height
       const zoom = wr < hr ? wr : hr
-
-      const tx = (width - (image.width * zoom)) / 2
-      const ty = (height - (image.height * zoom)) / 2
-
-      console.log(tx, ty);
-      /*
-      this.setState({
-        sx: 0,
-        sy: 0,
-        tx,
-        ty,
-        x: x + tx,
-        y: y + ty,
-        zoom,
+      const iw = image.width * zoom
+      const ih = image.height * zoom
+      const tx = ((width-iw)/2)/zoom
+      const ty = ((height-ih)/2)/zoom
+      const x = this.state.x+tx
+      const y = this.state.y+ty
+      // set fix state
+      this.setState({ tx, ty, x, y, zoom }, () => {
+        // reset translation xy
+        this.setState({ tx: 0, ty: 0 })
       })
-      */ 
     }
 
     mouseWheel = (e) => {

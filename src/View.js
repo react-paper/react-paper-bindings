@@ -71,8 +71,7 @@ export default class View extends Component {
     }
 
     if (zoom !== prevProps.zoom) {
-      const scaleCenter = sx && sy ? view.viewToProject(sx, sy) : null
-      view.scale(zoom / prevProps.zoom, scaleCenter)
+      view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
     }
 
     if (x !== prevProps.x || y !== prevProps.y) {

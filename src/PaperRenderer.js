@@ -21,6 +21,12 @@ function applyEllipseProps(instance, props, prevProps = {}) {
 }
 
 function applyGroupProps(instance, props, prevProps = {}) {
+  if (props.center !== prevProps.center) {
+    instance.translate([
+      props.center[0] - prevProps.center[0],
+      props.center[1] - prevProps.center[1],
+    ])
+  }
   if (props.rotation !== prevProps.rotation) {
     instance.rotate(props.rotation - prevProps.rotation)
   }
@@ -63,7 +69,6 @@ function applyPathProps(instance, props, prevProps = {}) {
     instance.dashOffset = props.dashOffset
   }
   if (props.data !== prevProps.data) {
-    //console.log('set path data', props.data);
     instance.setPathData(props.data)
   }
   if (props.fillColor !== prevProps.fillColor) {
@@ -217,12 +222,11 @@ const PaperRenderer = ReactFiberReconciler({
       case TYPES.RASTER:
         instance = new Raster(paperProps)
         instance._applyProps = applyRasterProps
-        instance.onLoad = (...args) => {
+        instance.onLoad = () => {
+          // this will position the image to the top left corner
+          // matching the position of paths, circles, rectangles, ...
           instance.bounds.top = 0
           instance.bounds.left = 0
-          if (paperProps.fitToView) {
-            instance.fitBounds(instance.view.bounds)
-          }
           if (typeof paperProps.onLoad === 'function') {
             paperProps.onLoad(instance)
           }

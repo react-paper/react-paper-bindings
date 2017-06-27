@@ -8,10 +8,9 @@ export default class View extends Component {
 
   static propTypes = {
     activeTool: PropTypes.string,
-    height: PropTypes.number.isRequired,
-    normalize: PropTypes.number,
-    onWheel: PropTypes.func,
     width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+    onWheel: PropTypes.func,
     sx: PropTypes.number,
     sy: PropTypes.number,
     tx: PropTypes.number,
@@ -22,11 +21,7 @@ export default class View extends Component {
   }
 
   componentDidMount() {
-    const {
-      activeTool, children, height, width,
-      originalWidth, originalHeight,
-      normalize, x, y, zoom,
-    } = this.props
+    const { activeTool, children, width, height, x, y, zoom } = this.props
 
     this._scope = new PaperScope()
     this._scope.setup(this._canvas)
@@ -37,11 +32,7 @@ export default class View extends Component {
 
     this._mountNode = PaperRenderer.createContainer(this._scope)
 
-    PaperRenderer.updateContainer(
-      children,
-      this._mountNode,
-      this,
-    )
+    PaperRenderer.updateContainer(children, this._mountNode, this)
 
     if (typeof zoom === 'number') {
       view.zoom = zoom
@@ -57,14 +48,9 @@ export default class View extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      children, height, width,
-      sx, sy, tx, ty, x, y, zoom,
-    } = this.props
+    const { children, width, height, sx, sy, tx, ty, x, y, zoom } = this.props
 
     const { view } = this._scope
-
-    let scaleOrTranslate = false
 
     if (width !== prevProps.width || height !== prevProps.height) {
       const prevCenter = view.center
@@ -74,36 +60,26 @@ export default class View extends Component {
 
     if (zoom !== prevProps.zoom) {
       view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
-      scaleOrTranslate = true
     }
 
     if (x !== prevProps.x || y !== prevProps.y) {
       view.translate(tx, ty)
-      scaleOrTranslate = true
     }
 
-    PaperRenderer.updateContainer(
-      children,
-      this._mountNode,
-      this,
-    )
+    PaperRenderer.updateContainer(children, this._mountNode, this)
   }
 
   componentWillUnmount() {
-    PaperRenderer.updateContainer(
-      null,
-      this._mountNode,
-      this,
-    )
+    PaperRenderer.updateContainer(null, this._mountNode, this)
   }
 
   render() {
     const { height, onWheel, width } = this.props
     const canvasProps = {
       ref: ref => this._canvas = ref,
+      width,
       height,
       onWheel,
-      width,
     }
     return (
       <canvas {...canvasProps} />

@@ -11,10 +11,10 @@ export default function withMoveTool(WrappedComponent) {
     constructor(props) {
       super(props)
       this.state = {
-        sx: 0,
-        sy: 0,
-        tx: 0,
-        ty: 0,
+        sx: 0, // scale center x
+        sy: 0, // scale center y
+        tx: 0, // translate x
+        ty: 0, // translate y
         x: 0,
         y: 0,
         zoom: 1,
@@ -24,6 +24,7 @@ export default function withMoveTool(WrappedComponent) {
     }
 
     fitImage = (image) => {
+      // center the image in the middle
       const { width, height } = this.props
       const wr = width / image.width
       const hr = height / image.height

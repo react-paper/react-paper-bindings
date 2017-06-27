@@ -16,7 +16,6 @@ export default function withPenTool(WrappedComponent) {
 
     mouseDrag = (e) => {
       if (!this._path) {
-        // create temporary path
         this._path = new Path({
           segments: [e.point],
           selected: true,
@@ -31,15 +30,14 @@ export default function withPenTool(WrappedComponent) {
 
     mouseUp = (e) => {
       if (this._path) {
-        this._path.simplify(4)
+        this._path.simplify(6)
         this.props.addItem('Path', {
           data: this._path.getPathData(),
           selected: true,
-        }, () => {
-          // remove temporary path
-          this._path.remove()
-          this._path = null
         })
+        console.log(this._path.getPathData());
+        this._path.remove()
+        this._path = null
       }
     }
 

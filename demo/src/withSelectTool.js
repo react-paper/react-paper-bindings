@@ -1,12 +1,19 @@
 import React, { Component } from 'react'
 
+const HIT_TEST_OPTIONS = {
+  segments: true,
+  stroke: true,
+  fill: true,
+  tolerance: 12,
+}
+
 export default function withSelectTool(WrappedComponent) {
 
   return class extends Component {
 
     constructor(props) {
       super(props)
-      this._dragged = false
+      this._changed = false
       this._item = null
       this._point = null
     }
@@ -18,7 +25,7 @@ export default function withSelectTool(WrappedComponent) {
           case 'delete':
             const { reactId, reactType } = this._item
             this.props.removeItem(reactType, reactId, () => {
-              this._dragged = false
+              this._changed = false
               this._item = null
               this._point = null
             })
@@ -42,12 +49,7 @@ export default function withSelectTool(WrappedComponent) {
 
     mouseDown = (e) => {
       e.tool.view._project.deselectAll()
-      const hit = e.tool.view._project.hitTest(e.point, {
-        segments: true,
-        stroke: true,
-        fill: true,
-        tolerance: 12,
-      })
+      const hit = e.tool.view._project.hitTest(e.point, HIT_TEST_OPTIONS)
       if (
         hit && hit.item &&
         hit.item.reactType !== 'Raster' &&
@@ -65,26 +67,21 @@ export default function withSelectTool(WrappedComponent) {
 
     mouseDrag = (e) => {
       if (this._item && this._point) {
-        const t = e.point.subtract(this._point)
-        this._item.translate(t.x, t.y)
-        this._dragged = true
+        this._item.translate(e.point.subtract(this._point))
+        this._changed = true
         this._point = e.point
       }
     }
 
     mouseUp = (e) => {
-      if (
-        this._item &&
-        this._dragged &&
-        typeof this._item.getPathData === 'function'
-      ) {
+      if (this._item && this._changed) {
         const { reactId, reactType } = this._item
         this.props.updateItem(reactType, reactId, {
           data: this._item.getPathData(),
           selected: true,
         })
       }
-      this._dragged = false
+      this._changed = false
       this._point = null
     }
 

@@ -9,21 +9,19 @@ export default function withCircleTool(WrappedComponent) {
 
     mouseDown = (e) => {
       e.tool.view._project.deselectAll()
-      // create temporary circle
       const circle = new Path.Circle({
         center: e.point,
         fillColor: getRandomColor(),
-        radius: getRandomInt(10,30),
+        radius: getRandomInt(10, 60),
         selected: true,
       })
       this.props.addItem('Circle', {
         data: circle.getPathData(),
         fillColor: circle.fillColor.toCSS(true),
         selected: true,
-      }, () => {
-        // remove temporary circle
-        circle.remove()
       })
+      console.log(circle.getPathData());
+      circle.remove()
     }
 
     render() {

@@ -1,17 +1,17 @@
-.PaperButtons {
+.ToolButtons {
   position: absolute;
   z-index: 50;
   width: 100%;
   top: 0;
   left: 50%;
-  padding: 10px 11px 12px 11px;
+  padding: 11px 11px 12px 11px;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.8);
   user-select: none;
   box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
 }
 
-.PaperButtons span {
+.ToolButtons span {
   position: relative;
   bottom: 2px;
   display: inline-block;
@@ -21,7 +21,19 @@
   margin: 0 10px;
 }
 
-.PaperButtons a {
+.ToolButtons a {
   display: inline-block;
-  margin-right: 3px;
+  margin: 0 4px;
+}
+
+.ToolButtons a svg path {
+  fill: #fff;
+}
+
+.ToolButtons a:hover svg path {
+  fill: #ccc;
+}
+
+.ToolButtons a:active svg path {
+  fill: orange;
 }

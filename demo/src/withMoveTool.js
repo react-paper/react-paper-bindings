@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import { getEventXY } from './helpers'
 
+const ZOOM_FACTOR = 1.1
+
 export default function withMoveTool(WrappedComponent) {
 
   return class extends Component {
@@ -23,47 +25,48 @@ export default function withMoveTool(WrappedComponent) {
 
     fitImage = (image) => {
       const { width, height } = this.props
-      const wr = width/image.width
-      const hr = height/image.height
+      const wr = width / image.width
+      const hr = height / image.height
       const zoom = wr < hr ? wr : hr
       const iw = image.width * zoom
       const ih = image.height * zoom
-      const tx = ((width-iw)/2)/zoom
-      const ty = ((height-ih)/2)/zoom
-      const x = this.state.x+tx
-      const y = this.state.y+ty
+      const tx = (width-iw) / 2 / zoom
+      const ty = (height-ih) / 2 / zoom
+      const x = this.state.x + tx
+      const y = this.state.y + ty
       // set fix state
       this.setState({ tx, ty, x, y, zoom }, () => {
-        // reset translation xy
+        // reset translation xy to prevent zoom problems
+        // TODO: try to find a better solution
         this.setState({ tx: 0, ty: 0 })
       })
     }
 
     mouseWheel = (e) => {
-      const { x, y, zoom } = this.state
       const { top, left } = this.props
+      const { x, y, zoom } = this.state
 
-      // calculate new zoom and ratio
-      const newZoom = (e.wheelDelta || -e.deltaY) > 0 ? zoom * 1.1 : zoom / 1.1
+      // calculate new zoom from wheel event
+      const newZoom = (e.wheelDelta || -e.deltaY) > 0
+        ? zoom * ZOOM_FACTOR
+        : zoom / ZOOM_FACTOR
+
+      // calculate zoom ratio
       const ratio = newZoom / zoom
 
       // get mouse position within image
-      const mx = e.pageX - x - left
-      const my = e.pageY - y - top
+      const prevX = e.pageX - x - left
+      const prevY = e.pageY - y - top
 
-      // get mouse position within image after resize
-      const nx = mx * ratio
-      const ny = my * ratio
-
-      // get difference in mouse positions before and after resize
-      const dx = mx - nx
-      const dy = my - ny
+      // get diff in mouse positions before and after resize
+      const tx = prevX - prevX * ratio
+      const ty = prevY - prevY * ratio
 
       this.setState({
         sx: e.pageX - left,
         sy: e.pageY - top,
-        x: x + dx,
-        y: y + dy,
+        x: x + tx,
+        y: y + ty,
         zoom: newZoom,
       })
     }

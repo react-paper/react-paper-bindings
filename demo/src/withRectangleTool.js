@@ -9,21 +9,19 @@ export default function withRectangleTool(WrappedComponent) {
 
     mouseDown = (e) => {
       e.tool.view._project.deselectAll()
-      // create temporary rectangle
       const rectangle = new Path.Rectangle({
         center: e.point,
         fillColor: getRandomColor(),
-        size: getRandomInt(20,60),
+        size: getRandomInt(20,120),
         selected: true,
       })
       this.props.addItem('Rectangle', {
         data: rectangle.getPathData(),
         fillColor: rectangle.fillColor.toCSS(true),
         selected: true,
-      }, () => {
-        // remove temporary rectangle
-        rectangle.remove()
       })
+      console.log(rectangle.getPathData());
+      rectangle.remove()
     }
 
     render() {

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './PaperButton.css'
+import './ToolButton.css'
 
-export default class PaperButton extends Component {
+export default class ToolButton extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
@@ -17,7 +17,7 @@ export default class PaperButton extends Component {
 
   render() {
     const { active, children, tool, ...rest } = this.props
-    const className = `PaperButton ${active?'PaperButton-active':''}`
+    const className = `ToolButton ${active?'ToolButton-active':''}`
     return (
       <button {...rest} className={className} onClick={this.handleClick}>
         {children}

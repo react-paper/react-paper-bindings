@@ -4,13 +4,6 @@ export const COLORS = [
   'cyan',
 ]
 
-export function getEventXY(e) {
-  return {
-    x: (e.touches) ? e.touches[0].pageX : e.pageX,
-    y: (e.touches) ? e.touches[0].pageY : e.pageY,
-  }
-}
-
 export function getRandomInt(min, max) {
   return Math.floor(Math.random()*(max-min+1))+min
 }

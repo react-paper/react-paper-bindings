@@ -20,7 +20,7 @@ export default function withRectangleTool(WrappedComponent) {
         fillColor: rectangle.fillColor.toCSS(true),
         selected: true,
       })
-      console.log(rectangle.getPathData());
+      //console.log(rectangle.getPathData());
       rectangle.remove()
     }
 

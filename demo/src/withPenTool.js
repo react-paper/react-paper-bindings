@@ -35,7 +35,7 @@ export default function withPenTool(WrappedComponent) {
           data: this._path.getPathData(),
           selected: true,
         })
-        console.log(this._path.getPathData());
+        //console.log(this._path.getPathData());
         this._path.remove()
         this._path = null
       }

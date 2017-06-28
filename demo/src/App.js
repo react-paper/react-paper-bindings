@@ -5,8 +5,6 @@ import './App.css'
 
 import MR_BUBBLES from './mr-bubbles.jpg'
 
-const TOOLBAR_HEIGHT = 56
-
 const INITIAL_DATA = {
   Path: [{
     id: 1,
@@ -26,7 +24,6 @@ const INITIAL_DATA = {
   }],
   Rectangle: [],
 }
-
 
 class App extends Component {
 
@@ -72,10 +69,8 @@ class App extends Component {
           <Paper
             image={MR_BUBBLES}
             initialData={INITIAL_DATA}
-            top={box.top+TOOLBAR_HEIGHT}
-            left={box.left}
             width={box.width}
-            height={box.height-TOOLBAR_HEIGHT}
+            height={box.height-56}
           />}
       </div>
     )

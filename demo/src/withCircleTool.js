@@ -20,7 +20,7 @@ export default function withCircleTool(WrappedComponent) {
         fillColor: circle.fillColor.toCSS(true),
         selected: true,
       })
-      console.log(circle.getPathData());
+      //console.log(circle.getPathData());
       circle.remove()
     }
 

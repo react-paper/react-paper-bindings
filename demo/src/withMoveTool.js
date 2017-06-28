@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-
-import { getEventXY } from './helpers'
+import { Point } from 'paper'
 
 const ZOOM_FACTOR = 1.1
+
+
 
 export default function withMoveTool(WrappedComponent) {
 
@@ -18,11 +19,17 @@ export default function withMoveTool(WrappedComponent) {
         x: 0,
         y: 0,
         zoom: 1,
+        console: [],
       }
-      this._event = null
-      this._point = null
+      this._pan = null
+      this._pinch = null
     }
 
+    /**
+     * Fit image into viewport
+     *
+     * @param  {Raster} image Paper.js Raster instance
+     */
     fitImage = (image) => {
       // center the image in the middle
       const { width, height } = this.props
@@ -43,8 +50,94 @@ export default function withMoveTool(WrappedComponent) {
       })
     }
 
+    /**
+     * Get pinch zoom event data
+     *
+     * @param  {ToolEvent} e Paper.js ToolEvent
+     * @return {Object}      Object representing pinch zoom event
+     */
+    getPinchEventData(e) {
+      const { event: { target, touches } } = e
+      const { offsetLeft, offsetTop } = target
+      // touch points
+      const point0 = new Point(
+        touches[0].pageX - offsetLeft,
+        touches[0].pageY - offsetTop,
+      )
+      const point1 = new Point(
+        touches[1].pageX - offsetLeft,
+        touches[1].pageY - offsetTop,
+      )
+      // center point between fingers
+      const center = new Point(
+        (point0.x + point1.x) / 2,
+        (point0.y + point1.y) / 2,
+      )
+      // distance between fingers
+      const distance = Math.sqrt(
+        Math.pow(point1.x - point0.x, 2) +
+        Math.pow(point1.y - point0.y, 2)
+      )
+      // return object describing touch state
+      return { point0, point1, center, distance }
+    }
+
+    /**
+     * Get pinch zoom state data
+     *
+     * @param  {Object} prev Previous pinch zoom event data
+     * @param  {Object} next Next pinch zoom event data
+     * @return {Object}      Next pinch zoom state
+     */
+    getPinchStateData(prev, next) {
+      const { x, y, zoom } = this.state
+      const t = next.center.subtract(prev.center).divide(zoom)
+      const scale = next.distance / prev.distance
+      return {
+        tx: t.x,
+        ty: t.y,
+        sx: next.center.x,
+        sy: next.center.y,
+        x: x + t.x,
+        y: y + t.y,
+        zoom: zoom * scale,
+      }
+    }
+
+    /**
+     * Get pan event data
+     * @param  {SyntheticEvent} e React's SyntheticEvent
+     * @return {object}           Object representing pan event
+     */
+    getPanEventData(e) {
+      const { event: { touches }, pageX, pageY, point } = e
+      return {
+        point,
+        x: (touches) ? touches[0].pageX : pageX,
+        y: (touches) ? touches[0].pageY : pageY,
+      }
+    }
+
+    /**
+     * Get pan state data
+     *
+     * @param  {Object} prev Previous pan event data
+     * @param  {Object} next Next pan event data
+     * @return {Object}      Next pan state data
+     */
+    getPanStateData(prev, next) {
+      const { x, y } = this.state
+      const t = next.point.subtract(prev.point)
+      return {
+        tx: t.x,
+        ty: t.y,
+        x: x + (next.x - prev.x),
+        y: y + (next.y - prev.y),
+      }
+    }
+
     mouseWheel = (e) => {
-      const { top, left } = this.props
+      const { offsetLeft, offsetTop } = e.nativeEvent.target
       const { x, y, zoom } = this.state
 
       // calculate new zoom from wheel event
@@ -56,16 +149,16 @@ export default function withMoveTool(WrappedComponent) {
       const ratio = newZoom / zoom
 
       // get mouse position within image
-      const prevX = e.pageX - x - left
-      const prevY = e.pageY - y - top
+      const prevX = e.pageX - x
+      const prevY = e.pageY - y
 
       // get diff in mouse positions before and after resize
-      const tx = prevX - prevX * ratio
-      const ty = prevY - prevY * ratio
+      const tx = prevX - (prevX * ratio) - offsetLeft
+      const ty = prevY - (prevY * ratio) - offsetTop
 
       this.setState({
-        sx: e.pageX - left,
-        sy: e.pageY - top,
+        sx: e.pageX - offsetLeft,
+        sy: e.pageY - offsetTop,
         x: x + tx,
         y: y + ty,
         zoom: newZoom,
@@ -73,190 +166,33 @@ export default function withMoveTool(WrappedComponent) {
     }
 
     mouseDown = (e) => {
-      this._point = e.point
-      this._event = e.event
+      this._pan = this.getPanEventData(e)
     }
 
     mouseDrag = (e) => {
-      const { x, y } = this.state
-      const t = e.point.subtract(this._point)
-      const curr = getEventXY(e.event)
-      const prev = getEventXY(this._event)
-      this.setState({
-        tx: t.x,
-        ty: t.y,
-        x: x + (curr.x - prev.x),
-        y: y + (curr.y - prev.y),
-      })
-      // do not set next point!
-      this._event = e.event
+      const { event: { touches } } = e
+      if (touches && touches.length === 2) {
+        if (!this._pinch) {
+          this._pinch = this.getPinchEventData(e)
+        } else {
+          const prev = this._pinch
+          const next = this.getPinchEventData(e)
+          this.setState(this.getPinchStateData(prev, next))
+          this._pinch = next
+        }
+      } else {
+        const prev = this._pan
+        const next = this.getPanEventData(e)
+        this.setState(this.getPanStateData(prev, next))
+        this._event = next
+      }
     }
 
     mouseUp = (e) => {
       this._point = null
       this._event = null
+      this._pinch = null
     }
-
-    /*
-    touchStart = (e) => {
-      console.log('touchStart', e);
-      return
-
-      switch (e.touches.length) {
-        case 1:
-
-        // set touch action
-        this.touchAction = 'moving';
-
-        // get start touches
-        this.startX0 = e.touches[0].pageX;
-        this.startY0 = e.touches[0].pageY;
-
-        break;
-
-        case 2:
-
-        // set touch action
-        this.touchAction = 'zooming';
-
-        // get start touches
-        this.startX0 = e.touches[0].pageX;
-        this.startY0 = e.touches[0].pageY;
-        this.startX1 = e.touches[1].pageX;
-        this.startY1 = e.touches[1].pageY;
-
-        // get start center
-        this.startCenterX = (this.startX0 + this.startX1) / 2;
-        this.startCenterY = (this.startY0 + this.startY1) / 2;
-
-        // get start distance between fingers
-        this.startDistance = Math.sqrt(Math.pow((this.startX1 - this.startX0), 2) + Math.pow((this.startY1 - this.startY0), 2));
-
-        break;
-      }
-    }
-
-    touchMove = (e) => {
-      console.log('touchMove', e)
-      return
-
-      switch (this.touchAction) {
-        case 'moving':
-
-        // get end touches
-        var endX0 = e.touches[0].pageX;
-        var endY0 = e.touches[0].pageY;
-
-        var tx = endX0 - this.startX0;
-        var ty = endY0 - this.startY0;
-
-        this.translateLayers(tx, ty);
-
-        // calculate new translation points
-        var translateX = this.getTranslateX() + tx;
-        var translateY = this.getTranslateY() + ty;
-
-        // set transform properties
-        this.setTranslateX(translateX);
-        this.setTranslateY(translateY);
-
-        // apply transform
-        this.applyTransform();
-
-        // reset start touches
-        this.startX0 = endX0;
-        this.startY0 = endY0;
-
-        break;
-
-        case 'zooming':
-
-        // get end touches
-        var endX0 = e.touches[0].pageX;
-        var endY0 = e.touches[0].pageY;
-        var endX1 = e.touches[1].pageX;
-        var endY1 = e.touches[1].pageY;
-
-        // get end center
-        var endCenterX = (endX0 + endX1) / 2;
-        var endCenterY = (endY0 + endY1) / 2;
-
-        // get end distance between fingers
-        var endDistance = Math.sqrt(Math.pow((endX1 - endX0), 2) + Math.pow((endY1 - endY0), 2));
-
-        // get distance difference
-        var distanceDiff = endDistance / this.startDistance;
-
-        // calculate scale and ratio
-        var scale = this.getScale();
-        var startScale = this.getStartScale();
-        var newScale = startScale * distanceDiff;
-
-        var ratio = newScale / scale;
-
-        // get center position within image
-        var mx = endCenterX - this.getImage().getX();
-        var my = endCenterY - this.getImage().getY();
-
-        // get center position within image after resize
-        var nx = mx * ratio;
-        var ny = my * ratio;
-
-        // get translation difference because of zooming
-        var zx = mx - nx;
-        var zy = my - ny;
-
-        // get translation difference because of moving
-        var tx = endCenterX - this.startCenterX;
-        var ty = endCenterY - this.startCenterY;
-
-        // get total translation difference
-        var tx = zx + tx;
-        var ty = zy + ty;
-
-        // calculate new translation
-        var translateX = this.getTranslateX() + tx;
-        var translateY = this.getTranslateY() + ty;
-
-        // set transform properties
-        this.setScale(newScale);
-        this.setTranslateX(translateX);
-        this.setTranslateY(translateY);
-
-        // scale layers
-        var box = this.getCanvas().getBox();
-        var sx = endCenterX - box.x;
-        var sy = endCenterY - box.y;
-        this.scaleAndTranslateLayers(ratio, sx, sy, tx, ty);
-
-        // apply transform
-        this.applyTransform();
-
-        // reset start touches
-        this.startX0 = endX0;
-        this.startY0 = endY0;
-        this.startX1 = endX1;
-        this.startY1 = endY1;
-
-        // reset start center
-        this.startCenterX = endCenterX;
-        this.startCenterY = endCenterY;
-
-        break;
-      }
-    }
-
-    touchEnd = (e) => {
-      return
-      switch (this.touchAction) {
-        case 'zooming':
-        this.setStartScale(this.getScale());
-        break;
-      }
-
-      this.touchAction = null;
-    }
-    */
 
     render() {
       return (
@@ -264,6 +200,9 @@ export default function withMoveTool(WrappedComponent) {
           {...this.props}
           {...this.state}
           fitImage={this.fitImage}
+          moveToolTouchStart={this.touchStart}
+          moveToolTouchMove={this.touchMove}
+          moveToolTouchEnd={this.touchEnd}
           moveToolMouseWheel={this.mouseWheel}
           moveToolMouseDown={this.mouseDown}
           moveToolMouseDrag={this.mouseDrag}

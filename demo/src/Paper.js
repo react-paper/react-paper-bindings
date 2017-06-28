@@ -18,17 +18,16 @@ import withSelectTool from './withSelectTool'
 import withPenTool from './withPenTool'
 import withCircleTool from './withCircleTool'
 import withRectangleTool from './withRectangleTool'
+import withDeleteTool from './withDeleteTool'
 
 import './Paper.css'
 
 class Paper extends Component {
 
   static propTypes = {
-    height: PropTypes.number.isRequired,
     image: PropTypes.any.isRequired,
-    left: PropTypes.number.isRequired,
-    top: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
   }
 
   constructor(props) {
@@ -61,8 +60,8 @@ class Paper extends Component {
     const viewProps = {
       activeTool, width, height,
       sx, sy, tx, ty, x, y, zoom,
-      onWheel: this.props.moveToolMouseWheel,
       ref: ref => this._view = ref,
+      onWheel: this.props.moveToolMouseWheel,
     }
 
     return (
@@ -143,21 +142,26 @@ class Paper extends Component {
             name={'rectangle'}
             onMouseDown={this.props.rectangleToolMouseDown}
           />
+          <Tool
+            active={activeTool === 'delete'}
+            name={'delete'}
+            onMouseDown={this.props.deleteToolMouseDown}
+          />
         </View>
         <ToolButtons>
-          <ToolButton
-            tool={'select'}
-            title={'Select Tool'}
-            active={activeTool === 'select'}
-            onClick={this.props.setTool}>
-            <i className={'material-icons'}>touch_app</i>
-          </ToolButton>
           <ToolButton
             tool={'move'}
             title={'Move Tool'}
             active={activeTool === 'move'}
             onClick={this.props.setTool}>
             <i className={'material-icons'}>pan_tool</i>
+          </ToolButton>
+          <ToolButton
+            tool={'select'}
+            title={'Select Tool'}
+            active={activeTool === 'select'}
+            onClick={this.props.setTool}>
+            <i className={'material-icons'}>touch_app</i>
           </ToolButton>
           <ToolButton
             tool={'pen'}
@@ -179,6 +183,13 @@ class Paper extends Component {
             active={activeTool === 'rectangle'}
             onClick={this.props.setTool}>
             <i className={'material-icons'}>add_box</i>
+          </ToolButton>
+          <ToolButton
+            tool={'delete'}
+            title={'Delete Tool'}
+            active={activeTool === 'delete'}
+            onClick={this.props.setTool}>
+            <i className={'material-icons'}>delete</i>
           </ToolButton>
           <span></span>
           <ToolButton
@@ -250,4 +261,5 @@ export default compose(
   withSelectTool,
   withCircleTool,
   withRectangleTool,
+  withDeleteTool,
 )(Paper)

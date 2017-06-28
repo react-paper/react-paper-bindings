@@ -208,6 +208,13 @@ const PaperRenderer = ReactFiberReconciler({
         instance = new Layer(paperProps)
         instance._applyProps = applyLayerProps
         break
+      case TYPES.LINE:
+        instance = new Path.Line(paperProps)
+        instance._applyProps = applyPathProps
+        if (paperProps.data) {
+          instance.setPathData(paperProps.data)
+        }
+        break
       case TYPES.PATH:
         instance = new Path(paperProps)
         instance._applyProps = applyPathProps

@@ -3,6 +3,7 @@ export default {
   ELLIPSE: 'Ellipse',
   GROUP: 'Group',
   LAYER: 'Layer',
+  LINE: 'Line',
   PATH: 'Path',
   POINTTEXT: 'PointText',
   RASTER: 'Raster',

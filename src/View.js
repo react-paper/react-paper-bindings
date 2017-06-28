@@ -74,12 +74,10 @@ export default class View extends Component {
   }
 
   render() {
-    const { height, onWheel, width } = this.props
+    const { width, height, onWheel } = this.props
     const canvasProps = {
       ref: ref => this._canvas = ref,
-      width,
-      height,
-      onWheel,
+      width, height, onWheel,
     }
     return (
       <canvas {...canvasProps} />

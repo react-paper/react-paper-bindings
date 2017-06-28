@@ -24,8 +24,8 @@ cd react-paper-bindings/demo
 npm install
 
 # cra does not like sources from outside its root
-# we need to symlink build folder in development
-ln -s /path/to/react-paper-bindings/build /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
+# we need to symlink dist folder in development
+ln -s /path/to/react-paper-bindings/dist /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
 
 npm start
 ```

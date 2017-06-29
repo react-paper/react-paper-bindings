@@ -30,14 +30,14 @@ export default function withMoveTool(WrappedComponent) {
      *
      * @param  {Raster} image Paper.js Raster instance
      */
-    fitImage = (image) => {
+    fitImage = ({ originalWidth, originalHeight }) => {
       // center the image in the middle
       const { width, height } = this.props
-      const wr = width / image.width
-      const hr = height / image.height
+      const wr = width / originalWidth
+      const hr = height / originalHeight
       const zoom = wr < hr ? wr : hr
-      const iw = image.width * zoom
-      const ih = image.height * zoom
+      const iw = originalWidth * zoom
+      const ih = originalHeight * zoom
       const tx = (width-iw) / 2 / zoom
       const ty = (height-ih) / 2 / zoom
       const x = this.state.x + tx
@@ -110,7 +110,7 @@ export default function withMoveTool(WrappedComponent) {
      * @return {object}           Object representing pan event
      */
     getPanEventData(e) {
-      const { event: { touches }, pageX, pageY, point } = e
+      const { event: { touches, pageX, pageY }, point } = e
       return {
         point,
         x: (touches) ? touches[0].pageX : pageX,

@@ -227,15 +227,17 @@ const PaperRenderer = ReactFiberReconciler({
         instance._applyProps = applyPointTextProps
         break
       case TYPES.RASTER:
-        instance = new Raster(paperProps)
+        const { onLoad, ...rasterProps } = paperProps
+        instance = new Raster(rasterProps)
         instance._applyProps = applyRasterProps
         instance.onLoad = () => {
-          // this will position the image to the top left corner
-          // matching the position of paths, circles, rectangles, ...
-          instance.bounds.top = 0
-          instance.bounds.left = 0
-          if (typeof paperProps.onLoad === 'function') {
-            paperProps.onLoad(instance)
+          // position image
+          const w = paperProps.originalWidth || paperProps.width
+          const h = paperProps.originalHeight || paperProps.height
+          instance.fitBounds(0, 0, w, h)
+          // run onLoad handler
+          if (typeof onLoad === 'function') {
+            onLoad(instance)
           }
         }
         break;

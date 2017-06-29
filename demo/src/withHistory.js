@@ -89,16 +89,12 @@ export default function withHistory(WrappedComponent) {
       return (
         <WrappedComponent
           {...this.props}
-
           data={history[historyIndex]}
 
           addItem={this.addItem}
           removeItem={this.removeItem}
           updateItem={this.updateItem}
-
-          addHistory={this.addHistory}
           clearHistory={this.clearHistory}
-          getPrevHistory={this.getPrevHistory}
 
           canUndo={historyIndex > 0}
           canRedo={history.length > 1 && historyIndex + 1 < history.length}

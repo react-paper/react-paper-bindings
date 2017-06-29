@@ -1,0 +1,25 @@
+.PaperTreeLabel {
+  display: flex;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.PaperTreeLabel:hover {
+  background-color: #eee;
+}
+
+.PaperTreeLabel .material-icons {
+  display: inline-block;
+  margin: 0 4px 0 3px;
+  padding: 0;
+  height: 20px;
+  line-height: 20px;
+  font-size: 16px;
+}
+
+.PaperTreeLabel span {
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+}

@@ -1,0 +1,17 @@
+.PaperTreeItem {
+  display: flex;
+  cursor: pointer;
+  padding: 0 0 0 1px;
+}
+
+.PaperTreeItem:hover {
+  background-color: #eee;
+}
+
+.PaperTreeItem--final {
+  margin-left: 8px;
+}
+
+.PaperTreeItem--final .tree-view_arrow {
+  display: none !important;
+}

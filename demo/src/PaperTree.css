@@ -1,0 +1,51 @@
+.PaperTree {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  width: 200px;
+  height: 300px;
+  bottom: 0;
+  right: 0;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
+  user-select: none;
+}
+
+.PaperTree__title {
+  margin: 0;
+  padding: 6px;
+  font-size: 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.PaperTree__body {
+  flex: 1;
+  overflow: auto;
+  padding: 4px 6px;
+}
+
+/* arrow */
+.PaperTree .tree-view_arrow {
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.2s;
+  transform: scale3d(0.8,0.8,1);
+  user-select: none;
+}
+.PaperTree .tree-view_arrow:after {
+  position: relative;
+  content: '▾';
+}
+.PaperTree .tree-view_arrow-collapsed {
+  transform: scale3d(0.8,0.8,1) rotate(-90deg);
+}
+
+/* children */
+.PaperTree .tree-view_children {
+  margin-left: 18px;
+}
+.PaperTree .tree-view_children-collapsed {
+  height: 0px;
+}

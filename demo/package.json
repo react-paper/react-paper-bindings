@@ -4,10 +4,14 @@
   "homepage": "http://hribb.github.io/react-paper-bindings/",
   "dependencies": {
     "immutability-helper": "^2.2.2",
+    "lodash.omit": "^4.5.0",
+    "lodash.pick": "^4.4.0",
+    "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
     "react": "file:../react",
     "react-dom": "file:../react-dom",
+    "react-treeview": "^0.4.7",
     "recompose": "^0.23.5"
   },
   "devDependencies": {

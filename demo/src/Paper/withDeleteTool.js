@@ -12,15 +12,11 @@ export default function withDeleteTool(WrappedComponent) {
   return class extends Component {
 
     mouseDown = (e) => {
-      e.tool.view._project.deselectAll()
-      const hit = e.tool.view._project.hitTest(e.point, HIT_TEST_OPTIONS)
-      if (
-        hit && hit.item &&
-        hit.item.reactType !== 'Raster' &&
-        hit.item.layer.name !== 'ReactLogo'
-      ) {
-        const { reactId, reactType } = hit.item
-        this.props.removeItem(reactType, reactId)
+      const project = e.tool.view._project
+      project.deselectAll()
+      const hit = project.hitTest(e.point, HIT_TEST_OPTIONS)
+      if (hit && hit.item && !hit.item.locked) {
+        this.props.removeItem(hit.item)
       }
     }
 

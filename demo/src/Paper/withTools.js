@@ -7,7 +7,7 @@ export default function withTools(WrappedComponent) {
     constructor(props) {
       super(props)
       this.state = {
-        activeTool: 'move',
+        activeTool: 'select',
       }
     }
 

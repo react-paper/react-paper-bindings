@@ -12,46 +12,54 @@ export default function withHistory(WrappedComponent) {
         historyIndex: 0,
         history: [props.initialData],
       }
-      this._nextId = 123
+      this._id = 123
     }
 
-    addItem = (type, item, callback) => {
-      const nextItem = assign(item, { id: this._nextId })
-      const prevHistory = this.getPrevHistory()
-      const nextHistory = update(prevHistory, {
-        [type]: { $push: [nextItem] }
+    addItem = (layer, data) => {
+      const history = this.getPrevHistory()
+      const layerIndex = history.findIndex(l => l.id === layer.data.id)
+      const nextData = assign(data, { id: this._id })
+      const nextHistory = update(history, {
+        [layerIndex]: { children: { $push: [nextData] } }
       })
-      this.addHistory(nextHistory, callback)
-      this._nextId++
+      this.addHistory(nextHistory)
+      this._id++
     }
 
-    updateItem = (type, id, item, callback) => {
-      const prevHistory = this.getPrevHistory()
-      const itemIndex = prevHistory[type].findIndex(p => p.id === id)
-      const prevItem = prevHistory[type][itemIndex]
-      const nextItem = assign({}, prevItem, item)
-      const nextHistory = update(prevHistory, {
-        [type]: { [itemIndex]: { $set: nextItem } }
+    updateItem = (item, data) => {
+      const history = this.getPrevHistory()
+      const layerIndex = history.findIndex(l => l.id === item.layer.data.id)
+      const children = history[layerIndex].children
+      const itemIndex = children.findIndex(i => i.id === item.data.id)
+      const nextData = assign({}, children[itemIndex], data)
+      const nextHistory = update(history, {
+        [layerIndex]: { children: { [itemIndex]: { $set: nextData } } }
       })
-      this.addHistory(nextHistory, callback)
+      this.addHistory(nextHistory)
     }
 
-    removeItem = (type, id, callback) => {
-      const prevHistory = this.getPrevHistory()
-      const itemIndex = prevHistory[type].findIndex(p => p.id === id)
-      const nextHistory = update(prevHistory, {
-        [type]: { $splice: [[itemIndex, 1]] }
+    removeItem = (item) => {
+      const history = this.getPrevHistory()
+      const layerIndex = history.findIndex(l => l.id === item.layer.data.id)
+      const children = history[layerIndex].children
+      const itemIndex = children.findIndex(i => i.id === item.data.id)
+      const nextHistory = update(history, {
+        [layerIndex]: { children: { $splice: [[itemIndex, 1]] } }
       })
-      this.addHistory(nextHistory, callback)
+      this.addHistory(nextHistory)
     }
 
-    addHistory = (nextHistory, callback) => {
+    addHistory = (nextHistory) => {
       const historyIndex = this.state.historyIndex+1
       const history = [
         ...this.state.history.slice(0, historyIndex),
         nextHistory,
       ]
-      this.setState({ historyIndex, history }, callback)
+      this.setState({ historyIndex, history })
+    }
+
+    getPrevHistory = () => {
+      return this.state.history[this.state.historyIndex]
     }
 
     clearHistory = () => {
@@ -59,10 +67,6 @@ export default function withHistory(WrappedComponent) {
         historyIndex: 0,
         history: [this.props.initialData],
       })
-    }
-
-    getPrevHistory = () => {
-      return this.state.history[this.state.historyIndex]
     }
 
     undo = () => {
@@ -94,13 +98,13 @@ export default function withHistory(WrappedComponent) {
           addItem={this.addItem}
           removeItem={this.removeItem}
           updateItem={this.updateItem}
-          clearHistory={this.clearHistory}
 
           canUndo={historyIndex > 0}
           canRedo={history.length > 1 && historyIndex + 1 < history.length}
 
           undo={this.undo}
           redo={this.redo}
+          clearHistory={this.clearHistory}
         />
       )
     }

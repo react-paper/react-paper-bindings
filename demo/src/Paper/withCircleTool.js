@@ -3,32 +3,33 @@ import { Path } from 'paper'
 
 import { getRandomColor, getRandomInt } from './helpers'
 
-export default function withRectangleTool(WrappedComponent) {
+export default function withCircleTool(WrappedComponent) {
 
   return class extends Component {
 
     mouseDown = (e) => {
       e.tool.view._project.deselectAll()
-      const rectangle = new Path.Rectangle({
+      const circle = new Path.Circle({
         center: e.point,
         fillColor: getRandomColor(),
-        size: getRandomInt(20,120),
+        radius: getRandomInt(10, 60),
+      })
+      this.props.addItem(circle.layer, {
+        type: 'Circle',
+        pathData: circle.getPathData(),
+        fillColor: circle.fillColor.toCSS(true),
         selected: true,
       })
-      this.props.addItem('Rectangle', {
-        data: rectangle.getPathData(),
-        fillColor: rectangle.fillColor.toCSS(true),
-        selected: true,
-      })
-      //console.log(rectangle.getPathData());
-      rectangle.remove()
+      console.log(circle);
+      console.log(circle.getPathData());
+      circle.remove()
     }
 
     render() {
       return (
         <WrappedComponent
           {...this.props}
-          rectangleToolMouseDown={this.mouseDown}
+          circleToolMouseDown={this.mouseDown}
         />
       )
     }

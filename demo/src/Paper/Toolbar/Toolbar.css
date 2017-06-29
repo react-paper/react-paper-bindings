@@ -1,4 +1,4 @@
-.PaperToolbar {
+.Toolbar {
   position: absolute;
   z-index: 50;
   width: 100%;
@@ -11,7 +11,7 @@
   box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
 }
 
-.PaperToolbar span {
+.Toolbar span {
   position: relative;
   bottom: 2px;
   display: inline-block;
@@ -21,19 +21,19 @@
   margin: 0 10px;
 }
 
-.PaperToolbar a {
+.Toolbar a {
   display: inline-block;
   margin: 0 4px;
 }
 
-.PaperToolbar a svg path {
+.Toolbar a svg path {
   fill: #fff;
 }
 
-.PaperToolbar a:hover svg path {
+.Toolbar a:hover svg path {
   fill: #ccc;
 }
 
-.PaperToolbar a:active svg path {
+.Toolbar a:active svg path {
   fill: orange;
 }

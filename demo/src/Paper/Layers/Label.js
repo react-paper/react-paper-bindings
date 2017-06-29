@@ -1,22 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './PaperTreeLabel.css'
+import './Label.css'
 
-const PaperTreeLabel = (props) => {
+const Label = (props) => {
   const { children, icon, onClick } = props
   return (
-    <span className={'PaperTreeLabel tree-view_label'} onClick={onClick}>
+    <div className={'tree-view_label'} onClick={onClick}>
       {icon && <i className={'material-icons'}>{icon}</i>}
       <span>{children}</span>
-    </span>
+    </div>
   )
 }
 
-PaperTreeLabel.propTypes = {
+Label.propTypes = {
   children: PropTypes.node,
   icon: PropTypes.node,
   onClick: PropTypes.func,
 }
 
-export default PaperTreeLabel
+export default Label

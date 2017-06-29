@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Button from './PaperToolbarButton'
+import Button from './Button'
 
-import './PaperToolbar.css'
+import './Toolbar.css'
 
-const PaperToolbar = (props) => {
-  const { activeTool, animate, fullscreen, showLayers } = props
+const Toolbar = (props) => {
+  const { activeTool, fullscreen, showLayers } = props
   return (
-    <div className={'PaperToolbar'}>
+    <div className={'Toolbar'}>
       <Button
         tool={'move'}
         title={'Move Tool'}
@@ -76,16 +76,6 @@ const PaperToolbar = (props) => {
         disabled={!props.canRedo && !props.canUndo}>
         <i className={'material-icons'}>clear</i>
       </Button>
-      {/*
-      <Button
-        tool={'animation'}
-        title={animate ? 'Stop Animation' : 'Start Animation'}
-        onClick={props.toggleAnimation}>
-        <i className={'material-icons'}>
-          {animate ? 'pause' : 'play_arrow'}
-        </i>
-      </Button>
-      */}
       <Button
         tool={'layers'}
         title={showLayers ? 'Hide Layers' : 'Show Layers'}
@@ -120,21 +110,19 @@ const PaperToolbar = (props) => {
   )
 }
 
-PaperToolbar.propTypes = {
-  activeTool: PropTypes.string.isRequired,
-  animate: PropTypes.oneOfType([PropTypes.bool,PropTypes.number]).isRequired,
-  canUndo: PropTypes.bool.isRequired,
-  canRedo: PropTypes.bool.isRequired,
-  fullscreen: PropTypes.bool.isRequired,
-  showLayers: PropTypes.bool.isRequired,
-  save: PropTypes.func.isRequired,
-  setTool: PropTypes.func.isRequired,
-  undo: PropTypes.func.isRequired,
-  redo: PropTypes.func.isRequired,
-  clearHistory: PropTypes.func.isRequired,
-  toggleAnimation: PropTypes.func.isRequired,
-  toggleFullscreen: PropTypes.func.isRequired,
-  toggleLayers: PropTypes.func.isRequired,
+Toolbar.propTypes = {
+  activeTool: PropTypes.string,
+  canUndo: PropTypes.bool,
+  canRedo: PropTypes.bool,
+  fullscreen: PropTypes.bool,
+  showLayers: PropTypes.bool,
+  save: PropTypes.func,
+  setTool: PropTypes.func,
+  undo: PropTypes.func,
+  redo: PropTypes.func,
+  clearHistory: PropTypes.func,
+  toggleFullscreen: PropTypes.func,
+  toggleLayers: PropTypes.func,
 }
 
-export default PaperToolbar
+export default Toolbar

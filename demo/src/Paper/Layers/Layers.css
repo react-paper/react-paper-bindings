@@ -1,18 +1,18 @@
-.PaperTree {
+.Layers {
   position: absolute;
   display: flex;
   flex-direction: column;
   z-index: 50;
   width: 200px;
-  height: 300px;
-  bottom: 0;
-  right: 0;
+  height: 200px;
+  bottom: 10px;
+  right: 10px;
   background: rgba(255,255,255,0.9);
-  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
+  box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.3);
   user-select: none;
 }
 
-.PaperTree__title {
+.Layers__title {
   margin: 0;
   padding: 6px;
   font-size: 16px;
@@ -20,32 +20,32 @@
   border-bottom: 1px solid #eee;
 }
 
-.PaperTree__body {
+.Layers__body {
   flex: 1;
   overflow: auto;
-  padding: 4px 6px;
+  padding: 6px;
 }
 
 /* arrow */
-.PaperTree .tree-view_arrow {
+.Layers .tree-view_arrow {
   cursor: pointer;
   display: inline-block;
   transition: all 0.2s;
   transform: scale3d(0.8,0.8,1);
   user-select: none;
 }
-.PaperTree .tree-view_arrow:after {
+.Layers .tree-view_arrow:after {
   position: relative;
   content: '▾';
 }
-.PaperTree .tree-view_arrow-collapsed {
+.Layers .tree-view_arrow-collapsed {
   transform: scale3d(0.8,0.8,1) rotate(-90deg);
 }
 
 /* children */
-.PaperTree .tree-view_children {
-  margin-left: 18px;
+.Layers .tree-view_children {
+  margin-left: 30px;
 }
-.PaperTree .tree-view_children-collapsed {
+.Layers .tree-view_children-collapsed {
   height: 0px;
 }

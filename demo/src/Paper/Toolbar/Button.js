@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import './PaperToolbarButton.css'
+import './Button.css'
 
-export default class PaperToolbarButton extends Component {
+export default class Button extends Component {
 
   static propTypes = {
     active: PropTypes.bool,
-    children: PropTypes.node.isRequired,
-    onClick: PropTypes.func.isRequired,
-    tool: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    onClick: PropTypes.func,
+    tool: PropTypes.string,
   }
 
   handleClick = () => {
@@ -18,7 +18,7 @@ export default class PaperToolbarButton extends Component {
 
   render() {
     const { active, children, tool, ...rest } = this.props
-    const className = `PaperToolbarButton ${active?'PaperToolbarButton-active':''}`
+    const className = `Button ${active?'Button-active':''}`
     return (
       <button {...rest} className={className} onClick={this.handleClick}>
         {children}

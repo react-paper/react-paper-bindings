@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import assign from 'object-assign'
 
-import Item from './PaperTreeItem'
+import Item from './Item'
 
-import './PaperTree.css'
+import './Layers.css'
 
-export default class PaperTree extends Component {
+export default class Layers extends Component {
 
   static propTypes = {
-    items: PropTypes.array.isRequired,
+    layers: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -21,25 +22,25 @@ export default class PaperTree extends Component {
   toggleExpanded = (id) => {
     const { expanded } = this.state
     this.setState({
-      expanded: Object.assign({}, expanded, {
+      expanded: assign({}, expanded, {
         [id]: typeof expanded[id] === 'undefined' ? false : !expanded[id]
       })
     })
   }
 
   render() {
-    const { items } = this.props
+    const { layers } = this.props
     const { expanded } = this.state
     return (
-      <div className={'PaperTree'}>
-        <h2 className={'PaperTree__title'}>Layers</h2>
-        <div className={'PaperTree__body'}>
-          {items.map(([type, options], index) =>
+      <div className={'Layers'}>
+        <h2 className={'Layers__title'}>Layers</h2>
+        <div className={'Layers__body'}>
+          {layers.map(({ id, type, children }) =>
             <Item
-              id={`${options.name||type}${index}`}
-              key={`${options.name||type}${index}`}
+              id={id}
+              key={id}
               type={type}
-              options={options}
+              children={children}
               expanded={expanded}
               onClick={this.toggleExpanded}
             />

@@ -23,12 +23,10 @@ export default function withSelectTool(WrappedComponent) {
         const { key, modifiers: { shift } } = e
         switch (key) {
           case 'delete':
-            const { reactId, reactType } = this._item
-            this.props.removeItem(reactType, reactId, () => {
-              this._changed = false
-              this._item = null
-              this._point = null
-            })
+            this.props.removeItem(this._item)
+            this._changed = false
+            this._item = null
+            this._point = null
             break
           case 'up':
             this._item.translate(0, shift ? -10 : -1)
@@ -52,13 +50,14 @@ export default function withSelectTool(WrappedComponent) {
       const hit = e.tool.view._project.hitTest(e.point, HIT_TEST_OPTIONS)
       if (
         hit && hit.item &&
-        hit.item.reactType !== 'Raster' &&
-        hit.item.layer.name !== 'ReactLogo'
+        hit.item.data.type !== 'Raster'
       ) {
         hit.item.selected = true
         hit.item.bringToFront()
         this._item = hit.item
         this._point = e.point
+        console.log(this._item)
+        console.log(this._item.getPathData && this._item.getPathData())
       } else {
         this._item = null
         this._point = null
@@ -75,9 +74,8 @@ export default function withSelectTool(WrappedComponent) {
 
     mouseUp = (e) => {
       if (this._item && this._changed) {
-        const { reactId, reactType } = this._item
-        this.props.updateItem(reactType, reactId, {
-          data: this._item.getPathData(),
+        this.props.updateItem(this._item, {
+          pathData: this._item.getPathData(),
           selected: true,
         })
       }

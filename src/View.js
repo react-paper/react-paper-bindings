@@ -46,6 +46,9 @@ export default class View extends Component {
       const tool = tools.find(t => t.name === activeTool)
       if (tool) tool.activate()
     }
+
+    //this._scope.project.layers[0].remove
+    //console.log(this._scope.project.layers)
   }
 
   componentDidUpdate(prevProps, prevState) {

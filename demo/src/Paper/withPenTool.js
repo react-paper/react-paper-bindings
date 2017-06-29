@@ -31,11 +31,13 @@ export default function withPenTool(WrappedComponent) {
     mouseUp = (e) => {
       if (this._path) {
         this._path.simplify(6)
-        this.props.addItem('Path', {
-          data: this._path.getPathData(),
+        this.props.addItem(this._path.layer, {
+          type: 'Path',
+          pathData: this._path.getPathData(),
           selected: true,
         })
-        //console.log(this._path.getPathData());
+        console.log(this._path);
+        console.log(this._path.getPathData());
         this._path.remove()
         this._path = null
       }

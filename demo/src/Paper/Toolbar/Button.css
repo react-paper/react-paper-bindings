@@ -1,4 +1,4 @@
-.PaperToolbarButton {
+.Button {
   width: 32px;
   height: 32px;
   padding: 2px 0 0 0;
@@ -10,21 +10,21 @@
   cursor: pointer;
 }
 
-.PaperToolbarButton:hover {
+.Button:hover {
   color: #ccc;
 }
 
-.PaperToolbarButton:disabled,
-.PaperToolbarButton:disabled:hover {
+.Button:disabled,
+.Button:disabled:hover {
   color: #777;
 }
 
-.PaperToolbarButton:active,
-.PaperToolbarButton-active,
-.PaperToolbarButton-active:hover {
+.Button:active,
+.Button-active,
+.Button-active:hover {
   color: orange;
 }
 
-.PaperToolbarButton:nth-child(2) i {
+.Button:nth-child(2) i {
   font-size: 22px;
 }

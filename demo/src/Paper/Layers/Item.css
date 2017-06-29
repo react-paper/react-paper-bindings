@@ -1,0 +1,9 @@
+.Layers .tree-view_item {
+  display: flex;
+  cursor: pointer;
+  padding: 0 0 0 4px;
+}
+
+.Layers .tree-view_item:hover {
+  background-color: #eee;
+}

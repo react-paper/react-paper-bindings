@@ -1,23 +1,24 @@
-.PaperTreeLabel {
+.Layers .tree-view_label {
   display: flex;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.PaperTreeLabel:hover {
+.Layers .tree-view_label:hover {
   background-color: #eee;
 }
 
-.PaperTreeLabel .material-icons {
+.Layers .tree-view_label .material-icons {
   display: inline-block;
-  margin: 0 4px 0 3px;
+  margin: 0 2px;
   padding: 0;
+  width: 16px;
   height: 20px;
   line-height: 20px;
   font-size: 16px;
 }
 
-.PaperTreeLabel span {
+.Layers .tree-view_label span {
   display: inline-block;
   height: 20px;
   line-height: 20px;

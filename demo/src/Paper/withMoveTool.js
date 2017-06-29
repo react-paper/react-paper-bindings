@@ -30,19 +30,24 @@ export default function withMoveTool(WrappedComponent) {
      *
      * @param  {Raster} image Paper.js Raster instance
      */
-    fitImage = ({ originalWidth, originalHeight }) => {
-      // center the image in the middle
-      const { width, height } = this.props
-      const wr = width / originalWidth
-      const hr = height / originalHeight
+    fitImage = (image) => {
+      const { imageWidth, imageHeight, width, height } = this.props
+      // first fit raster into original image
+      image.fitBounds(0, 0, imageWidth, imageHeight)
+      // calculate zoom
+      const wr = width / imageWidth
+      const hr = height / imageHeight
       const zoom = wr < hr ? wr : hr
-      const iw = originalWidth * zoom
-      const ih = originalHeight * zoom
+      // calculate new image size
+      const iw = imageWidth * zoom
+      const ih = imageHeight * zoom
+      // calculate needed translation xy
       const tx = (width-iw) / 2 / zoom
       const ty = (height-ih) / 2 / zoom
+      // calculate center xy
       const x = this.state.x + tx
       const y = this.state.y + ty
-      // set fix state
+      // center the image in the middle
       this.setState({ tx, ty, x, y, zoom }, () => {
         // reset translation xy to prevent zoom problems
         // TODO: try to find a better solution

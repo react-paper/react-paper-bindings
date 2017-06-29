@@ -68,11 +68,11 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.dashOffset !== prevProps.dashOffset) {
     instance.dashOffset = props.dashOffset
   }
-  if (props.data !== prevProps.data) {
-    instance.setPathData(props.data)
-  }
   if (props.fillColor !== prevProps.fillColor) {
     instance.fillColor = props.fillColor
+  }
+  if (props.pathData !== prevProps.pathData) {
+    instance.pathData = props.pathData
   }
   if (props.point !== prevProps.point) {
     instance.translate([
@@ -101,7 +101,7 @@ function applyPathProps(instance, props, prevProps = {}) {
 }
 
 function applyRectangleProps(instance, props, prevProps = {}) {
-  applyCircleProps(instance, props, prevProps)
+  applyPathProps(instance, props, prevProps)
   if (props.size !== prevProps.size) {
     instance.scale(
       props.size[0] / prevProps.size[0],
@@ -111,7 +111,6 @@ function applyRectangleProps(instance, props, prevProps = {}) {
 }
 
 function applyRasterProps(instance, props, prevProps = {}) {
-  // TODO
   if (props.position !== prevProps.position) {
     instance.position = props.position[0]
   }
@@ -189,12 +188,13 @@ const PaperRenderer = ReactFiberReconciler({
     let instance
 
     switch (type) {
+      case TYPES.TOOL:
+        instance = new Tool(paperProps)
+        instance._applyProps = applyToolProps
+        break
       case TYPES.CIRCLE:
         instance = new Path.Circle(paperProps)
         instance._applyProps = applyCircleProps
-        if (paperProps.data) {
-          instance.setPathData(paperProps.data)
-        }
         break
       case TYPES.ELLIPSE:
         instance = new Path.Ellipse(paperProps)
@@ -211,53 +211,35 @@ const PaperRenderer = ReactFiberReconciler({
       case TYPES.LINE:
         instance = new Path.Line(paperProps)
         instance._applyProps = applyPathProps
-        if (paperProps.data) {
-          instance.setPathData(paperProps.data)
-        }
         break
       case TYPES.PATH:
         instance = new Path(paperProps)
         instance._applyProps = applyPathProps
-        if (paperProps.data) {
-          instance.setPathData(paperProps.data)
-        }
         break
       case TYPES.POINTTEXT:
         instance = new PointText(paperProps)
         instance._applyProps = applyPointTextProps
         break
+      case TYPES.RECTANGLE:
+        instance = new Path.Rectangle(paperProps)
+        instance._applyProps = applyRectangleProps
+        break
       case TYPES.RASTER:
         const { onLoad, ...rasterProps } = paperProps
         instance = new Raster(rasterProps)
         instance._applyProps = applyRasterProps
-        instance.onLoad = () => {
-          // position image
-          const w = paperProps.originalWidth || paperProps.width
-          const h = paperProps.originalHeight || paperProps.height
-          instance.fitBounds(0, 0, w, h)
-          // run onLoad handler
-          if (typeof onLoad === 'function') {
-            onLoad(instance)
-          }
+        if (typeof onLoad === 'function') {
+          instance.onLoad = () => onLoad(instance)
         }
         break;
-      case TYPES.RECTANGLE:
-        instance = new Path.Rectangle(paperProps)
-        instance._applyProps = applyRectangleProps
-        if (paperProps.data) {
-          instance.setPathData(paperProps.data)
-        }
-        break
-      case TYPES.TOOL:
-        instance = new Tool(paperProps)
-        instance._applyProps = applyToolProps
-        break
       default:
         invariant(instance, 'PaperReact does not support the type "%s"', type)
         break
     }
 
-    instance.reactType = type
+    if (instance.data) {
+      instance.data.type = type
+    }
 
     invariant(instance, 'PaperReact does not support the type "%s"', type)
 

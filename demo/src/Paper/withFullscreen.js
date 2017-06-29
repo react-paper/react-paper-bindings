@@ -12,11 +12,6 @@ export default function withFullscreen(WrappedComponent) {
     }
 
     toggleFullscreen = () => {
-      this.toggleBrowserFullscreen()
-      this.setState({ fullscreen: !this.state.fullscreen })
-    }
-
-    toggleBrowserFullscreen() {
       if (!this.state.fullscreen) {
         if (document.documentElement.requestFullscreen) {
           document.documentElement.requestFullscreen()
@@ -38,6 +33,24 @@ export default function withFullscreen(WrappedComponent) {
           document.webkitExitFullscreen()
         }
       }
+    }
+
+    fullScreenChange = () => {
+      this.setState({ fullscreen: !this.state.fullscreen })
+    }
+
+    componentDidMount() {
+      document.addEventListener('webkitfullscreenchange', this.fullScreenChange)
+      document.addEventListener('mozfullscreenchange', this.fullScreenChange)
+      document.addEventListener('fullscreenchange', this.fullScreenChange)
+      document.addEventListener('MSFullscreenChange', this.fullScreenChange)
+    }
+
+    componentWillUnmount() {
+      document.addEventListener('webkitfullscreenchange', this.fullScreenChange)
+      document.addEventListener('mozfullscreenchange', this.fullScreenChange)
+      document.addEventListener('fullscreenchange', this.fullScreenChange)
+      document.addEventListener('MSFullscreenChange', this.fullScreenChange)
     }
 
     render() {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Paper from './Paper'
+import Paper from './Paper/Paper'
 
 import 'material-design-icons/iconfont/material-icons.css'
 import './App.css'
 
-//import MR_BUBBLES_IMAGE_SMALL from './mr-bubbles-480.jpg'
-//import MR_BUBBLES_IMAGE_MEDIUM from './mr-bubbles-720.jpg'
-import MR_BUBBLES_IMAGE_LARGE from './mr-bubbles-1080.jpg'
+import MR_BUBBLES_IMAGE from './mr-bubbles-480.jpg'
+//import MR_BUBBLES_IMAGE from './mr-bubbles-720.jpg'
+//import MR_BUBBLES_IMAGE from './mr-bubbles-1080.jpg'
 import MR_BUBBLES_JSON from './mr-bubbles.json'
 
 class App extends Component {
@@ -51,8 +51,10 @@ class App extends Component {
       <div className="App" ref={ref => this._box = ref}>
         {mounted &&
           <Paper
-            image={MR_BUBBLES_IMAGE_LARGE}
-            json={MR_BUBBLES_JSON}
+            initialData={MR_BUBBLES_JSON}
+            image={MR_BUBBLES_IMAGE}
+            imageWidth={1920}
+            imageHeight={870}
             width={box.width}
             height={box.height}
           />}

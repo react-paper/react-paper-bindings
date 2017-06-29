@@ -43,7 +43,8 @@ export default class View extends Component {
     }
 
     if (typeof activeTool === 'string') {
-      tools.find(t => t.name === activeTool).activate()
+      const tool = tools.find(t => t.name === activeTool)
+      if (tool) tool.activate()
     }
   }
 

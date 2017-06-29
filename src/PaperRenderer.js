@@ -39,6 +39,9 @@ function applyLayerProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
   }
+  if (props.selected !== prevProps.selected) {
+    instance.selected = props.selected
+  }
   if (props.visible !== prevProps.visible) {
     instance.visible = props.visible
   }
@@ -82,6 +85,9 @@ function applyPathProps(instance, props, prevProps = {}) {
   }
   if (props.rotation !== prevProps.rotation) {
     instance.rotate(props.rotation - prevProps.rotation)
+  }
+  if (props.selected !== prevProps.selected) {
+    instance.selected = props.selected
   }
   if (props.strokeCap !== prevProps.strokeCap) {
     instance.strokeCap = props.strokeCap

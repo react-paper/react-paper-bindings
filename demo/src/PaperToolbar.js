@@ -76,6 +76,7 @@ const PaperToolbar = (props) => {
         disabled={!props.canRedo && !props.canUndo}>
         <i className={'material-icons'}>clear</i>
       </Button>
+      {/*
       <Button
         tool={'animation'}
         title={animate ? 'Stop Animation' : 'Start Animation'}
@@ -84,6 +85,7 @@ const PaperToolbar = (props) => {
           {animate ? 'pause' : 'play_arrow'}
         </i>
       </Button>
+      */}
       <Button
         tool={'layers'}
         title={showLayers ? 'Hide Layers' : 'Show Layers'}

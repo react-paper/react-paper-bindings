@@ -97,7 +97,8 @@ const Toolbar = (props) => {
       <Button
         tool={'save'}
         title={'Save'}
-        onClick={props.save}>
+        onClick={props.save}
+        disabled={!props.canUndo}>
         <i className={'material-icons'}>save</i>
       </Button>
       <span></span>

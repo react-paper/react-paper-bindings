@@ -1,16 +1,23 @@
 .Layers .tree-view_label {
   display: flex;
+  flex: 1;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .Layers .tree-view_label:hover {
   background-color: #eee;
 }
 
+.Layers .tree-view_label-selected,
+.Layers .tree-view_label-selected:hover {
+  background: #ddd;
+}
+
 .Layers .tree-view_label .material-icons {
   display: inline-block;
-  margin: 0 2px;
+  margin: 0 2px 0 5px;
   padding: 0;
   width: 16px;
   height: 20px;

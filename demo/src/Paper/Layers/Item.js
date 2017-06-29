@@ -24,32 +24,44 @@ export default class Item extends Component {
     id: PropTypes.any.isRequired,
     type: PropTypes.string.isRequired,
     expanded: PropTypes.object.isRequired,
-    onClick: PropTypes.func,
+    selectedItem: PropTypes.number,
+    onArrowClick: PropTypes.func,
+    onLabelClick: PropTypes.func,
   }
 
-  handleClick = () => {
-    if (this.props.onClick) {
-      this.props.onClick(this.props.id)
+  handleArrowClick = () => {
+    if (this.props.onArrowClick) {
+      this.props.onArrowClick(this.props)
     }
   }
 
   render() {
-    const { id, type, children, expanded } = this.props
+    const { id, type, children, expanded, onLabelClick, selectedItem } = this.props
     const isGroup = type === 'Group' || type === 'Layer'
     const hasChildren = children && children.length
     const labelProps = {
+      id, type,
       icon: getIcon(type),
-      onClick: this.handleClick,
+      onClick: onLabelClick,
+      selected: id === selectedItem,
     }
     const treeProps = {
       collapsed: expanded[id] === false,
-      onClick: this.handleClick,
+      onClick: this.handleArrowClick,
       nodeLabel: <Label {...labelProps}>{type}</Label>,
     }
     return (
       <Tree {...treeProps}>
-        {hasChildren && children.map(({ id, type, children }) =>
-          <Label key={id} icon={getIcon(type)}>{type}</Label>
+        {hasChildren && children.map(({ id, type }) =>
+          <Label
+            key={id}
+            id={id}
+            type={type}
+            selected={id === selectedItem}
+            icon={getIcon(type)}
+            onClick={onLabelClick}>
+            {type}
+          </Label>
         )}
         {!hasChildren && isGroup &&
           <Label icon={'insert_drive_file'}>Empty</Label>}

@@ -5,7 +5,8 @@ import assign from 'object-assign'
 import pick from 'lodash.pick'
 
 import {
-  Circle, Layer, Path, Raster, Rectangle, Tool, View,
+  Layer, Raster, Tool, View,
+  Circle, Path, Rectangle, // eslint-disable-line no-unused-vars
 } from 'react-paper-bindings'
 
 import Toolbar from './Toolbar/Toolbar'
@@ -62,8 +63,8 @@ class Paper extends Component {
   }
 
   render() {
-    const { activeTool,  image, data } = this.props
-    const { imageLoaded, showLayers } = this.state
+    const { activeTool, activeLayer, image, data, selectedItem } = this.props
+    const { imageLoaded, showLayers, } = this.state
 
     const toolbarProps = assign(pick(this.props, [
       'activeTool','animate','fullscreen',
@@ -73,6 +74,13 @@ class Paper extends Component {
       showLayers,
       save: this.save,
       toggleLayers: this.toggleLayers,
+    })
+
+    const layerProps = assign(pick(this.props, [
+      'data',
+    ]), {
+      selectedItem,
+      selectItem: this.props.selectItem,
     })
 
     const viewProps = assign(pick(this.props, [
@@ -86,15 +94,24 @@ class Paper extends Component {
     return (
       <div className={'Paper'}>
         <Toolbar {...toolbarProps} />
-        {showLayers && <Layers layers={data} />}
+        {showLayers && <Layers {...layerProps} />}
         <View {...viewProps}>
           <Layer>
             <Raster locked source={image} onLoad={this.imageLoaded} />
           </Layer>
-          {data.map(({ id, type, children }) =>
-            <Layer key={id} data={{ id, type }} visible={imageLoaded}>
-              {children.map(({ id, type: Item, data, ...rest }) =>
-                <Item key={id} {...rest} data={{ id, type }} />
+          {data.map(({ id: layerId, type, children }) =>
+            <Layer
+              key={layerId}
+              data={{ id: layerId, type }}
+              visible={imageLoaded}
+              active={layerId === activeLayer}>
+              {children.map(({ id: itemId, type: Item, ...props }) =>
+                <Item
+                  key={itemId}
+                  {...props}
+                  data={{ id: itemId, type: Item }}
+                  selected={itemId === selectedItem || layerId === selectedItem}
+                />
               )}
             </Layer>
           )}
@@ -145,9 +162,9 @@ export default compose(
   withHistory,
   withFullscreen,
   withTools,
-  withPenTool,
   withMoveTool,
   withSelectTool,
+  withPenTool,
   withCircleTool,
   withRectangleTool,
   withDeleteTool,

@@ -8,21 +8,21 @@ export default function withCircleTool(WrappedComponent) {
   return class extends Component {
 
     mouseDown = (e) => {
-      e.tool.view._project.deselectAll()
+      this.props.deselectItem()
       const circle = new Path.Circle({
         center: e.point,
         fillColor: getRandomColor(),
         radius: getRandomInt(10, 60),
       })
-      this.props.addItem(circle.layer, {
+      const item = this.props.addItem(circle.layer, {
         type: 'Circle',
         pathData: circle.getPathData(),
         fillColor: circle.fillColor.toCSS(true),
-        selected: true,
       })
       console.log(circle);
       console.log(circle.getPathData());
       circle.remove()
+      this.props.selectItem(item)
     }
 
     render() {

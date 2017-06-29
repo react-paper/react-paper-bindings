@@ -13,9 +13,35 @@ export default function withSelectTool(WrappedComponent) {
 
     constructor(props) {
       super(props)
+      this.state = {
+        activeLayer: null,
+        selectedItem: null,
+      }
       this._changed = false
       this._item = null
       this._point = null
+    }
+
+    selectItem = ({ id, type }) => {
+      if (id === this.state.selectedItem) {
+        return
+      }
+      switch (type) {
+        case 'Layer':
+          this.setState({ activeLayer: id, selectedItem: id })
+          break
+        case 'Path':
+        case 'Circle':
+        case 'Rectangle':
+          this.setState({ selectedItem: id })
+          break
+        default:
+          break
+      }
+    }
+
+    deselectItem = () => {
+      this.setState({ selectedItem: null })
     }
 
     keyDown = (e) => {
@@ -40,19 +66,17 @@ export default function withSelectTool(WrappedComponent) {
           case 'right':
             this._item.translate(shift ? 10 : 1, 0)
             break
-          // no default
+          default:
+            break
         }
       }
     }
 
     mouseDown = (e) => {
-      e.tool.view._project.deselectAll()
+      this.deselectItem()
       const hit = e.tool.view._project.hitTest(e.point, HIT_TEST_OPTIONS)
-      if (
-        hit && hit.item &&
-        hit.item.data.type !== 'Raster'
-      ) {
-        hit.item.selected = true
+      if (hit && hit.item && !hit.item.locked) {
+        this.selectItem(hit.item.data)
         hit.item.bringToFront()
         this._item = hit.item
         this._point = e.point
@@ -87,6 +111,9 @@ export default function withSelectTool(WrappedComponent) {
       return (
         <WrappedComponent
           {...this.props}
+          {...this.state}
+          selectItem={this.selectItem}
+          deselectItem={this.deselectItem}
           selectToolKeyDown={this.keyDown}
           selectToolMouseDown={this.mouseDown}
           selectToolMouseDrag={this.mouseDrag}

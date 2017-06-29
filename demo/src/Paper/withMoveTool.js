@@ -19,7 +19,6 @@ export default function withMoveTool(WrappedComponent) {
         x: 0,
         y: 0,
         zoom: 1,
-        console: [],
       }
       this._pan = null
       this._pinch = null

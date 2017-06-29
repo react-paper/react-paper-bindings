@@ -18,12 +18,13 @@ export default function withHistory(WrappedComponent) {
     addItem = (layer, data) => {
       const history = this.getPrevHistory()
       const layerIndex = history.findIndex(l => l.id === layer.data.id)
-      const nextData = assign(data, { id: this._id })
+      const nextItem = assign(data, { id: this._id })
       const nextHistory = update(history, {
-        [layerIndex]: { children: { $push: [nextData] } }
+        [layerIndex]: { children: { $push: [nextItem] } }
       })
       this.addHistory(nextHistory)
       this._id++
+      return nextItem
     }
 
     updateItem = (item, data) => {
@@ -31,11 +32,12 @@ export default function withHistory(WrappedComponent) {
       const layerIndex = history.findIndex(l => l.id === item.layer.data.id)
       const children = history[layerIndex].children
       const itemIndex = children.findIndex(i => i.id === item.data.id)
-      const nextData = assign({}, children[itemIndex], data)
+      const nextItem = assign({}, children[itemIndex], data)
       const nextHistory = update(history, {
-        [layerIndex]: { children: { [itemIndex]: { $set: nextData } } }
+        [layerIndex]: { children: { [itemIndex]: { $set: nextItem } } }
       })
       this.addHistory(nextHistory)
+      return nextItem
     }
 
     removeItem = (item) => {

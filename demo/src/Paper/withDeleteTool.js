@@ -12,11 +12,11 @@ export default function withDeleteTool(WrappedComponent) {
   return class extends Component {
 
     mouseDown = (e) => {
-      const project = e.tool.view._project
-      project.deselectAll()
-      const hit = project.hitTest(e.point, HIT_TEST_OPTIONS)
+      this.props.deselectItem()
+      const hit = e.tool.view._project.hitTest(e.point, HIT_TEST_OPTIONS)
       if (hit && hit.item && !hit.item.locked) {
         this.props.removeItem(hit.item)
+        this.props.deselectItem()
       }
     }
 

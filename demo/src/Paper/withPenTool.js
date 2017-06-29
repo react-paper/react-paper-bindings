@@ -11,7 +11,7 @@ export default function withPenTool(WrappedComponent) {
     }
 
     mouseDown = (e) => {
-      e.tool.view._project.deselectAll()
+      this.props.deselectItem()
     }
 
     mouseDrag = (e) => {
@@ -31,13 +31,16 @@ export default function withPenTool(WrappedComponent) {
     mouseUp = (e) => {
       if (this._path) {
         this._path.simplify(6)
-        this.props.addItem(this._path.layer, {
+        const item = this.props.addItem(this._path.layer, {
           type: 'Path',
           pathData: this._path.getPathData(),
-          selected: true,
+          strokeColor: this._path.style.strokeColor.toCSS(true),
+          strokeScaling: this._path.strokeScaling,
+          strokeWidth: this._path.strokeWidth,
         })
         console.log(this._path);
         console.log(this._path.getPathData());
+        this.props.selectItem(item)
         this._path.remove()
         this._path = null
       }

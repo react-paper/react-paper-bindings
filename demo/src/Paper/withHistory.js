@@ -2,6 +2,18 @@ import React, { Component } from 'react'
 import assign from 'object-assign'
 import update from 'immutability-helper'
 
+function getInitialId(data, id = 1) {
+  data.forEach(item => {
+    if (item.id > id) {
+      id = item.id + 1
+    }
+    if (item.children) {
+      id = getInitialId(item.children, id)
+    }
+  })
+  return id
+}
+
 export default function withHistory(WrappedComponent) {
 
   return class extends Component {
@@ -12,7 +24,7 @@ export default function withHistory(WrappedComponent) {
         historyIndex: 0,
         history: [props.initialData],
       }
-      this._id = 123
+      this._id = getInitialId(props.initialData)
     }
 
     addItem = (layer, data) => {

@@ -7,6 +7,7 @@ import PaperRenderer from './PaperRenderer'
 export default class View extends Component {
 
   static propTypes = {
+    activeLayer: PropTypes.number,
     activeTool: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -21,7 +22,7 @@ export default class View extends Component {
   }
 
   componentDidMount() {
-    const { activeTool, children, width, height, x, y, zoom } = this.props
+    const { activeLayer, activeTool, children, width, height, x, y, zoom } = this.props
 
     this._scope = new PaperScope()
     this._scope.setup(this._canvas)
@@ -40,6 +41,11 @@ export default class View extends Component {
 
     if (typeof x === 'number' && typeof y === 'number') {
       view.translate(x, y)
+    }
+
+    if (typeof activeLayer === 'number') {
+      const layer = project.layers.find(l => l.data.id === activeLayer)
+      if (layer) layer.activate()
     }
 
     if (typeof activeTool === 'string') {

@@ -12,15 +12,20 @@ export default class Button extends Component {
     tool: PropTypes.string,
   }
 
-  handleClick = () => {
-    this.props.onClick(this.props.tool)
+  handleClick = (e) => {
+    if (this.props.onClick) {
+      this.props.onClick(e, this.props.tool)
+    }
   }
 
   render() {
-    const { active, children, tool, ...rest } = this.props
-    const className = `Button ${active?'Button-active':''}`
+    const { active, children, onClick, tool, ...rest } = this.props
+    const props = {
+      className: `Button${active ? ' Button-active' : ''}`,
+      onClick: this.handleClick,
+    }
     return (
-      <button {...rest} className={className} onClick={this.handleClick}>
+      <button {...rest} {...props}>
         {children}
       </button>
     )

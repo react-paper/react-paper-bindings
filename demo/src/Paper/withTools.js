@@ -7,31 +7,31 @@ export default function withTools(WrappedComponent) {
     constructor(props) {
       super(props)
       this.state = {
-        activeTool: 'select',
+        activeTool: 'move',
       }
       this._prevTool = null
     }
 
-    setTool = (activeTool) => {
+    setTool = (e, activeTool) => {
       this.setState({ activeTool })
     }
 
     keyDown = (e) => {
       if (e.code === 'Space' && this.state.activeTool !== 'move') {
         this._prevTool = this.state.activeTool
-        this.setTool('move')
+        this.setState({ activeTool: 'move' })
       } else if (e.key === 'm' || e.key === 'v') {
-        this.setTool('move')
+        this.setState({ activeTool: 'move' })
       } else if (e.key === 'p' || e.key === 'b') {
-        this.setTool('pen')
+        this.setState({ activeTool: 'pen' })
       } else if (e.key === 'd' || e.key === 'e') {
-        this.setTool('delete')
+        this.setState({ activeTool: 'delete' })
       } else if (e.key === 'a' || e.key === 's') {
-        this.setTool('select')
+        this.setState({ activeTool: 'select' })
       } else if (e.key === 'c') {
-        this.setTool('circle')
+        this.setState({ activeTool: 'circle' })
       } else if (e.key === 'r') {
-        this.setTool('rectangle')
+        this.setState({ activeTool: 'rectangle' })
       }
     }
 

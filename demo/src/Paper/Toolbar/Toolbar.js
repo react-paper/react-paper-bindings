@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Button from './Button'
+import Menu from './Menu/Menu'
+import MenuItem from './Menu/Item'
 
 import './Toolbar.css'
 
 const Toolbar = (props) => {
-  const { activeTool, fullscreen, showLayers } = props
+  const { activeTool, fullscreen, imageSize, showLayers } = props
   return (
     <div className={'Toolbar'}>
       <Button
@@ -76,6 +78,30 @@ const Toolbar = (props) => {
         disabled={!props.canRedo && !props.canUndo}>
         <i className={'material-icons'}>clear</i>
       </Button>
+      <Menu offset={'0 -8'} target={
+        <Button title={'Image Size'}>
+          <i className={'material-icons'}>photo_size_select_large</i>
+        </Button>
+      }>
+        <MenuItem onClick={props.setImageSize} size={480}>
+          <i className={'material-icons'}>
+            {imageSize === 480 ? 'radio_button_checked' : 'radio_button_unchecked'}
+          </i>
+          <span>480p</span>
+        </MenuItem>
+        <MenuItem onClick={props.setImageSize} size={720}>
+          <i className={'material-icons'}>
+            {imageSize === 720 ? 'radio_button_checked' : 'radio_button_unchecked'}
+          </i>
+          <span>720p</span>
+        </MenuItem>
+        <MenuItem onClick={props.setImageSize} size={1080}>
+          <i className={'material-icons'}>
+            {imageSize === 1080 ? 'radio_button_checked' : 'radio_button_unchecked'}
+          </i>
+          <span>1080p</span>
+        </MenuItem>
+      </Menu>
       <Button
         tool={'layers'}
         title={showLayers ? 'Hide Layers' : 'Show Layers'}
@@ -116,6 +142,7 @@ Toolbar.propTypes = {
   canUndo: PropTypes.bool,
   canRedo: PropTypes.bool,
   fullscreen: PropTypes.bool,
+  imageSize: PropTypes.number,
   showLayers: PropTypes.bool,
   save: PropTypes.func,
   setTool: PropTypes.func,
@@ -124,6 +151,7 @@ Toolbar.propTypes = {
   clearHistory: PropTypes.func,
   toggleFullscreen: PropTypes.func,
   toggleLayers: PropTypes.func,
+  setImageSize: PropTypes.func,
 }
 
 export default Toolbar

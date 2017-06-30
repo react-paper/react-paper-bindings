@@ -31,8 +31,13 @@ export default function withMoveTool(WrappedComponent) {
      */
     fitImage = (image) => {
       const { imageWidth, imageHeight, width, height } = this.props
-      // first fit raster into original image
+      // fit raster into original image size
       image.fitBounds(0, 0, imageWidth, imageHeight)
+      // if image is already loaded
+      // do not attempt to fit it again
+      if (this._imageLoaded) {
+        return
+      }
       // calculate zoom
       const wr = width / imageWidth
       const hr = height / imageHeight
@@ -52,6 +57,8 @@ export default function withMoveTool(WrappedComponent) {
         // TODO: try to find a better solution
         this.setState({ tx: 0, ty: 0 })
       })
+      // set image loaded
+      this._imageLoaded = true
     }
 
     /**

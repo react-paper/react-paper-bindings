@@ -49,7 +49,10 @@ export default class Layers extends Component {
     }
     return (
       <div className={'Layers'}>
-        <h2 className={'Layers__title'}>Layers</h2>
+        <h2 className={'Layers__title'}>
+          <i className={'material-icons'}>layers</i>
+          <span>Layers</span>
+        </h2>
         <div className={'Layers__body'}>
           {data.map(({ id, type, children }) =>
             <Item

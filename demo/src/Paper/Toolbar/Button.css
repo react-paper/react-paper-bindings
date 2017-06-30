@@ -24,7 +24,3 @@
 .Button-active:hover {
   color: orange;
 }
-
-.Button:nth-child(2) i {
-  font-size: 22px;
-}

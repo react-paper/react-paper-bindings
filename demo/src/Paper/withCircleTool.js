@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Path } from 'paper'
-
-import { getRandomColor, getRandomInt } from './helpers'
+import randomColor from 'randomcolor'
+import randomInt from 'random-int'
 
 export default function withCircleTool(WrappedComponent) {
 
@@ -11,8 +11,8 @@ export default function withCircleTool(WrappedComponent) {
       this.props.deselectItem()
       const circle = new Path.Circle({
         center: e.point,
-        fillColor: getRandomColor(),
-        radius: getRandomInt(10, 60),
+        fillColor: randomColor(),
+        radius: randomInt(10, 60),
       })
       const item = this.props.addItem(circle.layer, {
         type: 'Circle',

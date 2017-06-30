@@ -9,10 +9,14 @@
     "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.1",
     "prop-types": "^15.5.10",
+    "random-int": "^1.0.0",
+    "randomcolor": "^0.5.3",
     "react": "file:../react",
     "react-dom": "file:../react-dom",
+    "react-portal": "^3.1.0",
     "react-treeview": "^0.4.7",
-    "recompose": "^0.23.5"
+    "recompose": "^0.23.5",
+    "tether": "^1.4.0"
   },
   "devDependencies": {
     "gh-pages": "^1.0.0",

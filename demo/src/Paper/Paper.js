@@ -30,9 +30,11 @@ class Paper extends Component {
     image: PropTypes.any.isRequired,
     imageWidth: PropTypes.number.isRequired,
     imageHeight: PropTypes.number.isRequired,
+    imageSize: PropTypes.number.isRequired,
     initialData: PropTypes.any.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    setImageSize: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -67,9 +69,9 @@ class Paper extends Component {
     const { imageLoaded, showLayers, } = this.state
 
     const toolbarProps = assign(pick(this.props, [
-      'activeTool', 'animate', 'fullscreen',
+      'activeTool', 'animate', 'fullscreen', 'imageSize',
       'canUndo', 'canRedo', 'undo', 'redo', 'clearHistory',
-      'setTool', 'toggleAnimation', 'toggleFullscreen',
+      'setTool', 'setImageSize', 'toggleAnimation', 'toggleFullscreen',
     ]), {
       showLayers,
       save: this.save,

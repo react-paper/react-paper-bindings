@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Path } from 'paper'
-
-import { getRandomColor, getRandomInt } from './helpers'
+import randomColor from 'randomcolor'
+import randomInt from 'random-int'
 
 export default function withRectangleTool(WrappedComponent) {
 
@@ -11,8 +11,8 @@ export default function withRectangleTool(WrappedComponent) {
       this.props.deselectItem()
       const rectangle = new Path.Rectangle({
         center: e.point,
-        fillColor: getRandomColor(),
-        size: getRandomInt(20,120),
+        fillColor: randomColor(),
+        size: randomInt(20,120),
       })
       const item = this.props.addItem(rectangle.layer, {
         type: 'Rectangle',

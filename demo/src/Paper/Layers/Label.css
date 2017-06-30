@@ -8,12 +8,14 @@
 }
 
 .Layers .tree-view_label:hover {
-  background-color: #eee;
+  background: #eee;
+  background: #2a2a2a;
 }
 
 .Layers .tree-view_label-selected,
 .Layers .tree-view_label-selected:hover {
   background: #ddd;
+  background: #323232;
 }
 
 .Layers .tree-view_label .material-icons {

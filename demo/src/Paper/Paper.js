@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { compose } from 'recompose'
 import assign from 'object-assign'
 import pick from 'lodash.pick'
+import Loader from 'halogen/PulseLoader'
 
 import {
   Layer, Raster, Tool, View,
@@ -64,6 +65,13 @@ class Paper extends Component {
     this.setState({ imageLoaded: true })
   }
 
+  componentWillUpdate(nextProps) {
+    const { image } = this.props
+    if (image !== nextProps.image) {
+      this.setState({ imageLoaded: false })
+    }
+  }
+
   render() {
     const { activeTool, activeLayer, image, data, selectedItem } = this.props
     const { imageLoaded, showLayers, } = this.state
@@ -96,7 +104,15 @@ class Paper extends Component {
     return (
       <div className={'Paper'}>
         <Toolbar {...toolbarProps} />
-        {showLayers && <Layers {...layerProps} />}
+        {imageLoaded && showLayers &&
+          <Layers {...layerProps} />}
+        {!imageLoaded &&
+          <Loader
+            className={'Loader'}
+            color={'orange'}
+            size={'16px'}
+            margin={'4px'}
+          />}
         <View {...viewProps}>
           <Layer>
             <Raster locked source={image} onLoad={this.imageLoaded} />

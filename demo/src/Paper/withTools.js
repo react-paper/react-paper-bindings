@@ -9,37 +9,34 @@ export default function withTools(WrappedComponent) {
       this.state = {
         activeTool: 'select',
       }
-      this._prevTool
+      this._prevTool = null
     }
 
     setTool = (activeTool) => {
-      console.log('setTool', activeTool)
       this.setState({ activeTool })
     }
 
     keyDown = (e) => {
-      const { key, code } = e
-      if (code === 'Space' && this.state.activeTool !== 'move') {
+      if (e.code === 'Space' && this.state.activeTool !== 'move') {
         this._prevTool = this.state.activeTool
         this.setTool('move')
-      } else if (key === 'm' || key === 'v') {
+      } else if (e.key === 'm' || e.key === 'v') {
         this.setTool('move')
-      } else if (key === 'p' || key === 'b') {
+      } else if (e.key === 'p' || e.key === 'b') {
         this.setTool('pen')
-      } else if (key === 'd' || key === 'e') {
+      } else if (e.key === 'd' || e.key === 'e') {
         this.setTool('delete')
-      } else if (key === 'a' || key === 's') {
+      } else if (e.key === 'a' || e.key === 's') {
         this.setTool('select')
-      } else if (key === 'c') {
+      } else if (e.key === 'c') {
         this.setTool('circle')
-      } else if (key === 'r') {
+      } else if (e.key === 'r') {
         this.setTool('rectangle')
       }
     }
 
     keyUp = (e) => {
-      const { key, code } = e
-      if (code === 'Space' && this.state.activeTool === 'move' && this._prevTool !== 'move') {
+      if (e.code === 'Space' && this.state.activeTool === 'move' && this._prevTool !== 'move') {
         this.setTool(this._prevTool)
         this._prevTool = null
       }

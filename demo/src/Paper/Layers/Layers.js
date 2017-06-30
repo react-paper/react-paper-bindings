@@ -9,7 +9,7 @@ import './Layers.css'
 export default class Layers extends Component {
 
   static propTypes = {
-    activeLayer: PropTypes.bool,
+    activeLayer: PropTypes.number,
     data: PropTypes.array.isRequired,
     selectedItem: PropTypes.number,
     selectItem: PropTypes.func,
@@ -38,9 +38,10 @@ export default class Layers extends Component {
   }
 
   render() {
-    const { data, selectedItem } = this.props
+    const { activeLayer, data, selectedItem } = this.props
     const { expanded } = this.state
     const itemProps = {
+      activeLayer,
       expanded,
       selectedItem,
       onArrowClick: this.handleArrowClick,

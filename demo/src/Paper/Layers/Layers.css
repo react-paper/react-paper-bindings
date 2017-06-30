@@ -8,6 +8,7 @@
   bottom: 10px;
   right: 10px;
   background: rgba(255,255,255,0.9);
+  background: #fff;
   box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.3);
   user-select: none;
 }
@@ -31,7 +32,7 @@
   cursor: pointer;
   display: inline-block;
   transition: all 0.2s;
-  transform: scale3d(0.8,0.8,1);
+  /*transform: scale3d(0.8,0.8,1);*/
   user-select: none;
 }
 .Layers .tree-view_arrow:after {
@@ -39,7 +40,8 @@
   content: '▾';
 }
 .Layers .tree-view_arrow-collapsed {
-  transform: scale3d(0.8,0.8,1) rotate(-90deg);
+  /*transform: scale3d(0.8,0.8,1) rotate(-90deg);*/
+  transform: rotate(-90deg);
 }
 
 /* children */

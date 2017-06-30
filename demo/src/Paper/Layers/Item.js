@@ -24,6 +24,7 @@ export default class Item extends Component {
     id: PropTypes.any.isRequired,
     type: PropTypes.string.isRequired,
     expanded: PropTypes.object.isRequired,
+    activeLayer: PropTypes.number,
     selectedItem: PropTypes.number,
     onArrowClick: PropTypes.func,
     onLabelClick: PropTypes.func,
@@ -36,14 +37,17 @@ export default class Item extends Component {
   }
 
   render() {
-    const { id, type, children, expanded, onLabelClick, selectedItem } = this.props
+    const {
+      id, type, children, expanded,
+      activeLayer, selectedItem, onLabelClick,
+    } = this.props
     const isGroup = type === 'Group' || type === 'Layer'
     const hasChildren = children && children.length
     const labelProps = {
       id, type,
       icon: getIcon(type),
       onClick: onLabelClick,
-      selected: id === selectedItem,
+      selected: id === selectedItem || (id === activeLayer && !selectedItem),
     }
     const treeProps = {
       collapsed: expanded[id] === false,

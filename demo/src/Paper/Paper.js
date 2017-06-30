@@ -67,24 +67,24 @@ class Paper extends Component {
     const { imageLoaded, showLayers, } = this.state
 
     const toolbarProps = assign(pick(this.props, [
-      'activeTool','animate','fullscreen',
-      'canUndo','canRedo', 'undo','redo', 'clearHistory',
-      'setTool','toggleAnimation','toggleFullscreen',
+      'activeTool', 'animate', 'fullscreen',
+      'canUndo', 'canRedo', 'undo', 'redo', 'clearHistory',
+      'setTool', 'toggleAnimation', 'toggleFullscreen',
     ]), {
       showLayers,
       save: this.save,
       toggleLayers: this.toggleLayers,
     })
 
-    const layerProps = assign(pick(this.props, [
-      'data',
-    ]), {
+    const layerProps = {
+      data,
+      activeLayer,
       selectedItem,
       selectItem: this.props.selectItem,
-    })
+    }
 
     const viewProps = assign(pick(this.props, [
-      'activeTool', 'width', 'height',
+      'activeTool', 'activeLayer', 'width', 'height',
       'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
     ]), {
       ref: ref => this._view = ref,
@@ -119,6 +119,7 @@ class Paper extends Component {
             active={activeTool === 'select'}
             name={'select'}
             onKeyDown={this.props.selectToolKeyDown}
+            onKeyUp={this.props.selectToolKeyUp}
             onMouseDown={this.props.selectToolMouseDown}
             onMouseDrag={this.props.selectToolMouseDrag}
             onMouseUp={this.props.selectToolMouseUp}

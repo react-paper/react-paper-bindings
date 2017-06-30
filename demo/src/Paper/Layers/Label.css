@@ -4,6 +4,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
+  margin-left: 2px;
 }
 
 .Layers .tree-view_label:hover {
@@ -17,7 +18,7 @@
 
 .Layers .tree-view_label .material-icons {
   display: inline-block;
-  margin: 0 2px 0 5px;
+  margin: 0 2px 0 3px;
   padding: 0;
   width: 16px;
   height: 20px;

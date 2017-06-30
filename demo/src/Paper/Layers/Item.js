@@ -42,7 +42,7 @@ export default class Item extends Component {
       activeLayer, selectedItem, onLabelClick,
     } = this.props
     const isGroup = type === 'Group' || type === 'Layer'
-    const hasChildren = children && children.length
+    const hasChildren = children && children.length > 0
     const labelProps = {
       id, type,
       icon: getIcon(type),

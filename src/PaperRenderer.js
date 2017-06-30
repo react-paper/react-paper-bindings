@@ -117,8 +117,8 @@ function applyRectangleProps(instance, props, prevProps = {}) {
 }
 
 function applyRasterProps(instance, props, prevProps = {}) {
-  if (props.position !== prevProps.position) {
-    instance.position = props.position[0]
+  if (props.source !== prevProps.source) {
+    instance.source = props.source
   }
 }
 

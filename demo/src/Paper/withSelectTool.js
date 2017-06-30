@@ -13,9 +13,11 @@ export default function withSelectTool(WrappedComponent) {
 
     constructor(props) {
       super(props)
+      const d = props.initialData
+      const id = d && d[0] && d[0].id
       this.state = {
-        activeLayer: null,
-        selectedItem: null,
+        activeLayer: id,
+        selectedItem: id,
       }
       this._changed = false
       this._item = null
@@ -56,19 +58,44 @@ export default function withSelectTool(WrappedComponent) {
             break
           case 'up':
             this._item.translate(0, shift ? -10 : -1)
+            this._changed = true
             break
           case 'down':
             this._item.translate(0, shift ? 10 : 1)
+            this._changed = true
             break
           case 'left':
             this._item.translate(shift ? -10 : -1, 0)
+            this._changed = true
             break
           case 'right':
             this._item.translate(shift ? 10 : 1, 0)
+            this._changed = true
             break
           default:
             break
         }
+      }
+    }
+
+    keyUp = (e) => {
+      const { key } = e
+      if (this._item && this._changed && key !== 'shift') {
+        // debounce keyup item update
+        // when user preses some key multiple times
+        // we don't immediately record history change
+        // because we would end up with many small changes
+        if (this._updateTimeout) {
+          clearTimeout(this._updateTimeout)
+        }
+        this._updateTimeout = setTimeout(() => {
+          this.props.updateItem(this._item, {
+            pathData: this._item.getPathData(),
+            selected: true,
+          })
+          this._changed = false
+          this._updateTimeout = null
+        }, 350)
       }
     }
 
@@ -115,6 +142,7 @@ export default function withSelectTool(WrappedComponent) {
           selectItem={this.selectItem}
           deselectItem={this.deselectItem}
           selectToolKeyDown={this.keyDown}
+          selectToolKeyUp={this.keyUp}
           selectToolMouseDown={this.mouseDown}
           selectToolMouseDrag={this.mouseDrag}
           selectToolMouseUp={this.mouseUp}

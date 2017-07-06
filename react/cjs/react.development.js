@@ -1,5 +1,10 @@
 'use strict';
 
+
+if (process.env.NODE_ENV !== "production") {
+
+'use strict';
+
 var objectAssign$1 = require('object-assign');
 var warning = require('fbjs/lib/warning');
 var emptyObject = require('fbjs/lib/emptyObject');
@@ -1872,6 +1877,8 @@ var React = {
   });
 }
 
-var React_1 = React;
+var ReactEntry = React;
 
-module.exports = React_1;
+module.exports = ReactEntry;
+
+}

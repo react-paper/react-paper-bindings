@@ -1,5 +1,10 @@
 'use strict';
 
+
+if (process.env.NODE_ENV !== "production") {
+
+'use strict';
+
 var _assign = require('object-assign');
 var ExecutionEnvironment = require('fbjs/lib/ExecutionEnvironment');
 var react = require('react');
@@ -470,7 +475,7 @@ function findCurrentFiberUsingSlowPath(fiber) {
       a = parentA;
       b = parentB;
     } else {
-      // The return pointers pointer to the same fiber. We'll have to use the
+      // The return pointers point to the same fiber. We'll have to use the
       // default, slow path: scan the child sets of each parent alternate to see
       // which child belongs to which set.
       //
@@ -770,7 +775,7 @@ function shouldConstruct(Component) {
   return !!(Component.prototype && Component.prototype.isReactComponent);
 }
 
-var ReactShallowRenderer_1 = ReactShallowRenderer;
+var ReactShallowRendererEntry = ReactShallowRenderer;
 
 /**
  * Static poolers. Several custom versions for each potential number of
@@ -1140,7 +1145,7 @@ var warnedAboutShallowRenderer = false;
 function createRendererWithWarning() {
   warning(warnedAboutShallowRenderer, 'Shallow renderer has been moved to react-test-renderer/shallow. ' + 'Update references to remove this warning. ' + 'TestUtils.createRenderer will be removed completely in React 16.');
   warnedAboutShallowRenderer = true;
-  return new ReactShallowRenderer_1();
+  return new ReactShallowRendererEntry();
 }
 
 function Event(suffix) {}
@@ -1571,6 +1576,8 @@ Object.keys(topLevelTypes).forEach(function (eventType) {
   ReactTestUtils.SimulateNative[convenienceName] = makeNativeSimulator(eventType);
 });
 
-var ReactTestUtils_1 = ReactTestUtils;
+var ReactTestUtilsEntry = ReactTestUtils;
 
-module.exports = ReactTestUtils_1;
+module.exports = ReactTestUtilsEntry;
+
+}

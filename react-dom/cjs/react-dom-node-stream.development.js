@@ -23,6 +23,7 @@ var performanceNow = require('fbjs/lib/performanceNow');
 var propTypes = require('prop-types');
 var checkPropTypes = require('prop-types/checkPropTypes');
 var emptyObject = require('fbjs/lib/emptyObject');
+var stream = require('stream');
 
 /**
  * Copyright 2013-present, Facebook, Inc.
@@ -7690,7 +7691,7 @@ var ReactDOMUnknownPropertyHook = {
 
 var ReactDOMUnknownPropertyHook_1 = ReactDOMUnknownPropertyHook;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
 
@@ -7983,7 +7984,7 @@ function resolve(child, context) {
 
 var ReactDOMServerRenderer = function () {
   function ReactDOMServerRenderer(element, makeStaticMarkup) {
-    _classCallCheck(this, ReactDOMServerRenderer);
+    _classCallCheck$1(this, ReactDOMServerRenderer);
 
     this.stack = [{
       children: [element],
@@ -8239,33 +8240,70 @@ var ReactDOMServerRenderer = function () {
 
 var ReactPartialRenderer = ReactDOMServerRenderer;
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var Readable = stream.Readable;
+
+// This is a Readable Node.js stream which wraps the ReactDOMPartialRenderer.
+
+var ReactMarkupReadableStream = function (_Readable) {
+  _inherits(ReactMarkupReadableStream, _Readable);
+
+  function ReactMarkupReadableStream(element, makeStaticMarkup) {
+    _classCallCheck(this, ReactMarkupReadableStream);
+
+    var _this = _possibleConstructorReturn(this, _Readable.call(this, {}));
+    // Calls the stream.Readable(options) constructor. Consider exposing built-in
+    // features like highWaterMark in the future.
+
+
+    _this.partialRenderer = new ReactPartialRenderer(element, makeStaticMarkup);
+    return _this;
+  }
+
+  ReactMarkupReadableStream.prototype._read = function _read(size) {
+    try {
+      this.push(this.partialRenderer.read(size));
+    } catch (err) {
+      this.emit('error', err);
+    }
+  };
+
+  return ReactMarkupReadableStream;
+}(Readable);
 /**
  * Render a ReactElement to its initial HTML. This should only be used on the
  * server.
- * See https://facebook.github.io/react/docs/react-dom-server.html#rendertostring
+ * See https://facebook.github.io/react/docs/react-dom-stream.html#rendertostream
  */
-function renderToString(element) {
-  !React.isValidElement(element) ? invariant(false, 'renderToString(): You must pass a valid ReactElement.') : void 0;
-  var renderer = new ReactPartialRenderer(element, false);
-  var markup = renderer.read(Infinity);
-  return markup;
+
+
+function renderToStream(element) {
+  invariant(React.isValidElement(element), 'renderToStream(): You must pass a valid ReactElement.');
+  return new ReactMarkupReadableStream(element, false);
 }
 
 /**
- * Similar to renderToString, except this doesn't create extra DOM attributes
+ * Similar to renderToStream, except this doesn't create extra DOM attributes
  * such as data-react-id that React uses internally.
- * See https://facebook.github.io/react/docs/react-dom-server.html#rendertostaticmarkup
+ * See https://facebook.github.io/react/docs/react-dom-stream.html#rendertostaticstream
  */
-function renderToStaticMarkup(element) {
-  !React.isValidElement(element) ? invariant(false, 'renderToStaticMarkup(): You must pass a valid ReactElement.') : void 0;
-  var renderer = new ReactPartialRenderer(element, true);
-  var markup = renderer.read(Infinity);
-  return markup;
+function renderToStaticStream(element) {
+  invariant(React.isValidElement(element), 'renderToStaticStream(): You must pass a valid ReactElement.');
+  return new ReactMarkupReadableStream(element, true);
 }
 
-var ReactDOMStringRenderer = {
-  renderToString: renderToString,
-  renderToStaticMarkup: renderToStaticMarkup
+var ReactDOMNodeStreamRenderer = {
+  renderToStream: renderToStream,
+  renderToStaticStream: renderToStaticStream
 };
 
 /**
@@ -8283,12 +8321,12 @@ var ReactVersion = '16.0.0-alpha.13';
 
 ReactDOMInjection.inject();
 
-var ReactDOMServerEntry = {
-  renderToString: ReactDOMStringRenderer.renderToString,
-  renderToStaticMarkup: ReactDOMStringRenderer.renderToStaticMarkup,
+var ReactDOMNodeStreamEntry = {
+  renderToStream: ReactDOMNodeStreamRenderer.renderToStream,
+  renderToStaticStream: ReactDOMNodeStreamRenderer.renderToStaticStream,
   version: ReactVersion
 };
 
-module.exports = ReactDOMServerEntry;
+module.exports = ReactDOMNodeStreamEntry;
 
 }

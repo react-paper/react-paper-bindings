@@ -2189,8 +2189,8 @@ var React = {
   });
 }
 
-var React_1 = React;
+var ReactEntry = React;
 
-return React_1;
+return ReactEntry;
 
 })));

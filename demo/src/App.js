@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Paper from './Paper/Paper'
 
 // for development without internet connection
-//import 'material-design-icons/iconfont/material-icons.css'
+import 'material-design-icons/iconfont/material-icons.css'
 
 import './App.css'
 
@@ -25,7 +25,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageSize: 1080,
+      imageSize: 720,
       mounted: false,
     }
     this._box = null

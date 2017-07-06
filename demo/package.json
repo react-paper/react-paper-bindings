@@ -3,12 +3,12 @@
   "version": "0.0.1",
   "homepage": "http://hribb.github.io/react-paper-bindings/",
   "dependencies": {
-    "halogen": "^0.2.0",
     "immutability-helper": "^2.2.2",
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "material-design-icons": "^3.0.1",
     "object-assign": "^4.1.1",
+    "paper": "^0.11.4",
     "prop-types": "^15.5.10",
     "random-int": "^1.0.0",
     "randomcolor": "^0.5.3",

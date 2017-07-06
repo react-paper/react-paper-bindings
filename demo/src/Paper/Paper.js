@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { compose } from 'recompose'
 import assign from 'object-assign'
 import pick from 'lodash.pick'
-import Loader from 'halogen/PulseLoader'
 
 import {
   Layer, Raster, Tool, View,
@@ -12,16 +11,17 @@ import {
 
 import Toolbar from './Toolbar/Toolbar'
 import Layers from './Layers/Layers'
+import Loader from './Loader/Loader'
 
-import withHistory from './withHistory'
-import withFullscreen from './withFullscreen'
-import withTools from './withTools'
-import withMoveTool from './withMoveTool'
-import withSelectTool from './withSelectTool'
-import withPenTool from './withPenTool'
-import withCircleTool from './withCircleTool'
-import withRectangleTool from './withRectangleTool'
-import withDeleteTool from './withDeleteTool'
+import withHistory from './hoc/withHistory'
+import withFullscreen from './hoc/withFullscreen'
+import withTools from './hoc/withTools'
+import withMoveTool from './hoc/withMoveTool'
+import withSelectTool from './hoc/withSelectTool'
+import withPenTool from './hoc/withPenTool'
+import withCircleTool from './hoc/withCircleTool'
+import withRectangleTool from './hoc/withRectangleTool'
+import withDeleteTool from './hoc/withDeleteTool'
 
 import './Paper.css'
 
@@ -42,16 +42,17 @@ class Paper extends Component {
     super(props)
     this.state = {
       imageLoaded: false,
+      loaded: false,
       showLayers: true,
     }
     this._view = null
   }
 
   save = () => {
-    const json = this._view._scope.project.exportJSON();
-    const svg = this._view._scope.project.exportSVG({ embedImages: false });
-    console.log(json);
-    console.log(svg);
+    const json = this._view._scope.project.exportJSON()
+    const svg = this._view._scope.project.exportSVG({ embedImages: false })
+    console.log(json)
+    console.log(svg)
   }
 
   toggleLayers = () => {
@@ -61,8 +62,9 @@ class Paper extends Component {
   }
 
   imageLoaded = (image) => {
+    this._loaded = true
     this.props.fitImage(image)
-    this.setState({ imageLoaded: true })
+    this.setState({ imageLoaded: true, loaded: true })
   }
 
   componentWillUpdate(nextProps) {
@@ -74,7 +76,7 @@ class Paper extends Component {
 
   render() {
     const { activeTool, activeLayer, image, data, selectedItem } = this.props
-    const { imageLoaded, showLayers, } = this.state
+    const { loaded, imageLoaded, showLayers, } = this.state
 
     const toolbarProps = assign(pick(this.props, [
       'activeTool', 'animate', 'fullscreen', 'imageSize',
@@ -104,15 +106,8 @@ class Paper extends Component {
     return (
       <div className={'Paper'}>
         <Toolbar {...toolbarProps} />
-        {imageLoaded && showLayers &&
-          <Layers {...layerProps} />}
-        {!imageLoaded &&
-          <Loader
-            className={'Loader'}
-            color={'orange'}
-            size={'16px'}
-            margin={'4px'}
-          />}
+        {loaded && showLayers && <Layers {...layerProps} />}
+        {!imageLoaded && <Loader color={'orange'} />}
         <View {...viewProps}>
           <Layer>
             <Raster locked source={image} onLoad={this.imageLoaded} />

@@ -19,8 +19,8 @@ export default function withCircleTool(WrappedComponent) {
         pathData: circle.getPathData(),
         fillColor: circle.fillColor.toCSS(true),
       })
-      console.log(circle);
-      console.log(circle.getPathData());
+      console.log(circle)
+      console.log(circle.getPathData())
       circle.remove()
       this.props.selectItem(item)
     }

@@ -38,8 +38,8 @@ export default function withPenTool(WrappedComponent) {
           strokeScaling: this._path.strokeScaling,
           strokeWidth: this._path.strokeWidth,
         })
-        console.log(this._path);
-        console.log(this._path.getPathData());
+        console.log(this._path)
+        console.log(this._path.getPathData())
         this.props.selectItem(item)
         this._path.remove()
         this._path = null

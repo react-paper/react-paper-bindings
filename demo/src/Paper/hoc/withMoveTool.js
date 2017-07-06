@@ -3,8 +3,6 @@ import { Point } from 'paper'
 
 const ZOOM_FACTOR = 1.1
 
-
-
 export default function withMoveTool(WrappedComponent) {
 
   return class extends Component {

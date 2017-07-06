@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { setValueForStyles } from 'react-dom/lib/CSSPropertyOperations'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import Portal from 'react-portal'
@@ -22,7 +21,8 @@ export default class Dropdown extends Component {
     align: function(props, propName, componentName) {
       if (!/[btm][lrc] [btm][lrc]/.test(props[propName])) {
         return new Error(
-          `Invalid prop ${propName} (${props[propName]}) supplied to ${componentName}. Validation failed.`
+          `Invalid prop ${propName} (${props[propName]}) ` +
+          `supplied to ${componentName}. Validation failed.`
         )
       }
     },
@@ -60,7 +60,7 @@ export default class Dropdown extends Component {
       }],
     })
 
-    setValueForStyles(portalNode, { opacity: 1 }, this._reactInternalInstance)
+    portalNode.style.opacity = 1
   }
 
   beforeClose = (portalNode, remove) => {

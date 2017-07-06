@@ -12,12 +12,3 @@
   right: 0;
   bottom: 0;
 }
-
-.Loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -14px;
-  margin-left: -36px;
-  z-index: 9999;
-}

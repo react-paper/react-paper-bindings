@@ -19,8 +19,8 @@ export default function withRectangleTool(WrappedComponent) {
         pathData: rectangle.getPathData(),
         fillColor: rectangle.fillColor.toCSS(true),
       })
-      console.log(rectangle);
-      console.log(rectangle.getPathData());
+      console.log(rectangle)
+      console.log(rectangle.getPathData())
       rectangle.remove()
       this.props.selectItem(item)
     }

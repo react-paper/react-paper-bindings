@@ -12,7 +12,7 @@ export default function withTools(WrappedComponent) {
       this._prevTool = null
     }
 
-    setTool = (e, activeTool) => {
+    setTool = (activeTool) => {
       this.setState({ activeTool })
     }
 

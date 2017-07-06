@@ -9,9 +9,10 @@ import {
   Circle, Path, Rectangle, // eslint-disable-line no-unused-vars
 } from 'react-paper-bindings'
 
-import Toolbar from './Toolbar/Toolbar'
-import Layers from './Layers/Layers'
 import Loader from './Loader/Loader'
+import Toolbar from './Toolbar/Toolbar'
+import Menu from './Menu/Menu'
+import Layers from './Layers/Layers'
 
 import withHistory from './hoc/withHistory'
 import withFullscreen from './hoc/withFullscreen'
@@ -75,7 +76,11 @@ class Paper extends Component {
   }
 
   render() {
-    const { activeTool, activeLayer, image, data, selectedItem } = this.props
+    const {
+      activeTool, activeLayer, image, data,
+      selectedItem, setTool, width, height,
+    } = this.props
+
     const { loaded, imageLoaded, showLayers, } = this.state
 
     const toolbarProps = assign(pick(this.props, [
@@ -95,6 +100,21 @@ class Paper extends Component {
       selectItem: this.props.selectItem,
     }
 
+    const menuProps = {
+      activeTool,
+      setTool,
+      x: width / 2,
+      y: height - 70,
+      tools: [
+        { tool: 'move', icon: 'pan_tool' },
+        { tool: 'select', icon: 'touch_app' },
+        { tool: 'pen', icon: 'create' },
+        { tool: 'circle', icon: 'add_circle' },
+        { tool: 'rectangle', icon: 'add_box' },
+        { tool: 'delete', icon: 'delete' },
+      ].reverse(),
+    }
+
     const viewProps = assign(pick(this.props, [
       'activeTool', 'activeLayer', 'width', 'height',
       'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
@@ -106,8 +126,12 @@ class Paper extends Component {
     return (
       <div className={'Paper'}>
         <Toolbar {...toolbarProps} />
-        {loaded && showLayers && <Layers {...layerProps} />}
-        {!imageLoaded && <Loader color={'orange'} />}
+        {loaded && showLayers &&
+          <Layers {...layerProps} />}
+        {loaded && showLayers &&
+          <Menu {...menuProps} />}
+        {!imageLoaded &&
+          <Loader color={'orange'} />}
         <View {...viewProps}>
           <Layer>
             <Raster locked source={image} onLoad={this.imageLoaded} />
@@ -123,7 +147,10 @@ class Paper extends Component {
                   key={itemId}
                   {...props}
                   data={{ id: itemId, type: Item }}
-                  selected={itemId === selectedItem || layerId === selectedItem}
+                  selected={(
+                    (activeTool === 'select') &&
+                    (itemId === selectedItem || layerId === selectedItem)
+                  )}
                 />
               )}
             </Layer>

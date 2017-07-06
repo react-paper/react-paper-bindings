@@ -9,17 +9,20 @@ export default class Button extends Component {
     active: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
+    setTool: PropTypes.func,
     tool: PropTypes.string,
   }
 
   handleClick = (e) => {
     if (this.props.onClick) {
-      this.props.onClick(e, this.props.tool)
+      this.props.onClick(e)
+    } else if (this.props.setTool) {
+      this.props.setTool(this.props.tool)
     }
   }
 
   render() {
-    const { active, children, onClick, tool, ...rest } = this.props
+    const { active, children, onClick, setTool, tool, ...rest } = this.props
     const props = {
       className: `Button${active ? ' Button-active' : ''}`,
       onClick: this.handleClick,

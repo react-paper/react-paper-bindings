@@ -153,8 +153,19 @@ function applyToolProps(instance, props, prevProps = {}) {
 }
 
 const PaperRenderer = ReactFiberReconciler({
-
   appendChild(parentInstance, child) {
+    if (child.parentNode === parentInstance) {
+      child.remove()
+    }
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Item
+    ) {
+      child.addTo(parentInstance)
+    }
+  },
+
+  appendChildToContainer(parentInstance, child) {
     if (child.parentNode === parentInstance) {
       child.remove()
     }
@@ -260,7 +271,25 @@ const PaperRenderer = ReactFiberReconciler({
     return false
   },
 
+  getPublicInstance(instance) {
+    return instance;
+  },
+
   insertBefore(parentInstance, child, beforeChild) {
+    invariant(
+      child !== beforeChild,
+      'PaperReact: Can not insert node before itself'
+    )
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Path &&
+      beforeChild instanceof Path
+    ) {
+      child.insertAbove(beforeChild)
+    }
+  },
+
+  insertInContainerBefore(parentInstance, child, beforeChild) {
     invariant(
       child !== beforeChild,
       'PaperReact: Can not insert node before itself'
@@ -286,12 +315,20 @@ const PaperRenderer = ReactFiberReconciler({
     child.remove()
   },
 
+  removeChildFromContainer(parentInstance, child) {
+    child.remove()
+  },
+
   resetAfterCommit() {
     // Noop
   },
 
   resetTextContent(domElement) {
     // Noop
+  },
+
+  shouldDeprioritizeSubtree(type, props) {
+    return false;
   },
 
   getRootHostContext() {
@@ -302,11 +339,9 @@ const PaperRenderer = ReactFiberReconciler({
     return emptyObject
   },
 
-  scheduleAnimationCallback: window.requestAnimationFrame,
-
   scheduleDeferredCallback: window.requestIdleCallback,
 
-  shouldSetTextContent(props) {
+  shouldSetTextContent(type, props) {
     return (
       typeof props.children === 'string' ||
       typeof props.children === 'number'

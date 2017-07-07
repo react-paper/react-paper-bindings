@@ -66,7 +66,7 @@ export default class View extends Component {
     }
 
     if (zoom !== prevProps.zoom) {
-      view.scale(zoom / prevProps.zoom, view.viewToProject(sx, sy))
+      view.scale(zoom / prevProps.zoom, [sx, sy])
     }
 
     if (x !== prevProps.x || y !== prevProps.y) {
@@ -80,11 +80,19 @@ export default class View extends Component {
     PaperRenderer.updateContainer(null, this._mountNode, this)
   }
 
+  onWheel = (e) => {
+    if (this.props.onWheel) {
+      this.props.onWheel(e, this._scope)
+    }
+  }
+
   render() {
     const { width, height, onWheel } = this.props
     const canvasProps = {
+      width,
+      height,
       ref: ref => this._canvas = ref,
-      width, height, onWheel,
+      onWheel: onWheel ? this.onWheel : null
     }
     return (
       <canvas {...canvasProps} />

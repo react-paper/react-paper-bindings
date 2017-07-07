@@ -51,8 +51,8 @@ export default function withMoveTool(WrappedComponent) {
       const y = this.state.y + ty
       // center the image in the middle
       this.setState({ tx, ty, x, y, zoom }, () => {
-        // reset translation xy to prevent zoom problems
         // TODO: try to find a better solution
+        // reset translation xy to prevent zoom problems
         this.setState({ tx: 0, ty: 0 })
       })
       // set image loaded
@@ -66,8 +66,7 @@ export default function withMoveTool(WrappedComponent) {
      * @return {Object}      Object representing pinch zoom event
      */
     getPinchEventData(e) {
-      const { event: { target, touches } } = e
-      const { offsetLeft, offsetTop } = target
+      const { event: { target: { offsetLeft, offsetTop }, touches } } = e
       // touch points
       const point0 = new Point(
         touches[0].pageX - offsetLeft,
@@ -98,7 +97,7 @@ export default function withMoveTool(WrappedComponent) {
      * @param  {Object} next Next pinch zoom event data
      * @return {Object}      Next pinch zoom state
      */
-    getPinchStateData(prev, next) {
+    getPinchEventState(e, prev, next) {
       const { x, y, zoom } = this.state
       const t = next.center.subtract(prev.center).divide(zoom)
       const scale = next.distance / prev.distance
@@ -119,9 +118,9 @@ export default function withMoveTool(WrappedComponent) {
      * @return {object}           Object representing pan event
      */
     getPanEventData(e) {
-      const { event: { touches, pageX, pageY }, point } = e
+      const { point, event: { touches, pageX, pageY }, tool: { view } } = e
       return {
-        point,
+        point: view.projectToView(point),
         x: (touches) ? touches[0].pageX : pageX,
         y: (touches) ? touches[0].pageY : pageY,
       }
@@ -134,9 +133,10 @@ export default function withMoveTool(WrappedComponent) {
      * @param  {Object} next Next pan event data
      * @return {Object}      Next pan state data
      */
-    getPanStateData(prev, next) {
+    getPanEventState(e, prev, next) {
       const { x, y } = this.state
-      const t = next.point.subtract(prev.point)
+      const { point, tool: { view } } = e
+      const t = point.subtract(view.viewToProject(prev.point))
       return {
         tx: t.x,
         ty: t.y,
@@ -145,31 +145,25 @@ export default function withMoveTool(WrappedComponent) {
       }
     }
 
-    mouseWheel = (e) => {
-      const { offsetLeft, offsetTop } = e.nativeEvent.target
+    mouseWheel = (e, { view }) => {
       const { x, y, zoom } = this.state
-
-      // calculate new zoom from wheel event
+      const { pageX, pageY, nativeEvent } = e
+      const { offsetLeft, offsetTop } = nativeEvent.target
+      // calculate new zoom from wheel event delta
       const newZoom = (e.wheelDelta || -e.deltaY) > 0
         ? zoom * ZOOM_FACTOR
         : zoom / ZOOM_FACTOR
-
-      // calculate zoom ratio
-      const ratio = newZoom / zoom
-
-      // get mouse position within image
-      const prevX = e.pageX - x
-      const prevY = e.pageY - y
-
-      // get diff in mouse positions before and after resize
-      const tx = prevX - (prevX * ratio) - offsetLeft
-      const ty = prevY - (prevY * ratio) - offsetTop
-
+      // get mouse center point
+      const point = new Point(
+        pageX - offsetLeft,
+        pageY - offsetTop,
+      )
+      // convert point to project space
+      const s = view.viewToProject(point)
+      // scale paper
       this.setState({
-        sx: e.pageX - offsetLeft,
-        sy: e.pageY - offsetTop,
-        x: x + tx,
-        y: y + ty,
+        sx: s.x,
+        sy: s.y,
         zoom: newZoom,
       })
     }
@@ -186,20 +180,23 @@ export default function withMoveTool(WrappedComponent) {
         } else {
           const prev = this._pinch
           const next = this.getPinchEventData(e)
-          this.setState(this.getPinchStateData(prev, next))
+          this.setState(this.getPinchEventState(e, prev, next))
           this._pinch = next
         }
       } else {
         const prev = this._pan
         const next = this.getPanEventData(e)
-        this.setState(this.getPanStateData(prev, next))
-        this._event = next
+        this.setState(this.getPanEventState(e, prev, next))
+        // TODO: translating view manually is much faster
+        // figure out a way to do it fast with react
+        //const state = this.getPanEventState(e, prev, next)
+        //e.tool.view.translate(state.tx, state.ty)
+        this._pan = next
       }
     }
 
     mouseUp = (e) => {
-      this._point = null
-      this._event = null
+      this._pan = null
       this._pinch = null
     }
 

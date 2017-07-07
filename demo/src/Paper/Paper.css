@@ -12,3 +12,10 @@
   right: 0;
   bottom: 0;
 }
+
+.Paper.tool-move canvas { cursor: grab; }
+.Paper.tool-select canvas { cursor: pointer; }
+.Paper.tool-pen canvas { cursor: crosshair; }
+.Paper.tool-circle canvas { cursor: copy; }
+.Paper.tool-rectangle canvas { cursor: copy; }
+.Paper.tool-delete canvas { cursor: pointer; }

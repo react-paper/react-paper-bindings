@@ -104,15 +104,15 @@ class Paper extends Component {
       activeTool,
       setTool,
       x: width / 2,
-      y: height - 70,
+      y: height - 60,
       tools: [
-        { tool: 'move', icon: 'pan_tool' },
-        { tool: 'select', icon: 'touch_app' },
-        { tool: 'pen', icon: 'create' },
-        { tool: 'circle', icon: 'add_circle' },
-        { tool: 'rectangle', icon: 'add_box' },
-        { tool: 'delete', icon: 'delete' },
-      ].reverse(),
+        { tool: 'delete', icon: 'delete', title: 'Delete Tool (D)' },
+        { tool: 'pen', icon: 'create', title: 'Pen Tool (P)' },
+        { tool: 'select', icon: 'touch_app', title: 'Select Tool (A)' },
+        { tool: 'move', icon: 'pan_tool', title: 'Move Tool (V)' },
+        { tool: 'circle', icon: 'add_circle', title: 'Circle Tool (C)' },
+        { tool: 'rectangle', icon: 'add_box', title: 'Rectangle Tool (R)' },
+      ],
     }
 
     const viewProps = assign(pick(this.props, [
@@ -124,14 +124,14 @@ class Paper extends Component {
     })
 
     return (
-      <div className={'Paper'}>
+      <div className={`Paper tool-${activeTool}`}>
         <Toolbar {...toolbarProps} />
-        {loaded && showLayers &&
-          <Layers {...layerProps} />}
-        {loaded && showLayers &&
+        {loaded &&
           <Menu {...menuProps} />}
         {!imageLoaded &&
           <Loader color={'orange'} />}
+        {loaded && showLayers &&
+          <Layers {...layerProps} />}
         <View {...viewProps}>
           <Layer>
             <Raster locked source={image} onLoad={this.imageLoaded} />

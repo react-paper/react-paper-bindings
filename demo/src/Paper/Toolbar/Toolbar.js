@@ -14,42 +14,42 @@ const Toolbar = (props) => {
       <div>
         <Button
           tool={'move'}
-          title={'Move Tool'}
+          title={'Move Tool (V)'}
           active={activeTool === 'move'}
           setTool={props.setTool}>
           <i className={'material-icons'}>pan_tool</i>
         </Button>
         <Button
           tool={'select'}
-          title={'Select Tool'}
+          title={'Select Tool (A)'}
           active={activeTool === 'select'}
           setTool={props.setTool}>
           <i className={'material-icons'}>touch_app</i>
         </Button>
         <Button
           tool={'pen'}
-          title={'Pen Tool'}
+          title={'Pen Tool (P)'}
           active={activeTool === 'pen'}
           setTool={props.setTool}>
           <i className={'material-icons'}>create</i>
         </Button>
         <Button
           tool={'circle'}
-          title={'Circle Tool'}
+          title={'Circle Tool (C)'}
           active={activeTool === 'circle'}
           setTool={props.setTool}>
           <i className={'material-icons'}>add_circle</i>
         </Button>
         <Button
           tool={'rectangle'}
-          title={'Rectangle Tool'}
+          title={'Rectangle Tool (R)'}
           active={activeTool === 'rectangle'}
           setTool={props.setTool}>
           <i className={'material-icons'}>add_box</i>
         </Button>
         <Button
           tool={'delete'}
-          title={'Delete Tool'}
+          title={'Delete Tool (D)'}
           active={activeTool === 'delete'}
           setTool={props.setTool}>
           <i className={'material-icons'}>delete</i>
@@ -73,9 +73,6 @@ const Toolbar = (props) => {
           onClick={props.redo}>
           <i className={'material-icons'}>redo</i>
         </Button>
-      </div>
-      <span></span>
-      <div>
         <Button
           tool={'reset'}
           title={'Reset View'}
@@ -83,6 +80,9 @@ const Toolbar = (props) => {
           disabled={!props.canRedo && !props.canUndo}>
           <i className={'material-icons'}>clear</i>
         </Button>
+      </div>
+      <span></span>
+      <div>
         <Menu offset={'0 -8'} target={
           <Button title={'Image Size'}>
             <i className={'material-icons'}>photo_size_select_large</i>

@@ -18,8 +18,8 @@ const OFFSET = 0.05;
 const SPRING_CONFIG = { stiffness: 400, damping: 28 };
 
 // How far away from the main button does the child buttons go
-const FLY_OUT_RADIUS = 130,
-      SEPARATION_ANGLE = 40, //degrees
+const FLY_OUT_RADIUS = 90,
+      SEPARATION_ANGLE = 42, //degrees
       FAN_ANGLE = (NUM_CHILDREN - 1) * SEPARATION_ANGLE, //degrees
       BASE_ANGLE = ((180 - FAN_ANGLE) / 2); // degrees
 
@@ -250,6 +250,7 @@ export default class Menu extends Component {
 							>
 								<i
                   className={'material-icons'}
+                  title={tools[index].title}
                   data-tool={tools[index].tool}
                   onClick={this.setTool}
                 >
@@ -282,11 +283,12 @@ export default class Menu extends Component {
 				<Motion style={mainButtonRotation}>
 					{({rotate}) =>
 						<div
+              title={tool.title}
 							className={'Menu__MainButton'}
 							style={{...this.mainButtonStyles(), transform: `rotate(${rotate}deg)`}}
-							onClick={this.toggleMenu}>
-							{/*Using fa-close instead of fa-plus because fa-plus doesn't center properly*/}
-							<i className={'material-icons'}>{tool ? tool.icon : 'add'}</i>
+							onClick={this.toggleMenu}
+            >
+							<i className={'material-icons'} title={tool.title}>{tool.icon}</i>
 						</div>
 					}
 				</Motion>

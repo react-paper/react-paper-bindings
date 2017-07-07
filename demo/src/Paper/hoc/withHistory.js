@@ -27,6 +27,14 @@ export default function withHistory(WrappedComponent) {
       this._id = getInitialId(props.initialData)
     }
 
+    keyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        this.undo()
+      } else if (e.key === 'ArrowRight') {
+        this.redo()
+      }
+    }
+
     addItem = (layer, data) => {
       const history = this.getPrevHistory()
       const layerIndex = history.findIndex(l => l.id === layer.data.id)
@@ -85,7 +93,7 @@ export default function withHistory(WrappedComponent) {
 
     undo = () => {
       const { historyIndex, history } = this.state
-      if (historyIndex < 0) {
+      if (historyIndex <= 0) {
         return
       }
       this.setState({
@@ -96,10 +104,21 @@ export default function withHistory(WrappedComponent) {
 
     redo = () => {
       const { historyIndex, history } = this.state
+      if (historyIndex >= (history.length - 1)) {
+        return
+      }
       this.setState({
         historyIndex: historyIndex + 1,
         items: history[historyIndex + 1],
       })
+    }
+
+    componentDidMount() {
+      document.addEventListener('keydown', this.keyDown)
+    }
+
+    componentWillUnmount() {
+      document.removeEventListener('keydown', this.keyDown)
     }
 
     render() {

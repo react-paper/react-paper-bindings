@@ -32,7 +32,7 @@ npm start
 
 ## Example
 
-```
+```jsx
 import React, { Component } from 'react'
 
 import {

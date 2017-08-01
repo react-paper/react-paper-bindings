@@ -168,14 +168,13 @@ export default function withMoveTool(WrappedComponent) {
      * @param  {ToolEvent} e Paper.js ToolEvent
      */
     mouseDown = (e) => {
-      this._pan = this.getPanEventData(e)
+      //this._pan = this.getPanEventData(e)
     }
 
     /**
      * Mouse drag handler
      *
      * @TODO: fix start pan glitch
-     *
      * @TODO: transforming view manually is much faster,
      * figure out how to do it fast with react
      *
@@ -184,24 +183,30 @@ export default function withMoveTool(WrappedComponent) {
     mouseDrag = (e) => {
       const { event: { touches }, tool: { view } } = e
       if (touches && touches.length === 2) {
+        // pinch zoom
         if (!this._pinch) {
           this._pinch = this.getPinchEventData(e)
           return
         }
-        // pinch zoom
         const prev = this._pinch
         const next = this.getPinchEventData(e)
         //this.setState(this.getPinchEventState(e, prev, next))
         const { sx, sy, tx, ty, zoom } = this.getPinchEventState(e, prev, next)
+        // transform view manually
         view.scale(zoom / this.state.zoom, [sx, sy])
         view.translate(tx, ty)
         this._pinch = next
       } else {
         // pan
+        if (!this._pan) {
+          this._pan = this.getPanEventData(e)
+          return
+        }
         const prev = this._pan
         const next = this.getPanEventData(e)
         //this.setState(this.getPanEventState(e, prev, next))
         const { tx, ty } = this.getPanEventState(e, prev, next)
+        // transform view manually
         view.translate(tx, ty)
         this._pan = next
       }

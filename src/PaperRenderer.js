@@ -21,6 +21,7 @@ function applyEllipseProps(instance, props, prevProps = {}) {
 }
 
 function applyGroupProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.center !== prevProps.center) {
     instance.translate([
       props.center[0] - prevProps.center[0],
@@ -30,6 +31,7 @@ function applyGroupProps(instance, props, prevProps = {}) {
   if (props.rotation !== prevProps.rotation) {
     instance.rotate(props.rotation - prevProps.rotation)
   }
+  // TODO:
   if (props.strokeColor !== prevProps.strokeColor) {
     instance.strokeColor = props.strokeColor
   }
@@ -55,7 +57,26 @@ function applyLayerProps(instance, props, prevProps = {}) {
   }
 }
 
+function applyItemProps(instance, props, prevProps = {}) {
+  if (props.blendMode !== prevProps.blendMode) {
+    instance.blendMode = props.blendMode
+  }
+  if (props.clipMask !== prevProps.clipMask) {
+    instance.clipMask = props.clipMask
+  }
+  if (props.opacity !== prevProps.opacity) {
+    instance.opacity = props.opacity
+  }
+  if (props.selected !== prevProps.selected) {
+    instance.selected = props.selected
+  }
+  if (props.visible !== prevProps.visible) {
+    instance.visible = props.visible
+  }
+}
+
 function applyPathProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.center !== prevProps.center) {
     instance.translate([
       props.center[0] - prevProps.center[0],
@@ -86,9 +107,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.rotation !== prevProps.rotation) {
     instance.rotate(props.rotation - prevProps.rotation)
   }
-  if (props.selected !== prevProps.selected) {
-    instance.selected = props.selected
-  }
+
   if (props.strokeCap !== prevProps.strokeCap) {
     instance.strokeCap = props.strokeCap
   }
@@ -104,6 +123,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.strokeWidth !== prevProps.strokeWidth) {
     instance.strokeWidth = props.strokeWidth
   }
+
 }
 
 function applyRectangleProps(instance, props, prevProps = {}) {
@@ -117,6 +137,7 @@ function applyRectangleProps(instance, props, prevProps = {}) {
 }
 
 function applyRasterProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.source !== prevProps.source) {
     instance.source = props.source
   }

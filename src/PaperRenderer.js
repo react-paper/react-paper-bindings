@@ -9,54 +9,6 @@ import {
 
 import TYPES from './types'
 
-function applyCircleProps(instance, props, prevProps = {}) {
-  applyPathProps(instance, props, prevProps)
-  if (props.radius !== prevProps.radius) {
-    instance.scale(props.radius / prevProps.radius)
-  }
-}
-
-function applyEllipseProps(instance, props, prevProps = {}) {
-  applyRectangleProps(instance, props, prevProps)
-}
-
-function applyGroupProps(instance, props, prevProps = {}) {
-  applyItemProps(instance, props, prevProps)
-  if (props.center !== prevProps.center) {
-    instance.translate([
-      props.center[0] - prevProps.center[0],
-      props.center[1] - prevProps.center[1],
-    ])
-  }
-  if (props.rotation !== prevProps.rotation) {
-    instance.rotate(props.rotation - prevProps.rotation)
-  }
-  // TODO:
-  if (props.strokeColor !== prevProps.strokeColor) {
-    instance.strokeColor = props.strokeColor
-  }
-}
-
-function applyLayerProps(instance, props, prevProps = {}) {
-  if (props.active !== prevProps.active && props.active === true) {
-    instance.activate()
-  }
-  if (props.selected !== prevProps.selected) {
-    instance.selected = props.selected
-  }
-  if (props.visible !== prevProps.visible) {
-    instance.visible = props.visible
-  }
-  if (props.strokeColor !== prevProps.strokeColor) {
-    instance.strokeColor = props.strokeColor
-    instance.children.forEach(child => {
-      if (child instanceof Path) {
-        child.strokeColor = props.strokeColor
-      }
-    })
-  }
-}
-
 function applyItemProps(instance, props, prevProps = {}) {
   if (props.blendMode !== prevProps.blendMode) {
     instance.blendMode = props.blendMode
@@ -72,6 +24,42 @@ function applyItemProps(instance, props, prevProps = {}) {
   }
   if (props.visible !== prevProps.visible) {
     instance.visible = props.visible
+  }
+}
+
+function applyGroupProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
+  if (props.center !== prevProps.center) {
+    instance.translate([
+      props.center[0] - prevProps.center[0],
+      props.center[1] - prevProps.center[1],
+    ])
+  }
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotate(props.rotation - prevProps.rotation)
+  }
+  // TODO: check if this is ok
+  if (props.strokeColor !== prevProps.strokeColor) {
+    instance.strokeColor = props.strokeColor
+  }
+}
+
+function applyLayerProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
+  if (props.active !== prevProps.active && props.active === true) {
+    instance.activate()
+  }
+  if (props.locked !== prevProps.locked) {
+    instance.locked = props.locked
+  }
+  // TODO: check if this is ok
+  if (props.strokeColor !== prevProps.strokeColor) {
+    instance.strokeColor = props.strokeColor
+    instance.children.forEach(child => {
+      if (child instanceof Path) {
+        child.strokeColor = props.strokeColor
+      }
+    })
   }
 }
 
@@ -134,6 +122,17 @@ function applyRectangleProps(instance, props, prevProps = {}) {
       props.size[1] / prevProps.size[1],
     )
   }
+}
+
+function applyCircleProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (props.radius !== prevProps.radius) {
+    instance.scale(props.radius / prevProps.radius)
+  }
+}
+
+function applyEllipseProps(instance, props, prevProps = {}) {
+  applyRectangleProps(instance, props, prevProps)
 }
 
 function applyRasterProps(instance, props, prevProps = {}) {

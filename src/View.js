@@ -1,17 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Matrix, PaperScope, Size } from 'paper'
+import { PaperScope, Size } from 'paper'
 
 import PaperRenderer from './PaperRenderer'
 
 export default class View extends Component {
 
+  /**
+   * PaperScope reference
+   *
+   * @type {PaperScope}
+   */
+  paper = null
+
   static propTypes = {
     activeLayer: PropTypes.number,
     activeTool: PropTypes.string,
+    className: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     onWheel: PropTypes.func,
+    onDoubleClick: PropTypes.func,
     sx: PropTypes.number,
     sy: PropTypes.number,
     tx: PropTypes.number,
@@ -22,16 +31,25 @@ export default class View extends Component {
   }
 
   componentDidMount() {
-    const { activeLayer, activeTool, children, width, height, x, y, zoom } = this.props
+    const {
+      activeLayer,
+      activeTool,
+      children,
+      width,
+      height,
+      x,
+      y,
+      zoom,
+    } = this.props
 
-    this._scope = new PaperScope()
-    this._scope.setup(this._canvas)
+    this.paper = new PaperScope()
+    this.paper.setup(this._canvas)
 
-    const { project, tools, view } = this._scope
+    const { project, tools, view } = this.paper
 
     view.viewSize = new Size(width, height)
 
-    this._mountNode = PaperRenderer.createContainer(this._scope)
+    this._mountNode = PaperRenderer.createContainer(this.paper)
 
     PaperRenderer.updateContainer(children, this._mountNode, this)
 
@@ -55,9 +73,20 @@ export default class View extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { children, width, height, sx, sy, tx, ty, x, y, zoom } = this.props
+    const {
+      children,
+      width,
+      height,
+      sx,
+      sy,
+      tx,
+      ty,
+      x,
+      y,
+      zoom,
+    } = this.props
 
-    const { view } = this._scope
+    const { view } = this.paper
 
     if (width !== prevProps.width || height !== prevProps.height) {
       const prevCenter = view.center
@@ -82,17 +111,25 @@ export default class View extends Component {
 
   onWheel = (e) => {
     if (this.props.onWheel) {
-      this.props.onWheel(e, this._scope)
+      this.props.onWheel(e, this.paper)
+    }
+  }
+
+  onDoubleClick = (e) => {
+    if (this.props.onDoubleClick) {
+      this.props.onDoubleClick(e, this.paper)
     }
   }
 
   render() {
-    const { width, height, onWheel } = this.props
+    const { className, width, height, onWheel, onDoubleClick } = this.props
     const canvasProps = {
+      className,
       width,
       height,
       ref: ref => this._canvas = ref,
-      onWheel: onWheel ? this.onWheel : null
+      onWheel: onWheel ? this.onWheel : null,
+      onDoubleClick: onDoubleClick ? this.onDoubleClick : null,
     }
     return (
       <canvas {...canvasProps} />

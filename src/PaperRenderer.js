@@ -1,11 +1,8 @@
-import React, { Component } from 'react'
 import { ReactFiberReconciler } from 'react-dom'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
 
-import {
-  Group, Item, Layer, Path, PointText, Raster, Tool,
-} from 'paper'
+import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper/dist/paper-core'
 
 import TYPES from './types'
 

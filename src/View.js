@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { PaperScope, Size } from 'paper'
+import { PaperScope, Size } from 'paper/dist/paper-core'
 
 import PaperRenderer from './PaperRenderer'
 

@@ -4,17 +4,54 @@
 
 http://hribb.github.io/react-paper-bindings/
 
-## Development
+## Installation
 
-Clone repo
+Until Facebook [releases](https://github.com/facebook/react/issues/9103) `ReactFiberReconciler`, a custom version of `react` and `react-dom` is needed.
+
+Clone [react](https://github.com/facebook/react) repo
+```bash
+git clone https://github.com/facebook/react.git
+cd react
+npm install
 ```
+
+Change `src/renderers/dom/fiber/ReactDOMFiberEntry.js` to export `ReactFiberReconciler` through `react-dom`
+```diff
+--- a/src/renderers/dom/fiber/ReactDOMFiberEntry.js
++++ b/src/renderers/dom/fiber/ReactDOMFiberEntry.js
+@@ -729,6 +729,8 @@ var ReactDOMFiber = {
+
+   findDOMNode: findDOMNode,
+
++  ReactFiberReconciler: ReactFiberReconciler,
++
+   unstable_createPortal(
+     children: ReactNodeList,
+     container: DOMContainer,
+```
+
+Build and link `react` and `react-dom`
+```bash
+npm run build
+cd build/packages/react
+npm link
+cd ../react-dom
+npm link
+```
+
+Clone `react-paper-bindings`
+```bash
 git clone https://github.com/HriBB/react-paper-bindings.git
+cd react-paper-bindings
+npm install
+npm link react react-dom
 ```
+
+## Development
 
 Start watching `src` with babel
 ```
 cd react-paper-bindings
-npm install
 npm start
 ```
 

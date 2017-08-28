@@ -137,6 +137,9 @@ function applyRasterProps(instance, props, prevProps = {}) {
   if (props.source !== prevProps.source) {
     instance.source = props.source
   }
+  if (props.onLoad !== prevProps.onLoad) {
+    instance.onLoad = props.onLoad
+  }
 }
 
 function applyPointTextProps(instance, props, prevProps = {}) {
@@ -166,6 +169,24 @@ function applyPointTextProps(instance, props, prevProps = {}) {
 function applyToolProps(instance, props, prevProps = {}) {
   if (props.active !== prevProps.active && props.active === true) {
     instance.activate()
+  }
+  if (props.onMouseDown !== prevProps.onMouseDown) {
+    instance.onMouseDown = props.onMouseDown
+  }
+  if (props.onMouseDrag !== prevProps.onMouseDrag) {
+    instance.onMouseDrag = props.onMouseDrag
+  }
+  if (props.onMouseMove !== prevProps.onMouseMove) {
+    instance.onMouseMove = props.onMouseMove
+  }
+  if (props.onMouseUp !== prevProps.onMouseUp) {
+    instance.onMouseUp = props.onMouseUp
+  }
+  if (props.onKeyUp !== prevProps.onKeyUp) {
+    instance.onKeyUp = props.onKeyUp
+  }
+  if (props.onKeyDown !== prevProps.onKeyDown) {
+    instance.onKeyDown = props.onKeyDown
   }
 }
 
@@ -271,7 +292,7 @@ const PaperRenderer = ReactFiberReconciler({
         break
     }
 
-    if (instance.data) {
+    if (instance.data && !instance.data.type) {
       instance.data.type = type
     }
 

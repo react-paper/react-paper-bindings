@@ -13,21 +13,28 @@ export default class View extends Component {
    */
   paper = null
 
+  /**
+   * Canvas DOM reference
+   *
+   * @type {HTMLElement}
+   */
+  canvas = null
+
   static propTypes = {
     activeLayer: PropTypes.number,
     activeTool: PropTypes.string,
     className: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-    onWheel: PropTypes.func,
-    onDoubleClick: PropTypes.func,
-    sx: PropTypes.number,
-    sy: PropTypes.number,
-    tx: PropTypes.number,
-    ty: PropTypes.number,
-    x: PropTypes.number,
-    y: PropTypes.number,
-    zoom: PropTypes.number,
+    matrix: PropTypes.shape({
+      sx: PropTypes.number.isRequired,
+      sy: PropTypes.number.isRequired,
+      tx: PropTypes.number.isRequired,
+      ty: PropTypes.number.isRequired,
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+      zoom: PropTypes.number.isRequired,
+    }),
   }
 
   componentDidMount() {
@@ -37,13 +44,13 @@ export default class View extends Component {
       children,
       width,
       height,
-      x,
-      y,
-      zoom,
+      matrix,
     } = this.props
 
+    const { x, y, zoom } = matrix
+
     this.paper = new PaperScope()
-    this.paper.setup(this._canvas)
+    this.paper.setup(this.canvas)
 
     const { project, tools, view } = this.paper
 
@@ -73,19 +80,8 @@ export default class View extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      children,
-      width,
-      height,
-      sx,
-      sy,
-      tx,
-      ty,
-      x,
-      y,
-      zoom,
-    } = this.props
-
+    const { children, locked, width, height, matrix } = this.props
+    const { sx, sy, tx, ty, x, y, zoom } = matrix
     const { view } = this.paper
 
     if (width !== prevProps.width || height !== prevProps.height) {
@@ -94,11 +90,15 @@ export default class View extends Component {
       view.translate(view.center.subtract(prevCenter))
     }
 
-    if (zoom !== prevProps.zoom) {
-      view.scale(zoom / prevProps.zoom, [sx, sy])
+    if (locked !== prevProps.locked) {
+      //view.locked = locked
     }
 
-    if (x !== prevProps.x || y !== prevProps.y) {
+    if (zoom !== prevProps.matrix.zoom) {
+      view.scale(zoom / prevProps.matrix.zoom, [sx, sy])
+    }
+
+    if (x !== prevProps.matrix.x || y !== prevProps.matrix.y) {
       view.translate(tx, ty)
     }
 
@@ -122,17 +122,13 @@ export default class View extends Component {
   }
 
   render() {
-    const { className, width, height, onWheel, onDoubleClick } = this.props
-    const canvasProps = {
-      className,
-      width,
-      height,
-      ref: ref => this._canvas = ref,
-      onWheel: onWheel ? this.onWheel : null,
-      onDoubleClick: onDoubleClick ? this.onDoubleClick : null,
-    }
     return (
-      <canvas {...canvasProps} />
+      <canvas
+        ref={ref => this.canvas = ref}
+        className={this.props.className}
+        onWheel={this.onWheel}
+        onDoubleClick={this.onDoubleClick}
+      />
     )
   }
 

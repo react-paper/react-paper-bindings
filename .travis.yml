@@ -5,12 +5,11 @@ cache:
 notifications:
   email: false
 node_js:
-  - '9'
   - '8'
-  - '6'
-  - '4'
+branches:
+  only:
+    - master
+install:
+  - travis_retry npm install
 after_success:
   - npm run semantic-release
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/

@@ -1,0 +1,6 @@
+.DS_Store
+*.log
+test
+demo
+coverage
+node_modules

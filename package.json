@@ -11,12 +11,16 @@
   "bugs": {
     "url": "https://github.com/HriBB/react-paper-bindings/issues"
   },
-  "main": "dist/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "main": "lib/index.js",
   "module": "src/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
-    "start": "NODE_ENV=development babel src -w -d dist",
-    "build": "NODE_ENV=production babel src -d dist",
+    "start": "NODE_ENV=development babel src -w -d lib",
+    "build": "NODE_ENV=production babel src -d lib",
     "lint": "NODE_ENV=development eslint src/**",
     "test": "NODE_ENV=test node test/index.js",
     "prepublish": "npm run build",

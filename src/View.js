@@ -81,7 +81,7 @@ export default class View extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { children, locked, width, height, matrix } = this.props
+    const { children, width, height, matrix } = this.props
     const { sx, sy, tx, ty, x, y, zoom } = matrix
     const { view } = this.paper
 
@@ -89,10 +89,6 @@ export default class View extends Component {
       const prevCenter = view.center
       view.viewSize = new Size(width, height)
       view.translate(view.center.subtract(prevCenter))
-    }
-
-    if (locked !== prevProps.locked) {
-      //view.locked = locked
     }
 
     if (zoom !== prevProps.matrix.zoom) {

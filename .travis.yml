@@ -12,7 +12,5 @@ branches:
     - master
 before_install:
   - npm install
-before_script:
-  - npm prune
 after_success:
   - npm run semantic-release

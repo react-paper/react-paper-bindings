@@ -1,6 +1,5 @@
 {
   "name": "react-paper-bindings",
-  "version": "0.0.0-development",
   "description": "Paper.js bindings for React",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com> (http://climbuddy.com/)",
   "license": "ISC",
@@ -19,6 +18,7 @@
     "start": "NODE_ENV=development babel src -w -d dist",
     "build": "NODE_ENV=production babel src -d dist",
     "lint": "NODE_ENV=development eslint src/**",
+    "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "node test/index.js"
   },

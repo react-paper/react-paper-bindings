@@ -24,6 +24,7 @@ export default class View extends Component {
     activeLayer: PropTypes.number,
     activeTool: PropTypes.string,
     canvasProps: PropTypes.object,
+    children: PropTypes.node,
     className: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -36,6 +37,8 @@ export default class View extends Component {
       y: PropTypes.number.isRequired,
       zoom: PropTypes.number.isRequired,
     }),
+    onWheel: PropTypes.func,
+    onDoubleClick: PropTypes.func,
   }
 
   componentDidMount() {

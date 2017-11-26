@@ -209,52 +209,52 @@ const PaperRenderer = ReactFiberReconciler({
 
     switch (type) {
       case TYPES.TOOL:
-      instance = new Tool(paperProps)
-      instance._applyProps = applyToolProps
-      break
+        instance = new Tool(paperProps)
+        instance._applyProps = applyToolProps
+        break
       case TYPES.CIRCLE:
-      instance = new Path.Circle(paperProps)
-      instance._applyProps = applyCircleProps
-      break
+        instance = new Path.Circle(paperProps)
+        instance._applyProps = applyCircleProps
+        break
       case TYPES.ELLIPSE:
-      instance = new Path.Ellipse(paperProps)
-      instance._applyProps = applyEllipseProps
-      break
+        instance = new Path.Ellipse(paperProps)
+        instance._applyProps = applyEllipseProps
+        break
       case TYPES.GROUP:
-      instance = new Group(paperProps)
-      instance._applyProps = applyGroupProps
-      break
+        instance = new Group(paperProps)
+        instance._applyProps = applyGroupProps
+        break
       case TYPES.LAYER:
-      instance = new Layer(paperProps)
-      instance._applyProps = applyLayerProps
-      break
+        instance = new Layer(paperProps)
+        instance._applyProps = applyLayerProps
+        break
       case TYPES.LINE:
-      instance = new Path.Line(paperProps)
-      instance._applyProps = applyPathProps
-      break
+        instance = new Path.Line(paperProps)
+        instance._applyProps = applyPathProps
+        break
       case TYPES.PATH:
-      instance = new Path(paperProps)
-      instance._applyProps = applyPathProps
-      break
+        instance = new Path(paperProps)
+        instance._applyProps = applyPathProps
+        break
       case TYPES.POINTTEXT:
-      instance = new PointText(paperProps)
-      instance._applyProps = applyPointTextProps
-      break
+        instance = new PointText(paperProps)
+        instance._applyProps = applyPointTextProps
+        break
       case TYPES.RECTANGLE:
-      instance = new Path.Rectangle(paperProps)
-      instance._applyProps = applyRectangleProps
-      break
+        instance = new Path.Rectangle(paperProps)
+        instance._applyProps = applyRectangleProps
+        break
       case TYPES.RASTER:
-      const { onLoad, ...rasterProps } = paperProps
-      instance = new Raster(rasterProps)
-      instance._applyProps = applyRasterProps
-      if (typeof onLoad === 'function') {
-        instance.onLoad = () => onLoad(instance)
-      }
-      break;
+        const { onLoad, ...rasterProps } = paperProps
+        instance = new Raster(rasterProps)
+        instance._applyProps = applyRasterProps
+        if (typeof onLoad === 'function') {
+          instance.onLoad = () => onLoad(instance)
+        }
+        break;
       default:
-      invariant(instance, 'PaperReact does not support the type "%s"', type)
-      break
+        invariant(instance, 'PaperReact does not support the type "%s"', type)
+        break
     }
 
     if (instance.data && !instance.data.type) {

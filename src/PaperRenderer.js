@@ -1,4 +1,4 @@
-import { ReactFiberReconciler } from 'react-dom'
+import ReactFiberReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
 
@@ -191,29 +191,6 @@ function applyToolProps(instance, props, prevProps = {}) {
 }
 
 const PaperRenderer = ReactFiberReconciler({
-  appendChild(parentInstance, child) {
-    if (child.parentNode === parentInstance) {
-      child.remove()
-    }
-    if (
-      parentInstance instanceof Group &&
-      child instanceof Item
-    ) {
-      child.addTo(parentInstance)
-    }
-  },
-
-  appendChildToContainer(parentInstance, child) {
-    if (child.parentNode === parentInstance) {
-      child.remove()
-    }
-    if (
-      parentInstance instanceof Group &&
-      child instanceof Item
-    ) {
-      child.addTo(parentInstance)
-    }
-  },
 
   appendInitialChild(parentInstance, child) {
     if (typeof child === 'string') {
@@ -226,70 +203,58 @@ const PaperRenderer = ReactFiberReconciler({
     }
   },
 
-  commitTextUpdate(textInstance, oldText, newText) {
-    // Noop
-  },
-
-  commitMount(instance, type, newProps) {
-    // Noop
-  },
-
-  commitUpdate(instance, updatePayload, type, oldProps, newProps, paperScope) {
-    instance._applyProps(instance, newProps, oldProps)
-  },
-
   createInstance(type, props, paperScope) {
     const { children, ...paperProps } = props
     let instance
 
     switch (type) {
       case TYPES.TOOL:
-        instance = new Tool(paperProps)
-        instance._applyProps = applyToolProps
-        break
+      instance = new Tool(paperProps)
+      instance._applyProps = applyToolProps
+      break
       case TYPES.CIRCLE:
-        instance = new Path.Circle(paperProps)
-        instance._applyProps = applyCircleProps
-        break
+      instance = new Path.Circle(paperProps)
+      instance._applyProps = applyCircleProps
+      break
       case TYPES.ELLIPSE:
-        instance = new Path.Ellipse(paperProps)
-        instance._applyProps = applyEllipseProps
-        break
+      instance = new Path.Ellipse(paperProps)
+      instance._applyProps = applyEllipseProps
+      break
       case TYPES.GROUP:
-        instance = new Group(paperProps)
-        instance._applyProps = applyGroupProps
-        break
+      instance = new Group(paperProps)
+      instance._applyProps = applyGroupProps
+      break
       case TYPES.LAYER:
-        instance = new Layer(paperProps)
-        instance._applyProps = applyLayerProps
-        break
+      instance = new Layer(paperProps)
+      instance._applyProps = applyLayerProps
+      break
       case TYPES.LINE:
-        instance = new Path.Line(paperProps)
-        instance._applyProps = applyPathProps
-        break
+      instance = new Path.Line(paperProps)
+      instance._applyProps = applyPathProps
+      break
       case TYPES.PATH:
-        instance = new Path(paperProps)
-        instance._applyProps = applyPathProps
-        break
+      instance = new Path(paperProps)
+      instance._applyProps = applyPathProps
+      break
       case TYPES.POINTTEXT:
-        instance = new PointText(paperProps)
-        instance._applyProps = applyPointTextProps
-        break
+      instance = new PointText(paperProps)
+      instance._applyProps = applyPointTextProps
+      break
       case TYPES.RECTANGLE:
-        instance = new Path.Rectangle(paperProps)
-        instance._applyProps = applyRectangleProps
-        break
+      instance = new Path.Rectangle(paperProps)
+      instance._applyProps = applyRectangleProps
+      break
       case TYPES.RASTER:
-        const { onLoad, ...rasterProps } = paperProps
-        instance = new Raster(rasterProps)
-        instance._applyProps = applyRasterProps
-        if (typeof onLoad === 'function') {
-          instance.onLoad = () => onLoad(instance)
-        }
-        break;
+      const { onLoad, ...rasterProps } = paperProps
+      instance = new Raster(rasterProps)
+      instance._applyProps = applyRasterProps
+      if (typeof onLoad === 'function') {
+        instance.onLoad = () => onLoad(instance)
+      }
+      break;
       default:
-        invariant(instance, 'PaperReact does not support the type "%s"', type)
-        break
+      invariant(instance, 'PaperReact does not support the type "%s"', type)
+      break
     }
 
     if (instance.data && !instance.data.type) {
@@ -313,48 +278,12 @@ const PaperRenderer = ReactFiberReconciler({
     return instance;
   },
 
-  insertBefore(parentInstance, child, beforeChild) {
-    invariant(
-      child !== beforeChild,
-      'PaperReact: Can not insert node before itself'
-    )
-    if (
-      parentInstance instanceof Group &&
-      child instanceof Path &&
-      beforeChild instanceof Path
-    ) {
-      child.insertAbove(beforeChild)
-    }
-  },
-
-  insertInContainerBefore(parentInstance, child, beforeChild) {
-    invariant(
-      child !== beforeChild,
-      'PaperReact: Can not insert node before itself'
-    )
-    if (
-      parentInstance instanceof Group &&
-      child instanceof Path &&
-      beforeChild instanceof Path
-    ) {
-      child.insertAbove(beforeChild)
-    }
-  },
-
   prepareForCommit() {
     // Noop
   },
 
   prepareUpdate(domElement, type, oldProps, newProps) {
     return true
-  },
-
-  removeChild(parentInstance, child) {
-    child.remove()
-  },
-
-  removeChildFromContainer(parentInstance, child) {
-    child.remove()
   },
 
   resetAfterCommit() {
@@ -387,6 +316,83 @@ const PaperRenderer = ReactFiberReconciler({
   },
 
   useSyncScheduling: true,
+
+  now: Date.now,
+
+  mutation: {
+    appendChild(parentInstance, child) {
+      if (child.parentNode === parentInstance) {
+        child.remove()
+      }
+      if (
+        parentInstance instanceof Group &&
+        child instanceof Item
+      ) {
+        child.addTo(parentInstance)
+      }
+    },
+
+    appendChildToContainer(parentInstance, child) {
+      if (child.parentNode === parentInstance) {
+        child.remove()
+      }
+      if (
+        parentInstance instanceof Group &&
+        child instanceof Item
+      ) {
+        child.addTo(parentInstance)
+      }
+    },
+
+    insertBefore(parentInstance, child, beforeChild) {
+      invariant(
+        child !== beforeChild,
+        'PaperReact: Can not insert node before itself'
+      )
+      if (
+        parentInstance instanceof Group &&
+        child instanceof Path &&
+        beforeChild instanceof Path
+      ) {
+        child.insertAbove(beforeChild)
+      }
+    },
+
+    insertInContainerBefore(parentInstance, child, beforeChild) {
+      invariant(
+        child !== beforeChild,
+        'PaperReact: Can not insert node before itself'
+      )
+      if (
+        parentInstance instanceof Group &&
+        child instanceof Path &&
+        beforeChild instanceof Path
+      ) {
+        child.insertAbove(beforeChild)
+      }
+    },
+
+    removeChild(parentInstance, child) {
+      child.remove()
+    },
+
+    removeChildFromContainer(parentInstance, child) {
+      child.remove()
+    },
+
+    commitTextUpdate(textInstance, oldText, newText) {
+      // Noop
+    },
+
+    commitMount(instance, type, newProps) {
+      // Noop
+    },
+
+    commitUpdate(instance, updatePayload, type, oldProps, newProps, paperScope) {
+      instance._applyProps(instance, newProps, oldProps)
+    },
+  },
+
 })
 
 export default PaperRenderer

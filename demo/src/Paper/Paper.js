@@ -117,10 +117,12 @@ class Paper extends Component {
 
     const viewProps = assign(pick(this.props, [
       'activeTool', 'activeLayer', 'width', 'height',
-      'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
     ]), {
       ref: ref => this._view = ref,
       onWheel: this.props.moveToolMouseWheel,
+      matrix: pick(this.props, [
+        'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
+      ])
     })
 
     return (

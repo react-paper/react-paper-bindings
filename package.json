@@ -19,10 +19,11 @@
     "lint": "NODE_ENV=development eslint src/**"
   },
   "dependencies": {
-    "paper": "^0.11.4",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0-beta.5",
-    "react-dom": "^16.0.0-beta.5"
+    "paper": "^0.11.5",
+    "prop-types": "^15.6.0",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-reconciler": "^0.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

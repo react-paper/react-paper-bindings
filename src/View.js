@@ -23,6 +23,7 @@ export default class View extends Component {
   static propTypes = {
     activeLayer: PropTypes.number,
     activeTool: PropTypes.string,
+    canvasProps: PropTypes.object,
     className: PropTypes.string,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -56,9 +57,9 @@ export default class View extends Component {
 
     view.viewSize = new Size(width, height)
 
-    this._mountNode = PaperRenderer.createContainer(this.paper)
+    this.mountNode = PaperRenderer.createContainer(this.paper)
 
-    PaperRenderer.updateContainer(children, this._mountNode, this)
+    PaperRenderer.updateContainer(children, this.mountNode, this)
 
     if (typeof zoom === 'number') {
       view.zoom = zoom
@@ -102,11 +103,11 @@ export default class View extends Component {
       view.translate(tx, ty)
     }
 
-    PaperRenderer.updateContainer(children, this._mountNode, this)
+    PaperRenderer.updateContainer(children, this.mountNode, this)
   }
 
   componentWillUnmount() {
-    PaperRenderer.updateContainer(null, this._mountNode, this)
+    PaperRenderer.updateContainer(null, this.mountNode, this)
   }
 
   onWheel = (e) => {
@@ -122,10 +123,12 @@ export default class View extends Component {
   }
 
   render() {
+    const { className, canvasProps } = this.props
     return (
       <canvas
         ref={ref => this.canvas = ref}
-        className={this.props.className}
+        {...canvasProps}
+        className={className}
         onWheel={this.onWheel}
         onDoubleClick={this.onDoubleClick}
       />

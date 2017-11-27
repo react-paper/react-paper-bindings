@@ -18,11 +18,20 @@ cd react-paper-bindings/demo
 npm install
 
 # create-react-app does not like sources from outside its root
-# we need to symlink dist folder in development
-ln -s /path/to/react-paper-bindings/dist /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
+# we need to symlink lib folder in development
+npm run build
+ln -s /path/to/react-paper-bindings/lib /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
 
+# or npm link the library itself
+cd react-paper-bindings
+npm link
+cd demo
+npm link react-paper-bindings
+
+# then start demo with
 npm start
 ```
+If someone knows a better way, please let me know ;)
 
 ## Example
 

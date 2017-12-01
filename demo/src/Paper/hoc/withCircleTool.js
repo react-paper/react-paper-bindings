@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Path } from 'paper'
 import randomColor from 'randomcolor'
 import randomInt from 'random-int'
 
@@ -9,7 +8,8 @@ export default function withCircleTool(WrappedComponent) {
 
     mouseDown = (e) => {
       this.props.deselectItem()
-      const circle = new Path.Circle({
+      const paper = e.tool._scope
+      const circle = new paper.Path.Circle({
         center: e.point,
         fillColor: randomColor(),
         radius: randomInt(10, 60),

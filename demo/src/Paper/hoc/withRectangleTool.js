@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Path } from 'paper'
 import randomColor from 'randomcolor'
 import randomInt from 'random-int'
 
@@ -9,7 +8,8 @@ export default function withRectangleTool(WrappedComponent) {
 
     mouseDown = (e) => {
       this.props.deselectItem()
-      const rectangle = new Path.Rectangle({
+      const paper = e.tool._scope
+      const rectangle = new paper.Path.Rectangle({
         center: e.point,
         fillColor: randomColor(),
         size: randomInt(20,120),

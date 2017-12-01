@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Path } from 'paper'
 
 export default function withPenTool(WrappedComponent) {
 
@@ -15,8 +14,9 @@ export default function withPenTool(WrappedComponent) {
     }
 
     mouseDrag = (e) => {
+      const paper = e.tool._scope
       if (!this._path) {
-        this._path = new Path({
+        this._path = new paper.Path({
           segments: [e.point],
           selected: true,
           strokeColor: 'red',

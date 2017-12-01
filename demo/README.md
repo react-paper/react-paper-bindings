@@ -1,17 +1,5 @@
 # Installation
 
-Symlink folders
-
-```
-ln -s /home/bojan/www/react-paper-bindings/build /home/bojan/www/react-paper-bindings/demo/src/node_modules/react-paper-bindings
-```
-```
-ln -s /home/bojan/www/react-paper-bindings/react /home/bojan/www/react-paper-bindings/demo/src/node_modules/react
-```
-```
-ln -s /home/bojan/www/react-paper-bindings/react-dom /home/bojan/www/react-paper-bindings/demo/src/node_modules/react-dom
-```
-
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

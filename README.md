@@ -2,7 +2,7 @@
 
 ## Demo
 
-http://hribb.github.io/react-paper-bindings/
+https://hribb.github.io/react-paper-bindings/
 
 ## Development
 

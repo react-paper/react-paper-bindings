@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "homepage": "http://hribb.github.io/react-paper-bindings/",
   "dependencies": {
-    "immutability-helper": "^2.5.1",
+    "immutability-helper": "^2.6.2",
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "lodash.range": "^3.2.0",
@@ -13,13 +13,13 @@
     "prop-types": "^15.6.0",
     "random-int": "^1.0.0",
     "randomcolor": "^0.5.3",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-motion": "^0.5.2",
-    "react-portal": "^3.2.0",
+    "react-portal": "^4.1.0",
     "react-treeview": "^0.4.7",
-    "recompose": "^0.23.5",
-    "tether": "^1.4.2"
+    "recompose": "^0.26.0",
+    "tether": "^1.4.3"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0",

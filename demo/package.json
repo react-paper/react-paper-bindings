@@ -22,6 +22,7 @@
     "tether": "^1.4.3"
   },
   "devDependencies": {
+    "eslint-plugin-jsx-a11y": "^5.1.1",
     "gh-pages": "^1.1.0",
     "react-scripts": "^1.0.17"
   },

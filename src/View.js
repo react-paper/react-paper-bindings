@@ -123,6 +123,12 @@ export default class View extends Component {
 
   render() {
     const { className, canvasProps } = this.props
+    PaperRenderer.injectIntoDevTools({
+      bundleType: 1,
+      version: '1.0.3',
+      rendererPackageName: 'paper-renderer',
+      findHostInstanceByFiber: PaperRenderer.findHostInstance
+    })
     return (
       <canvas
         ref={ref => this.canvas = ref}

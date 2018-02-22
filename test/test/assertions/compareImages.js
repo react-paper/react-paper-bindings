@@ -1,26 +1,21 @@
-// assertions/compareScreenshot.js
 var resemble = require('node-resemble-js'),
   fs = require('fs');
 
-exports.assertion = function(filename, expected) {
-  var screenshotPath = 'screenshots/',
-    baselinePath = screenshotPath + 'baseline/' + filename,
-    resultPath = screenshotPath + 'results/' + filename,
-    diffPath = screenshotPath + 'diffs/' + filename;
+function getFileName(filePath) {
+ return filePath.replace(/^.*[\\\/]/, '')
+}
 
+var diffPath
+
+exports.assertion = function(file1, file2, diffDir, expected) {
   this.message = 'Unexpected compareScreenshot error.';
   this.expected = expected || 0;   // misMatchPercentage tolerance default 0%
 
-  this.command = function(callback) {
-    // create new baseline photo if none exists
-    if (!fs.existsSync(baselinePath)) {
-      console.log('WARNING: Baseline Photo does NOT exist.');
-      console.log('Creating Baseline Photo from Result: ' + baselinePath);
-      fs.writeFileSync(baselinePath, fs.readFileSync(resultPath));
-    }
+  diffPath = `${diffDir}/diff-${getFileName(file1)}-${getFileName(file2)}`
 
-    resemble(baselinePath)
-      .compareTo(resultPath)
+  this.command = function(callback) {
+    resemble(file1)
+      .compareTo(file2)
       .ignoreAntialiasing()
       .onComplete(callback);  // calls this.value with the result
 
@@ -28,29 +23,23 @@ exports.assertion = function(filename, expected) {
   };
 
   this.value = function(result) {
-    console.log(result);
-    result.getDiffImage().pack().pipe(fs.createWriteStream('screenshots/diffs/diff.png'));
-// var diff = new Buffer(result.getImageDataUrl().replace(/data:image\/png;base64,/,''), 'base64');   -->fs.writeFileSync(diffPath, 'diff.png'))
-
+    // console.log(result);
+    result.getDiffImage().pack().pipe(fs.createWriteStream(diffPath))
 
     return parseFloat(result.misMatchPercentage, 10);  // value this.pass is called with
   };
 
   this.pass = function(value) {
-    var pass = value <= this.expected;
+    let pass = value <= this.expected;
     if (pass) {
-      this.message = 'Screenshots Matched for ' + filename +
-        ' with a tolerance of ' + this.expected + '%.';
+      this.message = `${file1} matches to ${file2} with a tolerance of ${this.expected}%.`
     } else {
-      this.message = 'Screenshots Match Failed for ' + filename +
-        ' with a tolerance of ' + this.expected + '%.\n' +
-        '   Screenshots at:\n' +
-        '    Baseline: ' + baselinePath + '\n' +
-        '    Result: ' + resultPath + '\n' +
-        '    Diff: ' + diffPath + '\n' +
-        '   Open ' + diffPath + ' to see how the screenshot has changed.\n' +
-        '   If the Result Screenshot is correct you can use it to update the Baseline Screenshot and re-run your test:\n' +
-        '    cp ' + resultPath + ' ' + baselinePath;
+      this.message = `${file1} does not match to ${file2} with a tolerance of ${this.expected}%\n` +
+        `  Screenshots at:\n` +
+        `    File-1: ${file1}\n` +
+        `    File-2: ${file2}\n` +
+        `    Diff: ${diffPath}\n` +
+        `  Open ${diffPath} to see how the screenshot has changed.\n`
     }
     return pass;
   };

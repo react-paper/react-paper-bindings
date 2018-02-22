@@ -19,3 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/test/selenium-debug.log
+/test/screenshots
+/test/*.xml

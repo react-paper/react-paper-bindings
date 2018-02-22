@@ -91,5 +91,11 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.35.0",
+    "nightwatch": "^0.9.19",
+    "node-resemble-js": "^0.2.0",
+    "selenium-server-standalone-jar": "^3.9.1"
   }
 }

@@ -19,7 +19,7 @@
     "start": "NODE_ENV=development babel src -w -d lib",
     "build": "NODE_ENV=production babel src -d lib",
     "lint": "NODE_ENV=development eslint src/**",
-    "test": "NODE_ENV=test node test/index.js",
+    "test": "cd test && bash test.sh",
     "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },

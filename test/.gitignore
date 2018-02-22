@@ -22,4 +22,4 @@ yarn-error.log*
 
 /test/selenium-debug.log
 /test/screenshots
-/test/*.xml
+/test/reports

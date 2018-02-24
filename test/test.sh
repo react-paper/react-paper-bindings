@@ -7,12 +7,15 @@ exec 3< <(node scripts/start.js& echo $! > ${pid_file})
 # Check if the server started
 server_started=false
 while read line; do
+   echo "$line"
    case "$line" in
-   *Compiled\ successfully!*)
-      # echo "'$line' contains Ready. Exiting loop"
-      server_started=true
-      break
-      ;;
+   *Compiled*)
+     server_started=true
+     break
+     ;;
+   *)
+     # noop
+     ;;
    esac
 done <&3
 

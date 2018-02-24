@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Rectangle} from "../../../src";
+import {View, Rectangle, Group, Ellipse, Circle} from "../../../src";
 
 
 export default class Case01_React extends React.Component {
@@ -14,16 +14,41 @@ export default class Case01_React extends React.Component {
       y: 0,
       zoom: 1
     };
+
+    const x = 100, y = 100, rotation = 30
+
     return (
       <View width={800}
             height={600}
             matrix={matrix}
       >
-        <Rectangle
-          point={[100, 100]}
-          size={[100, 100]}
-          fillColor={'black'}
-        />
+        <Group name={'reactLogo'} rotation={rotation}>
+          <Ellipse
+            center={[x, y]}
+            size={[70, 25]}
+            strokeWidth={2.5}
+            strokeColor={'#61DAFB'}
+          />
+          <Ellipse
+            center={[x, y]}
+            rotation={120}
+            size={[70, 25]}
+            strokeWidth={2.5}
+            strokeColor={'#61DAFB'}
+          />
+          <Ellipse
+            center={[x, y]}
+            rotation={240}
+            size={[70, 25]}
+            strokeWidth={2.5}
+            strokeColor={'#61DAFB'}
+          />
+          <Circle
+            center={[x, y]}
+            fillColor={'#61DAFB'}
+            radius={7}
+          />
+        </Group>
       </View>
     )
   }

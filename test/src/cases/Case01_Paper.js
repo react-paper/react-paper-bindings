@@ -9,9 +9,10 @@ export default class Case01_Paper extends React.Component {
     paper.setup('myCanvas')
     drawGridLines(800, 600, 100)
 
-    let group = new Group()
-    const x = 100, y = 100
+    // Drawing sequence should be the same as PaperRenderer.
 
+    // 1. Child components are firstly rendered.
+    const x = 100, y = 100
     let paths = [
       Path.Ellipse({
         center: [x, y],
@@ -40,6 +41,10 @@ export default class Case01_Paper extends React.Component {
       })
     ]
 
+    // 2. Next, group component is rendered without children
+    let  group = new Group()
+
+    // 3. Initial child components are added to group
     group.addChildren(paths)
   }
 

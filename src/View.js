@@ -37,6 +37,7 @@ export default class View extends Component {
       y: PropTypes.number.isRequired,
       zoom: PropTypes.number.isRequired,
     }),
+    settings: PropTypes.object,
     onWheel: PropTypes.func,
     onDoubleClick: PropTypes.func,
   }
@@ -49,12 +50,19 @@ export default class View extends Component {
       width,
       height,
       matrix,
+      settings
     } = this.props
 
     const { x, y, zoom } = matrix
 
     this.paper = new PaperScope()
     this.paper.setup(this.canvas)
+
+    if (settings) {
+      for (let key of Object.keys(settings)) {
+        this.paper.settings[key] = settings[key]
+      }
+    }
 
     const { project, tools, view } = this.paper
 

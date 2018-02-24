@@ -39,6 +39,9 @@ function applyGroupProps(instance, props, prevProps = {}) {
   if (props.strokeColor !== prevProps.strokeColor) {
     instance.strokeColor = props.strokeColor
   }
+  if (props.fillColor !== prevProps.fillColor) {
+    instance.fillColor = props.fillColor
+  }
 }
 
 function applyLayerProps(instance, props, prevProps = {}) {
@@ -57,6 +60,9 @@ function applyLayerProps(instance, props, prevProps = {}) {
         child.strokeColor = props.strokeColor
       }
     })
+  }
+  if (props.fillColor !== prevProps.fillColor) {
+    instance.fillColor = props.fillColor
   }
 }
 

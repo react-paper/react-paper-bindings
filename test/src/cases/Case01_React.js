@@ -1,5 +1,6 @@
 import React from "react";
 import {View, Rectangle, Group, Ellipse, Circle} from "../../../src";
+import {createGridLines} from "./common";
 
 
 export default class Case01_React extends React.Component {
@@ -22,6 +23,7 @@ export default class Case01_React extends React.Component {
             height={600}
             matrix={matrix}
       >
+        {createGridLines(800, 600, 100)}
         <Group name={'reactLogo'} rotation={rotation}>
           <Ellipse
             center={[x, y]}

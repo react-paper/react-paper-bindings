@@ -1,11 +1,13 @@
 import React from "react";
 import paper, {Path, Group} from "paper";
+import {drawGridLines} from "./common";
 
 export default class Case01_Paper extends React.Component {
 
   componentDidMount() {
     paper.install(window);
     paper.setup('myCanvas')
+    drawGridLines(800, 600, 100)
 
     let group = new Group()
     const x = 100, y = 100

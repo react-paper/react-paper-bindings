@@ -1,5 +1,6 @@
+// @flow
+
 import TYPES from './types'
-import View from './View'
 
 const {
   CIRCLE,
@@ -25,5 +26,7 @@ export {
   RASTER as Raster,
   RECTANGLE as Rectangle,
   TOOL as Tool,
-  View,
 }
+
+export { default as View } from './View'
+export { default as Renderer } from './PaperRenderer'

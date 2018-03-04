@@ -1,3 +1,5 @@
+// @flow
+
 export default {
   CIRCLE: 'Circle',
   ELLIPSE: 'Ellipse',

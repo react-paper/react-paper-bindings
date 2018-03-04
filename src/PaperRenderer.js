@@ -1,8 +1,10 @@
+// @flow
+
 import ReactFiberReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
 
-import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper/dist/paper-core'
+import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper'
 
 import TYPES from './types'
 
@@ -196,16 +198,14 @@ const PaperRenderer = ReactFiberReconciler({
     if (typeof child === 'string') {
       // Noop for string children of Text (eg <Text>{'foo'}{'bar'}</Text>)
       invariant(false, 'Text children should already be flattened.')
-      return
-    }
-    if (parentInstance instanceof Group && child instanceof Item) {
+    } else if (parentInstance instanceof Group && child instanceof Item) {
       child.addTo(parentInstance)
     }
   },
 
   createInstance(type, props, paperScope) {
     const { children, ...paperProps } = props
-    let instance
+    let instance = {}
 
     switch (type) {
       case TYPES.TOOL:

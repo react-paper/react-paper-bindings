@@ -28,6 +28,19 @@ function applyItemProps(instance, props, prevProps = {}) {
   }
 }
 
+function applyStyleProps(instance, props) {
+  if (props.fillColor) {
+    instance.fillColor = props.fillColor
+  }
+  if (props.strokeColor) {
+    instance.strokeColor = props.strokeColor
+  }
+  if (props.selected) {
+    instance.selected = props.selected
+  }
+}
+
+
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
   if (! _.isEqual(props.center, prevProps.center)) {
@@ -298,6 +311,18 @@ const PaperRenderer = ReactFiberReconciler({
   },
 
   finalizeInitialChildren(domElement, type, props) {
+    // If applyMatrix=true, group props should be applied after all children have benn added.
+    // If applyMatrix=false, only style-related props (ex. fillColor, strokeColor) should be applied.
+    // TODO: add case for Layer
+    switch (type) {
+      case TYPES.GROUP:
+        if (domElement.applyMatrix) {
+          applyGroupProps(domElement, props)
+        } else {
+          applyStyleProps(domElement, props)
+        }
+        break
+    }
     return false
   },
 

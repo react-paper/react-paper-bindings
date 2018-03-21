@@ -21,10 +21,16 @@ export default class View extends Component<Props> {
   mountNode: any
 
   componentDidMount() {
-    const { activeLayer, activeTool, children, width, height } = this.props
+    const { activeLayer, activeTool, children, width, height, settings } = this.props
 
     this.paper = new PaperScope()
     this.paper.setup(this.canvas)
+
+    if (settings) {
+      for (let key of Object.keys(settings)) {
+        this.paper.settings[key] = settings[key]
+      }
+    }
 
     const { project, tools, view } = this.paper
 

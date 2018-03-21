@@ -1,0 +1,26 @@
+{
+  "src_folders": ["specs"],
+  "output_folder": "reports",
+  "custom_commands_path" : "commands",
+  "custom_assertions_path" : "assertions",
+  "selenium": {
+    "start_process": true,
+    "server_path": "../node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.9.1.jar",
+    "host": "127.0.0.1",
+    "port": 4000,
+    "cli_args": {
+      "webdriver.chrome.driver": "../node_modules/chromedriver/lib/chromedriver/chromedriver"
+    }
+  },
+  "test_settings": {
+    "default": {
+      "launch_url": "http://localhost:3000",
+      "selenium_port": 4000,
+      "selenium_host": "localhost",
+      "silent": true,
+      "desiredCapabilities": {
+        "browserName": "chrome"
+      }
+    }
+  }
+}

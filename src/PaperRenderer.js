@@ -36,6 +36,10 @@ function applyGroupProps(instance, props, prevProps = {}) {
       props.center[1] - prevProps.center[1],
     ])
   }
+  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+    instance.pivot = props.pivot
+    instance.position = props.position
+  }
   if (! arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position
   }
@@ -83,6 +87,10 @@ function applyPathProps(instance, props, prevProps = {}) {
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
     ])
+  }
+  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+    instance.pivot = props.pivot
+    instance.position = props.position
   }
   if (! arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position

@@ -1,3 +1,12 @@
 {
-  "extends": "react-app"
+  "extends": "react-app",
+  "rules": {
+    "no-unused-vars": [
+      "warn",
+      {
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ]
+  }
 }

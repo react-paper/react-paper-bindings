@@ -3,18 +3,9 @@
 <PROJECT_ROOT>/lib/
 .*/node_modules/.*\.json$
 
-[include]
-
 [libs]
 <PROJECT_ROOT>/flow/interfaces
 
 [options]
 module.system.node.resolve_dirname=src
 module.system.node.resolve_dirname=node_modules
-
-# Support for ES7 classes
-#esproposal.class_static_fields=enable
-#esproposal.class_instance_fields=enable
-
-# Enable getters and setters
-#unsafe.enable_getters_and_setters=true

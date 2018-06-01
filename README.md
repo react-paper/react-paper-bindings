@@ -12,25 +12,22 @@ cd react-paper-bindings
 npm start
 ```
 
-Start demo with `create-react-app`
+Link the library to the demo
 ```
-cd react-paper-bindings/demo
-npm install
-
-# create-react-app does not like sources from outside its root
-# we need to symlink lib folder in development
-npm run build
-ln -s /path/to/react-paper-bindings/lib /path/to/react-paper-bindings/demo/src/node_modules/react-paper-bindings
-
-# or npm link the library itself
+# npm link the library
 cd react-paper-bindings
 npm link
+
 cd demo
 npm link react-paper-bindings
+```
 
-# then start demo with
+Start demo with `create-react-app`
+```
+cd demo
 npm start
 ```
+
 If someone knows a better way, please let me know ;)
 
 ## Example

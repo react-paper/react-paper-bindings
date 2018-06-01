@@ -21,29 +21,32 @@
     "lint": "NODE_ENV=development eslint src/**",
     "test": "NODE_ENV=test node test/index.js",
     "prepublish": "npm run build",
+    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
-    "flow-bin": "^0.66.0",
     "paper": "^0.11.5",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-reconciler": "^0.7.0"
+    "prettier": "^1.13.3",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-reconciler": "0.10.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.2.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-react-app": "^3.1.0",
+    "babel-preset-react-app": "^3.1.1",
     "babel-preset-stage-0": "^6.24.1",
-    "eslint": "^4.13.1",
-    "eslint-config-react-app": "^2.0.1",
-    "eslint-plugin-flowtype": "^2.40.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.5.1",
-    "semantic-release": "^8.2.0"
+    "babel-runtime": "^6.26.0",
+    "eslint": "^4.19.1",
+    "eslint-config-react-app": "^3.0.0-next.66cc7a90",
+    "eslint-plugin-flowtype": "^2.48.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "^7.8.2",
+    "flow-bin": "^0.73.0",
+    "semantic-release": "^15.5.0"
   }
 }

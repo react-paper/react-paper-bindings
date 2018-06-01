@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import { compose } from 'recompose'
 import assign from 'object-assign'
 import pick from 'lodash.pick'
+import randomInt from 'random-int'
+
+import { Motion, spring } from 'react-motion'
 
 import {
   Layer, Raster, Tool, View,
-  Circle, Path, Rectangle, // eslint-disable-line no-unused-vars
+  Circle, Path, Rectangle, PointText, // eslint-disable-line no-unused-vars
 } from 'react-paper-bindings'
 
 import Loader from './Loader/Loader'
@@ -45,6 +48,8 @@ class Paper extends Component {
       imageLoaded: false,
       loaded: false,
       showLayers: true,
+      size: [randomInt(40,320),randomInt(40,320)],
+      open: false,
     }
     this._view = null
   }
@@ -115,15 +120,14 @@ class Paper extends Component {
       ],
     }
 
-    const viewProps = assign(pick(this.props, [
-      'activeTool', 'activeLayer', 'width', 'height',
-    ]), {
-      ref: ref => this._view = ref,
-      onWheel: this.props.moveToolMouseWheel,
-      matrix: pick(this.props, [
-        'sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom',
-      ])
-    })
+    const viewProps = assign(
+      pick(this.props, ['activeTool', 'activeLayer', 'width', 'height']),
+      {
+        ref: ref => this._view = ref,
+        onWheel: this.props.moveToolMouseWheel,
+        matrix: pick(this.props, ['sx', 'sy', 'tx', 'ty', 'x', 'y', 'zoom'])
+      }
+    )
 
     return (
       <div className={`Paper tool-${activeTool}`}>
@@ -135,8 +139,28 @@ class Paper extends Component {
         {loaded && showLayers &&
           <Layers {...layerProps} />}
         <View {...viewProps}>
-          <Layer>
+          <Layer name={'raster'}>
             <Raster locked source={image} onLoad={this.imageLoaded} />
+          </Layer>
+          <Layer name={'rectangle'} visible={imageLoaded}>
+            <Motion style={{size: spring(this.state.open ? 400 : 100)}}>
+              {({size}) =>
+                <Rectangle
+                  center={[width/2,height/2]}
+                  size={[size,size]}
+                  opacity={0.8}
+                  fillColor={'#ffffff'}
+                  onClick={() => this.setState({ open: !this.state.open })}
+                />
+              }
+            </Motion>
+            <PointText
+              point={[width/2-34,height/2+5]}
+              content={'Click Me'}
+              fillColor={'#000000'}
+              fontSize={18}
+              onClick={() => this.setState({ open: !this.state.open })}
+            />
           </Layer>
           {data.map(({ id: layerId, type, children }) =>
             <Layer
@@ -158,6 +182,7 @@ class Paper extends Component {
             </Layer>
           )}
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'select'}
             name={'select'}
             onKeyDown={this.props.selectToolKeyDown}
@@ -167,6 +192,7 @@ class Paper extends Component {
             onMouseUp={this.props.selectToolMouseUp}
           />
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'move'}
             name={'move'}
             onMouseDown={this.props.moveToolMouseDown}
@@ -174,6 +200,7 @@ class Paper extends Component {
             onMouseUp={this.props.moveToolMouseUp}
           />
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'pen'}
             name={'pen'}
             onMouseDown={this.props.penToolMouseDown}
@@ -181,16 +208,19 @@ class Paper extends Component {
             onMouseUp={this.props.penToolMouseUp}
           />
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'circle'}
             name={'circle'}
             onMouseDown={this.props.circleToolMouseDown}
           />
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'rectangle'}
             name={'rectangle'}
             onMouseDown={this.props.rectangleToolMouseDown}
           />
           <Tool
+            activeTool={activeTool}
             active={activeTool === 'delete'}
             name={'delete'}
             onMouseDown={this.props.deleteToolMouseDown}

@@ -5,31 +5,32 @@ const ZOOM_FACTOR = 1.1
 export default function withMoveTool(WrappedComponent) {
 
   return class extends Component {
-
-    constructor(props) {
-      super(props)
-      this.state = {
-        sx: 0, // scale center x
-        sy: 0, // scale center y
-        tx: 0, // translate x
-        ty: 0, // translate y
-        x: 0,
-        y: 0,
-        zoom: 1,
-      }
-      this._pan = null
-      this._pinch = null
+    state = {
+      sx: 0, // scale center x
+      sy: 0, // scale center y
+      tx: 0, // translate x
+      ty: 0, // translate y
+      x: 0,
+      y: 0,
+      zoom: 1,
     }
+
+    _pan = null
+    _pinch = null
+    _raster = null
+    _view = null
 
     /**
      * Fit image into viewport
      *
-     * @param  {Raster} image Paper.js Raster instance
+     * @param  {Raster} raster Paper.js Raster instance
      */
-    fitImage = (image) => {
+    fitImage = (raster) => {
+      this._raster = raster
+      this._view = raster.view
       const { imageWidth, imageHeight, width, height } = this.props
       // fit raster into original image size
-      image.fitBounds(0, 0, imageWidth, imageHeight)
+      raster.fitBounds(0, 0, imageWidth, imageHeight)
       // if image is already loaded
       // do not attempt to fit it again
       if (this._imageLoaded) {
@@ -144,22 +145,23 @@ export default function withMoveTool(WrappedComponent) {
      * @param  {SyntheticEvent} e    React's SyntheticEvent
      * @param  {PaperScope}     view Paper.js PaperScope instance
      */
-    mouseWheel = (e, { view }) => {
-      const { zoom } = this.state
-      const { pageX, pageY, nativeEvent } = e
+    mouseWheel = (e) => {
+      if (!this._imageLoaded) {
+        return
+      }
+      const view = this._view
+      const { clientX, clientY, nativeEvent } = e
       const { offsetLeft, offsetTop } = nativeEvent.target
       // get wheel delta
       const delta = -e.deltaY || e.wheelDelta
       // calculate new zoom from wheel event delta
-      const newZoom = delta > 0 ? zoom * ZOOM_FACTOR : zoom / ZOOM_FACTOR
+      const newZoom = delta > 0 ? 1 * ZOOM_FACTOR : 1 / ZOOM_FACTOR
       // convert mouse point to project space
-      const s = view.viewToProject(pageX - offsetLeft, pageY - offsetTop)
-      // scale paper
-      this.setState({
-        sx: s.x,
-        sy: s.y,
-        zoom: newZoom,
-      })
+      const center = view.viewToProject(clientX - offsetLeft, clientY - offsetTop)
+      // transform view
+      view.scale(newZoom, center)
+      // stop event
+      e.preventDefault()
     }
 
     /**
@@ -192,7 +194,6 @@ export default function withMoveTool(WrappedComponent) {
         const next = this.getPinchEventData(e)
         //this.setState(this.getPinchEventState(e, prev, next))
         const { sx, sy, tx, ty, zoom } = this.getPinchEventState(e, prev, next)
-        // transform view manually
         view.scale(zoom / this.state.zoom, [sx, sy])
         view.translate(tx, ty)
         this._pinch = next
@@ -205,8 +206,8 @@ export default function withMoveTool(WrappedComponent) {
         const prev = this._pan
         const next = this.getPanEventData(e)
         //this.setState(this.getPanEventState(e, prev, next))
-        const { tx, ty } = this.getPanEventState(e, prev, next)
         // transform view manually
+        const { tx, ty } = this.getPanEventState(e, prev, next)
         view.translate(tx, ty)
         this._pan = next
       }

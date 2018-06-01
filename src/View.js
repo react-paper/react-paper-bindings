@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import type { Node } from 'react'
-import { PaperScope, Size } from 'paper'
+import { PaperScope, Size } from 'paper/dist/paper-core'
 
 import PaperRenderer from './PaperRenderer'
 

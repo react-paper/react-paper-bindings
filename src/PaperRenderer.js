@@ -4,7 +4,7 @@ import ReactFiberReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
 
-import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper'
+import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper/dist/paper-core'
 
 import TYPES from './types'
 
@@ -259,7 +259,7 @@ const PaperRenderer = ReactFiberReconciler({
         }
         break;
       default:
-        invariant(instance, 'PaperReact does not support the type "%s"', type)
+        invariant(instance, 'PaperRenderer does not support the type "%s"', type)
         break
     }
 
@@ -267,7 +267,7 @@ const PaperRenderer = ReactFiberReconciler({
       instance.data.type = type
     }
 
-    invariant(instance, 'PaperReact does not support the type "%s"', type)
+    invariant(instance, 'PaperRenderer does not support the type "%s"', type)
 
     return instance
   },
@@ -353,7 +353,7 @@ const PaperRenderer = ReactFiberReconciler({
     insertBefore(parentInstance, child, beforeChild) {
       invariant(
         child !== beforeChild,
-        'PaperReact: Can not insert node before itself'
+        'PaperRenderer: Can not insert node before itself'
       )
       if (
         parentInstance instanceof Group &&
@@ -367,7 +367,7 @@ const PaperRenderer = ReactFiberReconciler({
     insertInContainerBefore(parentInstance, child, beforeChild) {
       invariant(
         child !== beforeChild,
-        'PaperReact: Can not insert node before itself'
+        'PaperRenderer: Can not insert node before itself'
       )
       if (
         parentInstance instanceof Group &&

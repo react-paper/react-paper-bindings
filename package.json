@@ -3,13 +3,13 @@
   "description": "Paper.js bindings for React",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com> (http://climbuddy.com/)",
   "license": "ISC",
-  "homepage": "https://github.com/HriBB/react-paper-bindings",
+  "homepage": "https://github.com/react-paper/react-paper-bindings",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HriBB/react-paper-bindings.git"
+    "url": "https://github.com/react-paper/react-paper-bindings.git"
   },
   "bugs": {
-    "url": "https://github.com/HriBB/react-paper-bindings/issues"
+    "url": "https://github.com/react-paper/react-paper-bindings/issues"
   },
   "files": [
     "lib"
@@ -22,7 +22,8 @@
     "test": "NODE_ENV=test node test/index.js",
     "prepublish": "npm run build",
     "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "dependencies": {
     "paper": "^0.11.5",
@@ -47,6 +48,8 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "flow-bin": "^0.73.0",
-    "semantic-release": "^15.5.0"
-  }
+    "semantic-release": "^15.5.0",
+    "travis-deploy-once": "^5.0.0"
+  },
+  "version": "0.0.0-development"
 }

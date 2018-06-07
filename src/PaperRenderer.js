@@ -3,12 +3,20 @@
 import ReactFiberReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
-import _ from "lodash";
+import _ from 'lodash'
 
-import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper/dist/paper-core'
+import {
+  Group,
+  Item,
+  Layer,
+  Path,
+  PointText,
+  Raster,
+  Tool,
+} from 'paper/dist/paper-core'
 
 import TYPES from './types'
-import {arePointsEqual} from "./utils";
+import { arePointsEqual } from './utils'
 
 function applyItemProps(instance, props, prevProps = {}) {
   if (props.blendMode !== prevProps.blendMode) {
@@ -40,20 +48,19 @@ function applyStyleProps(instance, props) {
   }
 }
 
-
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (! _.isEqual(props.center, prevProps.center)) {
+  if (!_.isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
     ])
   }
-  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+  if (!arePointsEqual(props.pivot, prevProps.pivot)) {
     instance.pivot = props.pivot
     instance.position = props.position
   }
-  if (! arePointsEqual(props.position, prevProps.position)) {
+  if (!arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position
   }
   if (props.rotation !== prevProps.rotation) {
@@ -95,17 +102,17 @@ function applyLayerProps(instance, props, prevProps = {}) {
 
 function applyPathProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (! _.isEqual(props.center, prevProps.center)) {
+  if (!_.isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
     ])
   }
-  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+  if (!arePointsEqual(props.pivot, prevProps.pivot)) {
     instance.pivot = props.pivot
     instance.position = props.position
   }
-  if (! arePointsEqual(props.position, prevProps.position)) {
+  if (!arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position
   }
   if (props.closed !== prevProps.closed) {
@@ -123,7 +130,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.pathData !== prevProps.pathData) {
     instance.pathData = props.pathData
   }
-    if (! _.isEqual(props.point, prevProps.point)) {
+  if (!_.isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -150,15 +157,14 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.strokeWidth !== prevProps.strokeWidth) {
     instance.strokeWidth = props.strokeWidth
   }
-
 }
 
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (! _.isEqual(props.size, prevProps.size)) {
+  if (!_.isEqual(props.size, prevProps.size)) {
     instance.scale(
       props.size[0] / prevProps.size[0],
-      props.size[1] / prevProps.size[1],
+      props.size[1] / prevProps.size[1]
     )
   }
 }
@@ -200,7 +206,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.fontWeight !== prevProps.fontWeight) {
     instance.fontWeight = props.fontWeight
   }
-  if (! _.isEqual(props.point, prevProps.point)) {
+  if (!_.isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -233,7 +239,6 @@ function applyToolProps(instance, props, prevProps = {}) {
 }
 
 const PaperRenderer = ReactFiberReconciler({
-
   appendInitialChild(parentInstance, child) {
     if (typeof child === 'string') {
       // Noop for string children of Text (eg <Text>{'foo'}{'bar'}</Text>)
@@ -291,9 +296,13 @@ const PaperRenderer = ReactFiberReconciler({
         if (typeof onLoad === 'function') {
           instance.onLoad = () => onLoad(instance)
         }
-        break;
+        break
       default:
-        invariant(instance, 'PaperRenderer does not support the type "%s"', type)
+        invariant(
+          instance,
+          'PaperRenderer does not support the type "%s"',
+          type
+        )
         break
     }
 
@@ -322,12 +331,14 @@ const PaperRenderer = ReactFiberReconciler({
           applyStyleProps(domElement, props)
         }
         break
+      default:
+        break;
     }
     return false
   },
 
   getPublicInstance(instance) {
-    return instance;
+    return instance
   },
 
   prepareForCommit() {
@@ -347,7 +358,7 @@ const PaperRenderer = ReactFiberReconciler({
   },
 
   shouldDeprioritizeSubtree(type, props) {
-    return false;
+    return false
   },
 
   getRootHostContext() {
@@ -362,8 +373,7 @@ const PaperRenderer = ReactFiberReconciler({
 
   shouldSetTextContent(type, props) {
     return (
-      typeof props.children === 'string' ||
-      typeof props.children === 'number'
+      typeof props.children === 'string' || typeof props.children === 'number'
     )
   },
 
@@ -376,10 +386,7 @@ const PaperRenderer = ReactFiberReconciler({
       if (child.parentNode === parentInstance) {
         child.remove()
       }
-      if (
-        parentInstance instanceof Group &&
-        child instanceof Item
-      ) {
+      if (parentInstance instanceof Group && child instanceof Item) {
         child.addTo(parentInstance)
       }
     },
@@ -388,10 +395,7 @@ const PaperRenderer = ReactFiberReconciler({
       if (child.parentNode === parentInstance) {
         child.remove()
       }
-      if (
-        parentInstance instanceof Group &&
-        child instanceof Item
-      ) {
+      if (parentInstance instanceof Group && child instanceof Item) {
         child.addTo(parentInstance)
       }
     },
@@ -440,11 +444,17 @@ const PaperRenderer = ReactFiberReconciler({
       // Noop
     },
 
-    commitUpdate(instance, updatePayload, type, oldProps, newProps, paperScope) {
+    commitUpdate(
+      instance,
+      updatePayload,
+      type,
+      oldProps,
+      newProps,
+      paperScope
+    ) {
       instance._applyProps(instance, newProps, oldProps)
     },
   },
-
 })
 
 export default PaperRenderer

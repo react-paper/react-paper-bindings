@@ -14,6 +14,7 @@ type Props = {
   children: Node,
   width: number,
   height: number,
+  settings?: Object,
 }
 
 export default class View extends Component<Props> {
@@ -22,7 +23,14 @@ export default class View extends Component<Props> {
   mountNode: FiberRoot
 
   componentDidMount() {
-    const { activeLayer, activeTool, children, width, height, settings } = this.props
+    const {
+      activeLayer,
+      activeTool,
+      children,
+      width,
+      height,
+      settings,
+    } = this.props
 
     this.paper = new PaperScope()
     this.paper.setup(this.canvas)
@@ -81,7 +89,7 @@ export default class View extends Component<Props> {
       bundleType: process.env.NODE_ENV === 'production' ? 0 : 1,
       version: '0.10.0',
       rendererPackageName: 'react-paper-bindings',
-      findHostInstanceByFiber: PaperRenderer.findHostInstance
+      findHostInstanceByFiber: PaperRenderer.findHostInstance,
     })
     const {
       activeLayer,
@@ -91,9 +99,6 @@ export default class View extends Component<Props> {
       height,
       ...other
     } = this.props
-    return (
-      <canvas ref={this.canvasRef} {...other} />
-    )
+    return <canvas {...other} ref={this.canvasRef} />
   }
-
 }

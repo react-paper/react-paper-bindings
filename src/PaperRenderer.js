@@ -3,10 +3,12 @@
 import ReactFiberReconciler from 'react-reconciler'
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
+import _ from "lodash";
 
 import { Group, Item, Layer, Path, PointText, Raster, Tool } from 'paper/dist/paper-core'
 
 import TYPES from './types'
+import {arePointsEqual} from "./utils";
 
 function applyItemProps(instance, props, prevProps = {}) {
   if (props.blendMode !== prevProps.blendMode) {
@@ -26,16 +28,39 @@ function applyItemProps(instance, props, prevProps = {}) {
   }
 }
 
+function applyStyleProps(instance, props) {
+  if (props.fillColor) {
+    instance.fillColor = props.fillColor
+  }
+  if (props.strokeColor) {
+    instance.strokeColor = props.strokeColor
+  }
+  if (props.selected) {
+    instance.selected = props.selected
+  }
+}
+
+
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (props.center !== prevProps.center) {
+  if (! _.isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
     ])
   }
+  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+    instance.pivot = props.pivot
+    instance.position = props.position
+  }
+  if (! arePointsEqual(props.position, prevProps.position)) {
+    instance.position = props.position
+  }
   if (props.rotation !== prevProps.rotation) {
-    instance.rotate(props.rotation - prevProps.rotation)
+    // in case null is set
+    const rotation = props.rotation ? props.rotation : 0
+    const prevRotation = prevProps.rotation ? prevProps.rotation : 0
+    instance.rotate(rotation - prevRotation)
   }
   // TODO: check if this is ok
   if (props.strokeColor !== prevProps.strokeColor) {
@@ -70,11 +95,18 @@ function applyLayerProps(instance, props, prevProps = {}) {
 
 function applyPathProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (props.center !== prevProps.center) {
+  if (! _.isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
     ])
+  }
+  if (! arePointsEqual(props.pivot, prevProps.pivot)) {
+    instance.pivot = props.pivot
+    instance.position = props.position
+  }
+  if (! arePointsEqual(props.position, prevProps.position)) {
+    instance.position = props.position
   }
   if (props.closed !== prevProps.closed) {
     instance.closed = props.closed
@@ -91,16 +123,18 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.pathData !== prevProps.pathData) {
     instance.pathData = props.pathData
   }
-  if (props.point !== prevProps.point) {
+    if (! _.isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
     ])
   }
   if (props.rotation !== prevProps.rotation) {
-    instance.rotate(props.rotation - prevProps.rotation)
+    // in case null is set
+    const rotation = props.rotation ? props.rotation : 0
+    const prevRotation = prevProps.rotation ? prevProps.rotation : 0
+    instance.rotate(rotation - prevRotation)
   }
-
   if (props.strokeCap !== prevProps.strokeCap) {
     instance.strokeCap = props.strokeCap
   }
@@ -121,7 +155,7 @@ function applyPathProps(instance, props, prevProps = {}) {
 
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (props.size !== prevProps.size) {
+  if (! _.isEqual(props.size, prevProps.size)) {
     instance.scale(
       props.size[0] / prevProps.size[0],
       props.size[1] / prevProps.size[1],
@@ -166,7 +200,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.fontWeight !== prevProps.fontWeight) {
     instance.fontWeight = props.fontWeight
   }
-  if (props.point !== prevProps.point) {
+  if (! _.isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -277,6 +311,18 @@ const PaperRenderer = ReactFiberReconciler({
   },
 
   finalizeInitialChildren(domElement, type, props) {
+    // If applyMatrix=true, group props should be applied after all children have benn added.
+    // If applyMatrix=false, only style-related props (ex. fillColor, strokeColor) should be applied.
+    // TODO: add case for Layer
+    switch (type) {
+      case TYPES.GROUP:
+        if (domElement.applyMatrix) {
+          applyGroupProps(domElement, props)
+        } else {
+          applyStyleProps(domElement, props)
+        }
+        break
+    }
     return false
   },
 

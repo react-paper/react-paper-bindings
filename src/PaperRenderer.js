@@ -369,7 +369,7 @@ const PaperRenderer = ReactFiberReconciler({
     return emptyObject
   },
 
-  scheduleDeferredCallback: window.requestIdleCallback,
+  scheduleDeferredCallback: typeof window !== 'undefined' ? window.requestIdleCallback : null,
 
   shouldSetTextContent(type, props) {
     return (

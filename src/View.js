@@ -36,9 +36,7 @@ export default class View extends Component<Props> {
     this.paper.setup(this.canvas)
 
     if (settings) {
-      for (let key of Object.keys(settings)) {
-        this.paper.settings[key] = settings[key]
-      }
+      this.paper.settings = Object.assign({}, this.paper.settings, settings);
     }
 
     const { project, tools, view } = this.paper

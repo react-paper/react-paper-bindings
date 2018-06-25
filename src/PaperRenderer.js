@@ -65,8 +65,8 @@ function applyGroupProps(instance, props, prevProps = {}) {
   }
   if (props.rotation !== prevProps.rotation) {
     // in case null is set
-    const rotation = props.rotation ? props.rotation : 0
-    const prevRotation = prevProps.rotation ? prevProps.rotation : 0
+    const rotation = props.rotation || 0
+    const prevRotation = prevProps.rotation || 0
     instance.rotate(rotation - prevRotation)
   }
   // TODO: check if this is ok
@@ -138,8 +138,8 @@ function applyPathProps(instance, props, prevProps = {}) {
   }
   if (props.rotation !== prevProps.rotation) {
     // in case null is set
-    const rotation = props.rotation ? props.rotation : 0
-    const prevRotation = prevProps.rotation ? prevProps.rotation : 0
+    const rotation = props.rotation || 0
+    const prevRotation = prevProps.rotation || 0
     instance.rotate(rotation - prevRotation)
   }
   if (props.strokeCap !== prevProps.strokeCap) {

@@ -194,6 +194,7 @@ function applyRasterProps(instance, props, prevProps = {}) {
 }
 
 function applyPointTextProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.content !== prevProps.content) {
     instance.content = props.content
   }

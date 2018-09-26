@@ -212,6 +212,9 @@ function applyPointTextProps(instance, props, prevProps = {}) {
       props.point[1] - prevProps.point[1],
     ])
   }
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotation = props.rotation;
+  }
 }
 
 function applyToolProps(instance, props, prevProps = {}) {

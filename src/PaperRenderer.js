@@ -28,6 +28,9 @@ function applyItemProps(instance, props, prevProps = {}) {
   if (props.opacity !== prevProps.opacity) {
     instance.opacity = props.opacity
   }
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotation = props.rotation;
+  }
   if (props.selected !== prevProps.selected) {
     instance.selected = props.selected
   }
@@ -211,10 +214,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
     ])
-  }
-  if (props.rotation !== prevProps.rotation) {
-    instance.rotation = props.rotation;
-  }
+  }  
 }
 
 function applyToolProps(instance, props, prevProps = {}) {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { Portal } from 'react-portal'
 import Tether from 'tether'
@@ -16,6 +15,11 @@ const POS = {
 }
 
 export default class Dropdown extends Component {
+
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef()
+  }
 
   static propTypes = {
     align: function(props, propName, componentName) {
@@ -42,7 +46,6 @@ export default class Dropdown extends Component {
 
   onOpen = (portalNode) => {
     const { align, offset } = this.props
-    const targetNode = findDOMNode(this)
     const [ay,ax,ty,tx] = align.split('').map(a => a && POS[a]).filter(a => a)
     const [oy,ox] = offset.split(' ').map(o => parseInt(o, 10))
 
@@ -50,7 +53,7 @@ export default class Dropdown extends Component {
 
     this._tether = new Tether({
       element: portalNode,
-      target: targetNode,
+      target: this.ref,
       attachment: `${ay} ${ax}`,
       targetAttachment: `${ty} ${tx}`,
       offset: `${oy} ${ox}`,
@@ -75,7 +78,6 @@ export default class Dropdown extends Component {
       clearTimeout(this._timeout)
     }
   }
-
   render() {
     const { children, closeOnEsc, closeOnOutsideClick, target } = this.props
     return (
@@ -84,7 +86,9 @@ export default class Dropdown extends Component {
         closeOnOutsideClick={closeOnOutsideClick}
         openByClickOn={target}
         onOpen={this.onOpen}
-        beforeClose={this.beforeClose}>
+        beforeClose={this.beforeClose}
+        ref={this.ref}
+      >
         {children}
       </Portal>
     )

@@ -1,9 +1,14 @@
 // @flow
 
-import ReactFiberReconciler from 'react-reconciler'
+import Reconciler from 'react-reconciler'
+import {
+  unstable_now as now,
+  unstable_scheduleCallback as scheduleDeferredCallback,
+  unstable_cancelCallback as cancelDeferredCallback,
+} from 'scheduler';
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
-import _ from 'lodash'
+import isEqual from 'lodash.isequal'
 
 import {
   Group,
@@ -50,7 +55,7 @@ function applyStyleProps(instance, props) {
 
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!_.isEqual(props.center, prevProps.center)) {
+  if (!isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -102,7 +107,7 @@ function applyLayerProps(instance, props, prevProps = {}) {
 
 function applyPathProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!_.isEqual(props.center, prevProps.center)) {
+  if (!isEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -130,7 +135,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.pathData !== prevProps.pathData) {
     instance.pathData = props.pathData
   }
-  if (!_.isEqual(props.point, prevProps.point)) {
+  if (!isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -161,7 +166,7 @@ function applyPathProps(instance, props, prevProps = {}) {
 
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (!_.isEqual(props.size, prevProps.size)) {
+  if (!isEqual(props.size, prevProps.size)) {
     instance.scale(
       props.size[0] / prevProps.size[0],
       props.size[1] / prevProps.size[1]
@@ -206,7 +211,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.fontWeight !== prevProps.fontWeight) {
     instance.fontWeight = props.fontWeight
   }
-  if (!_.isEqual(props.point, prevProps.point)) {
+  if (!isEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -238,7 +243,7 @@ function applyToolProps(instance, props, prevProps = {}) {
   }
 }
 
-const PaperRenderer = ReactFiberReconciler({
+const PaperRenderer = Reconciler({
   appendInitialChild(parentInstance, child) {
     if (typeof child === 'string') {
       // Noop for string children of Text (eg <Text>{'foo'}{'bar'}</Text>)
@@ -289,7 +294,7 @@ const PaperRenderer = ReactFiberReconciler({
         instance = new Path.Rectangle(paperProps)
         instance._applyProps = applyRectangleProps
         break
-      case TYPES.RASTER:
+      case TYPES.RASTER: {
         const { onLoad, ...rasterProps } = paperProps
         instance = new Raster(rasterProps)
         instance._applyProps = applyRasterProps
@@ -297,6 +302,7 @@ const PaperRenderer = ReactFiberReconciler({
           instance.onLoad = () => onLoad(instance)
         }
         break
+      }
       default:
         invariant(
           instance,
@@ -369,7 +375,19 @@ const PaperRenderer = ReactFiberReconciler({
     return emptyObject
   },
 
-  scheduleDeferredCallback: typeof window !== 'undefined' ? window.requestIdleCallback : null,
+  isPrimaryRenderer: false,
+  supportsMutation: true,
+  supportsHydration: false,
+  supportsPersistence: false,
+  //useSyncScheduling: true,
+
+  scheduleTimeout: setTimeout,
+  cancelTimeout: clearTimeout,
+  noTimeout: -1,
+
+  now,
+  scheduleDeferredCallback,
+  cancelDeferredCallback,
 
   shouldSetTextContent(type, props) {
     return (
@@ -377,83 +395,70 @@ const PaperRenderer = ReactFiberReconciler({
     )
   },
 
-  useSyncScheduling: true,
-
-  now: Date.now,
-
-  mutation: {
-    appendChild(parentInstance, child) {
-      if (child.parentNode === parentInstance) {
-        child.remove()
-      }
-      if (parentInstance instanceof Group && child instanceof Item) {
-        child.addTo(parentInstance)
-      }
-    },
-
-    appendChildToContainer(parentInstance, child) {
-      if (child.parentNode === parentInstance) {
-        child.remove()
-      }
-      if (parentInstance instanceof Group && child instanceof Item) {
-        child.addTo(parentInstance)
-      }
-    },
-
-    insertBefore(parentInstance, child, beforeChild) {
-      invariant(
-        child !== beforeChild,
-        'PaperRenderer: Can not insert node before itself'
-      )
-      if (
-        parentInstance instanceof Group &&
-        child instanceof Path &&
-        beforeChild instanceof Path
-      ) {
-        child.insertAbove(beforeChild)
-      }
-    },
-
-    insertInContainerBefore(parentInstance, child, beforeChild) {
-      invariant(
-        child !== beforeChild,
-        'PaperRenderer: Can not insert node before itself'
-      )
-      if (
-        parentInstance instanceof Group &&
-        child instanceof Path &&
-        beforeChild instanceof Path
-      ) {
-        child.insertAbove(beforeChild)
-      }
-    },
-
-    removeChild(parentInstance, child) {
+  appendChild(parentInstance, child) {
+    if (child.parentNode === parentInstance) {
       child.remove()
-    },
+    }
+    if (parentInstance instanceof Group && child instanceof Item) {
+      child.addTo(parentInstance)
+    }
+  },
 
-    removeChildFromContainer(parentInstance, child) {
+  appendChildToContainer(parentInstance, child) {
+    if (child.parentNode === parentInstance) {
       child.remove()
-    },
+    }
+    if (parentInstance instanceof Group && child instanceof Item) {
+      child.addTo(parentInstance)
+    }
+  },
 
-    commitTextUpdate(textInstance, oldText, newText) {
-      // Noop
-    },
-
-    commitMount(instance, type, newProps) {
-      // Noop
-    },
-
-    commitUpdate(
-      instance,
-      updatePayload,
-      type,
-      oldProps,
-      newProps,
-      paperScope
+  insertBefore(parentInstance, child, beforeChild) {
+    invariant(
+      child !== beforeChild,
+      'PaperRenderer: Can not insert node before itself'
+    )
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Path &&
+      beforeChild instanceof Path
     ) {
-      instance._applyProps(instance, newProps, oldProps)
-    },
+      child.insertAbove(beforeChild)
+    }
+  },
+
+  insertInContainerBefore(parentInstance, child, beforeChild) {
+    invariant(
+      child !== beforeChild,
+      'PaperRenderer: Can not insert node before itself'
+    )
+    if (
+      parentInstance instanceof Group &&
+      child instanceof Path &&
+      beforeChild instanceof Path
+    ) {
+      child.insertAbove(beforeChild)
+    }
+  },
+
+  removeChild(parentInstance, child) {
+    child.remove()
+  },
+
+  removeChildFromContainer(parentInstance, child) {
+    child.remove()
+  },
+
+  commitTextUpdate(textInstance, oldText, newText) {
+    // Noop
+  },
+
+  commitMount(instance, type, newProps) {
+    // Noop
+  },
+
+  commitUpdate(instance, updatePayload, type, oldProps, newProps, paperScope) {
+    instance._applyProps(instance, newProps, oldProps)
   },
 })
 

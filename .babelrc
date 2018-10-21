@@ -1,3 +1,33 @@
 {
-  "presets": ["react","es2015","stage-0"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "modules": false,
+        "useBuiltIns": "usage",
+        "shippedProposals": true,
+        "targets": {
+          "browsers": [">0.2%, not dead, not ie <= 11, not op_mini all"]
+        }
+      }
+    ],
+    [
+      "@babel/preset-react",
+      {
+        "useBuiltIns": true,
+        "pragma": "React.createElement"
+      }
+    ],
+    "@babel/preset-flow"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    "@babel/plugin-proposal-object-rest-spread"
+  ]
 }

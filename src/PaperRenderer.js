@@ -169,6 +169,19 @@ function applyRectangleProps(instance, props, prevProps = {}) {
   }
 }
 
+function applyArcProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (!_.isEqual(props.from, prevProps.from)) {
+    instance.from = props.from
+  }
+  if (!_.isEqual(props.to, prevProps.to)) {
+    instance.to = props.to
+  }
+  if (!_.isEqual(props.through, prevProps.through)) {
+    instance.through = props.through
+  }
+}
+
 function applyCircleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
   if (props.radius !== prevProps.radius) {
@@ -288,6 +301,10 @@ const PaperRenderer = ReactFiberReconciler({
       case TYPES.RECTANGLE:
         instance = new Path.Rectangle(paperProps)
         instance._applyProps = applyRectangleProps
+        break
+      case TYPES.ARC:
+        instance = new Path.Arc(paperProps)
+        instance._applyProps = applyArcProps
         break
       case TYPES.RASTER:
         const { onLoad, ...rasterProps } = paperProps

@@ -7,6 +7,7 @@ export default function withCircleTool(WrappedComponent) {
   return class extends Component {
 
     mouseDown = (e) => {
+      console.log('circle mouseDown')
       this.props.deselectItem()
       const paper = e.tool._scope
       const circle = new paper.Path.Circle({

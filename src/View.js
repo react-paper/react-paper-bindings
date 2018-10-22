@@ -23,6 +23,7 @@ export default class View extends Component<Props> {
   mountNode: FiberRoot
 
   componentDidMount() {
+    console.log('mount')
     const {
       activeLayer,
       activeTool,

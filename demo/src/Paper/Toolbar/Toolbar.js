@@ -9,6 +9,7 @@ import './Toolbar.css'
 
 const Toolbar = (props) => {
   const { activeTool, fullscreen, imageSize, showLayers } = props
+  console.log(activeTool)
   return (
     <div className={'Toolbar'}>
       <div>

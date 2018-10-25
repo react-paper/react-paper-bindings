@@ -3,10 +3,10 @@
 import React, { Component } from 'react'
 import { PaperScope, Size } from 'paper/dist/paper-core'
 
+import PaperRenderer from './PaperRenderer'
+
 import type { Node, ElementRef } from 'react'
 import type { FiberRoot } from 'react-reconciler'
-
-import PaperRenderer from './PaperRenderer'
 
 type CanvasRef = {
   current: ElementRef<any> | null,

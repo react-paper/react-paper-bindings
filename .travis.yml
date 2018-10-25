@@ -1,10 +1,21 @@
 language: node_js
+env: CXX=g++-4.9
 cache: yarn
 node_js: '10'
 notifications:
   email: false
+addons:
+  apt:
+    sources: 
+      - ubuntu-toolchain-r-test
+    packages:
+      - build-essential
+      - g++-4.9
+      - libcairo2-dev
+      - libpango1.0-dev
+      - libssl-dev
+      - libjpeg62-dev
+      - libgif-dev
+      - pkg-config
 after_success:
   - yarn travis-deploy-once "yarn semantic-release"
-branches:
-  except:
-    - /^v\d+\.\d+\.\d+$/

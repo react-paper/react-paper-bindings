@@ -9,7 +9,7 @@ const HIT_TEST_OPTIONS = {
 
 export default function withSelectTool(WrappedComponent) {
 
-  return class extends Component {
+  return class SelectTool extends Component {
 
     constructor(props) {
       super(props)

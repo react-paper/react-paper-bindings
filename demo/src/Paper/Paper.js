@@ -95,7 +95,7 @@ class Paper extends Component {
     this.setState({ imageLoaded: true, loaded: true })
   }
 
-  componentWillUpdate(nextProps) {
+  componentDidUpdate(nextProps) {
     const { image } = this.props
     if (image !== nextProps.image) {
       this.setState({ imageLoaded: false })

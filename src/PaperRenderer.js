@@ -8,7 +8,6 @@ import {
 } from 'scheduler';
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
-import isEqual from 'lodash.isequal'
 
 import {
   Group,
@@ -55,7 +54,7 @@ function applyStyleProps(instance, props) {
 
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!isEqual(props.center, prevProps.center)) {
+  if (!arePointsEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -63,7 +62,6 @@ function applyGroupProps(instance, props, prevProps = {}) {
   }
   if (!arePointsEqual(props.pivot, prevProps.pivot)) {
     instance.pivot = props.pivot
-    instance.position = props.position
   }
   if (!arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position
@@ -107,7 +105,7 @@ function applyLayerProps(instance, props, prevProps = {}) {
 
 function applyPathProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!isEqual(props.center, prevProps.center)) {
+  if (!arePointsEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -135,7 +133,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.pathData !== prevProps.pathData) {
     instance.pathData = props.pathData
   }
-  if (!isEqual(props.point, prevProps.point)) {
+  if (!arePointsEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -166,7 +164,7 @@ function applyPathProps(instance, props, prevProps = {}) {
 
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (!isEqual(props.size, prevProps.size)) {
+  if (!arePointsEqual(props.size, prevProps.size)) {
     instance.scale(
       props.size[0] / prevProps.size[0],
       props.size[1] / prevProps.size[1]
@@ -211,7 +209,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.fontWeight !== prevProps.fontWeight) {
     instance.fontWeight = props.fontWeight
   }
-  if (!isEqual(props.point, prevProps.point)) {
+  if (!arePointsEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -312,7 +310,10 @@ const PaperRenderer = Reconciler({
         break
     }
 
-    if (instance.data && !instance.data.type) {
+    // apply data type
+    if (!instance.data) {
+      instance.data = { type }
+    } else if (!instance.data.type) {
       instance.data.type = type
     }
 

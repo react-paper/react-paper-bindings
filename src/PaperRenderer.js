@@ -20,6 +20,7 @@ import {
 } from 'paper/dist/paper-core'
 
 import TYPES from './types'
+
 import { arePointsEqual } from './utils'
 
 function applyItemProps(instance, props, prevProps = {}) {
@@ -186,6 +187,19 @@ function applyEllipseProps(instance, props, prevProps = {}) {
   applyRectangleProps(instance, props, prevProps)
 }
 
+function applyArcProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (!arePointsEqual(props.from, prevProps.from)) {
+    instance.from = props.from
+  }
+  if (!arePointsEqual(props.to, prevProps.to)) {
+    instance.to = props.to
+  }
+  if (!arePointsEqual(props.through, prevProps.through)) {
+    instance.through = props.through
+  }
+}
+
 function applyRasterProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
   if (props.source !== prevProps.source) {
@@ -295,6 +309,10 @@ const PaperRenderer = Reconciler({
       case TYPES.RECTANGLE:
         instance = new Path.Rectangle(paperProps)
         instance._applyProps = applyRectangleProps
+        break
+      case TYPES.ARC:
+        instance = new Path.Arc(paperProps)
+        instance._applyProps = applyArcProps
         break
       case TYPES.RASTER: {
         const { onLoad, ...rasterProps } = paperProps

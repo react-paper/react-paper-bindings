@@ -32,6 +32,9 @@ function applyItemProps(instance, props, prevProps = {}) {
   if (props.opacity !== prevProps.opacity) {
     instance.opacity = props.opacity
   }
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotation = props.rotation;
+  }
   if (props.selected !== prevProps.selected) {
     instance.selected = props.selected
   }
@@ -194,6 +197,7 @@ function applyRasterProps(instance, props, prevProps = {}) {
 }
 
 function applyPointTextProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.content !== prevProps.content) {
     instance.content = props.content
   }

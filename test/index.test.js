@@ -3,7 +3,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { shallow, mount, render } from 'enzyme'
+import { mount } from 'enzyme'
 import sinon from 'sinon'
 
 import App from './components/App'

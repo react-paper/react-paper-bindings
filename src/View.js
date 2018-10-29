@@ -5,12 +5,8 @@ import { PaperScope, Size } from 'paper/dist/paper-core'
 
 import PaperRenderer from './PaperRenderer'
 
-import type { Node, ElementRef } from 'react'
+import type { Node } from 'react'
 import type { FiberRoot } from 'react-reconciler'
-
-type CanvasRef = {
-  current: ElementRef<any> | null,
-}
 
 type Props = {
   children?: Node,
@@ -20,8 +16,8 @@ type Props = {
 }
 
 export default class View extends Component<Props> {
-  canvas: CanvasRef
-  scope: PaperScope
+  canvas: { current: HTMLCanvasElement | null }
+  scope: typeof PaperScope
   mountNode: FiberRoot
 
   constructor(props: Props) {
@@ -74,6 +70,6 @@ export default class View extends Component<Props> {
 PaperRenderer.injectIntoDevTools({
   findFiberByHostInstance: () => null,
   bundleType: process.env.NODE_ENV === 'production' ? 0 : 1,
-  version: '16.5.2',
   rendererPackageName: 'react-paper-bindings',
+  version: '2.0.0',
 })

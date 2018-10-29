@@ -99,8 +99,8 @@
       "react": {
         "createClass": "createReactClass",
         "pragma": "React",
-        "version": "16.5.1",
-        "flowVersion": "0.80.0"
+        "version": "16.6.0",
+        "flowVersion": "0.84.0"
       }
     },
     "env": {

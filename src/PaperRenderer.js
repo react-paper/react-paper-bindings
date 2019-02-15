@@ -8,7 +8,6 @@ import {
 } from 'scheduler';
 import invariant from 'fbjs/lib/invariant'
 import emptyObject from 'fbjs/lib/emptyObject'
-import isEqual from 'lodash.isequal'
 
 import {
   Group,
@@ -21,6 +20,7 @@ import {
 } from 'paper/dist/paper-core'
 
 import TYPES from './types'
+
 import { arePointsEqual } from './utils'
 
 function applyItemProps(instance, props, prevProps = {}) {
@@ -32,6 +32,9 @@ function applyItemProps(instance, props, prevProps = {}) {
   }
   if (props.opacity !== prevProps.opacity) {
     instance.opacity = props.opacity
+  }
+  if (props.rotation !== prevProps.rotation) {
+    instance.rotation = props.rotation;
   }
   if (props.selected !== prevProps.selected) {
     instance.selected = props.selected
@@ -55,7 +58,7 @@ function applyStyleProps(instance, props) {
 
 function applyGroupProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!isEqual(props.center, prevProps.center)) {
+  if (!arePointsEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -63,7 +66,6 @@ function applyGroupProps(instance, props, prevProps = {}) {
   }
   if (!arePointsEqual(props.pivot, prevProps.pivot)) {
     instance.pivot = props.pivot
-    instance.position = props.position
   }
   if (!arePointsEqual(props.position, prevProps.position)) {
     instance.position = props.position
@@ -107,7 +109,7 @@ function applyLayerProps(instance, props, prevProps = {}) {
 
 function applyPathProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
-  if (!isEqual(props.center, prevProps.center)) {
+  if (!arePointsEqual(props.center, prevProps.center)) {
     instance.translate([
       props.center[0] - prevProps.center[0],
       props.center[1] - prevProps.center[1],
@@ -135,7 +137,7 @@ function applyPathProps(instance, props, prevProps = {}) {
   if (props.pathData !== prevProps.pathData) {
     instance.pathData = props.pathData
   }
-  if (!isEqual(props.point, prevProps.point)) {
+  if (!arePointsEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -166,11 +168,24 @@ function applyPathProps(instance, props, prevProps = {}) {
 
 function applyRectangleProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (!isEqual(props.size, prevProps.size)) {
+  if (!arePointsEqual(props.size, prevProps.size)) {
     instance.scale(
       props.size[0] / prevProps.size[0],
       props.size[1] / prevProps.size[1]
     )
+  }
+}
+
+function applyArcProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (!_.isEqual(props.from, prevProps.from)) {
+    instance.from = props.from
+  }
+  if (!_.isEqual(props.to, prevProps.to)) {
+    instance.to = props.to
+  }
+  if (!_.isEqual(props.through, prevProps.through)) {
+    instance.through = props.through
   }
 }
 
@@ -185,6 +200,19 @@ function applyEllipseProps(instance, props, prevProps = {}) {
   applyRectangleProps(instance, props, prevProps)
 }
 
+function applyArcProps(instance, props, prevProps = {}) {
+  applyPathProps(instance, props, prevProps)
+  if (!arePointsEqual(props.from, prevProps.from)) {
+    instance.from = props.from
+  }
+  if (!arePointsEqual(props.to, prevProps.to)) {
+    instance.to = props.to
+  }
+  if (!arePointsEqual(props.through, prevProps.through)) {
+    instance.through = props.through
+  }
+}
+
 function applyRasterProps(instance, props, prevProps = {}) {
   applyItemProps(instance, props, prevProps)
   if (props.source !== prevProps.source) {
@@ -196,6 +224,7 @@ function applyRasterProps(instance, props, prevProps = {}) {
 }
 
 function applyPointTextProps(instance, props, prevProps = {}) {
+  applyItemProps(instance, props, prevProps)
   if (props.content !== prevProps.content) {
     instance.content = props.content
   }
@@ -211,7 +240,7 @@ function applyPointTextProps(instance, props, prevProps = {}) {
   if (props.fontWeight !== prevProps.fontWeight) {
     instance.fontWeight = props.fontWeight
   }
-  if (!isEqual(props.point, prevProps.point)) {
+  if (!arePointsEqual(props.point, prevProps.point)) {
     instance.translate([
       props.point[0] - prevProps.point[0],
       props.point[1] - prevProps.point[1],
@@ -294,6 +323,10 @@ const PaperRenderer = Reconciler({
         instance = new Path.Rectangle(paperProps)
         instance._applyProps = applyRectangleProps
         break
+      case TYPES.ARC:
+        instance = new Path.Arc(paperProps)
+        instance._applyProps = applyArcProps
+        break
       case TYPES.RASTER: {
         const { onLoad, ...rasterProps } = paperProps
         instance = new Raster(rasterProps)
@@ -312,7 +345,10 @@ const PaperRenderer = Reconciler({
         break
     }
 
-    if (instance.data && !instance.data.type) {
+    // apply data type
+    if (!instance.data) {
+      instance.data = { type }
+    } else if (!instance.data.type) {
       instance.data.type = type
     }
 

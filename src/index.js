@@ -12,6 +12,7 @@ const {
   POINTTEXT,
   RASTER,
   RECTANGLE,
+  ARC,
   TOOL,
 } = TYPES
 
@@ -25,6 +26,7 @@ export {
   POINTTEXT as PointText,
   RASTER as Raster,
   RECTANGLE as Rectangle,
+  ARC as Arc,
   TOOL as Tool,
 }
 

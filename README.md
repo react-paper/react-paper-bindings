@@ -30,6 +30,10 @@ npm start
 
 If someone knows a better way, please let me know ;)
 
+## Similar projects
+
+- [react-paperjs](https://github.com/psychobolt/react-paperjs)
+
 ## Example
 
 ```jsx

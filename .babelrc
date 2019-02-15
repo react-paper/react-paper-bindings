@@ -3,13 +3,10 @@
     [
       "@babel/preset-env",
       {
-        "loose": true,
-        "modules": false,
-        "useBuiltIns": "usage",
-        "shippedProposals": true,
         "targets": {
-          "browsers": [">0.2%, not dead, not ie <= 11, not op_mini all"]
-        }
+          "browsers": ["ie >= 11"]
+        },
+        "loose": true
       }
     ],
     [

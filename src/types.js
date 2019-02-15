@@ -10,5 +10,6 @@ export default {
   POINTTEXT: 'PointText',
   RASTER: 'Raster',
   RECTANGLE: 'Rectangle',
+  ARC: 'Arc',
   TOOL: 'Tool',
 }

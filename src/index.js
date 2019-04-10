@@ -14,6 +14,7 @@ const {
   RECTANGLE,
   ARC,
   TOOL,
+  COMPOUNDPATH,
 } = TYPES
 
 export {
@@ -21,6 +22,7 @@ export {
   ELLIPSE as Ellipse,
   GROUP as Group,
   LAYER as Layer,
+  COMPOUNDPATH as CompoundPath,
   LINE as Line,
   PATH as Path,
   POINTTEXT as PointText,

@@ -17,11 +17,16 @@ import {
   PointText,
   Raster,
   Tool,
+  CompoundPath,
 } from 'paper/dist/paper-core'
 
 import TYPES from './types'
 
 import { arePointsEqual } from './utils'
+
+const isGroup = n => (n instanceof Group) || (n instanceof CompoundPath)
+const isPath = n => (n instanceof Path) || (n instanceof CompoundPath)
+const isItem = n => n instanceof Item
 
 function applyItemProps(instance, props, prevProps = {}) {
   if (props.blendMode !== prevProps.blendMode) {
@@ -97,7 +102,7 @@ function applyLayerProps(instance, props, prevProps = {}) {
   if (props.strokeColor !== prevProps.strokeColor) {
     instance.strokeColor = props.strokeColor
     instance.children.forEach(child => {
-      if (child instanceof Path) {
+      if (isPath(child)) {
         child.strokeColor = props.strokeColor
       }
     })
@@ -178,13 +183,13 @@ function applyRectangleProps(instance, props, prevProps = {}) {
 
 function applyArcProps(instance, props, prevProps = {}) {
   applyPathProps(instance, props, prevProps)
-  if (!_.isEqual(props.from, prevProps.from)) {
+  if (!arePointsEqual(props.from, prevProps.from)) {
     instance.from = props.from
   }
-  if (!_.isEqual(props.to, prevProps.to)) {
+  if (!arePointsEqual(props.to, prevProps.to)) {
     instance.to = props.to
   }
-  if (!_.isEqual(props.through, prevProps.through)) {
+  if (!arePointsEqual(props.through, prevProps.through)) {
     instance.through = props.through
   }
 }
@@ -198,19 +203,6 @@ function applyCircleProps(instance, props, prevProps = {}) {
 
 function applyEllipseProps(instance, props, prevProps = {}) {
   applyRectangleProps(instance, props, prevProps)
-}
-
-function applyArcProps(instance, props, prevProps = {}) {
-  applyPathProps(instance, props, prevProps)
-  if (!arePointsEqual(props.from, prevProps.from)) {
-    instance.from = props.from
-  }
-  if (!arePointsEqual(props.to, prevProps.to)) {
-    instance.to = props.to
-  }
-  if (!arePointsEqual(props.through, prevProps.through)) {
-    instance.through = props.through
-  }
 }
 
 function applyRasterProps(instance, props, prevProps = {}) {
@@ -277,7 +269,7 @@ const PaperRenderer = Reconciler({
     if (typeof child === 'string') {
       // Noop for string children of Text (eg <Text>{'foo'}{'bar'}</Text>)
       invariant(false, 'Text children should already be flattened.')
-    } else if (parentInstance instanceof Group && child instanceof Item) {
+    } else if (isGroup(parentInstance) && isItem(child)) {
       child.addTo(parentInstance)
     }
   },
@@ -302,6 +294,10 @@ const PaperRenderer = Reconciler({
       case TYPES.GROUP:
         instance = new Group(paperProps)
         instance._applyProps = applyGroupProps
+        break
+      case TYPES.COMPOUNDPATH:
+        instance = new CompoundPath(paperProps)
+        instance._applyProps = applyPathProps
         break
       case TYPES.LAYER:
         instance = new Layer(paperProps)
@@ -435,7 +431,7 @@ const PaperRenderer = Reconciler({
     if (child.parentNode === parentInstance) {
       child.remove()
     }
-    if (parentInstance instanceof Group && child instanceof Item) {
+    if (isGroup(parentInstance) && isItem(child)) {
       child.addTo(parentInstance)
     }
   },
@@ -444,7 +440,7 @@ const PaperRenderer = Reconciler({
     if (child.parentNode === parentInstance) {
       child.remove()
     }
-    if (parentInstance instanceof Group && child instanceof Item) {
+    if (isGroup(parentInstance) && isItem(child)) {
       child.addTo(parentInstance)
     }
   },
@@ -455,9 +451,9 @@ const PaperRenderer = Reconciler({
       'PaperRenderer: Can not insert node before itself'
     )
     if (
-      parentInstance instanceof Group &&
-      child instanceof Path &&
-      beforeChild instanceof Path
+      isGroup(parentInstance) &&
+      isPath(child) &&
+      isPath(beforeChild)
     ) {
       child.insertAbove(beforeChild)
     }
@@ -469,9 +465,9 @@ const PaperRenderer = Reconciler({
       'PaperRenderer: Can not insert node before itself'
     )
     if (
-      parentInstance instanceof Group &&
-      child instanceof Path &&
-      beforeChild instanceof Path
+      isGroup(parentInstance) &&
+      isPath(child) &&
+      isPath(beforeChild)
     ) {
       child.insertAbove(beforeChild)
     }

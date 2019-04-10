@@ -4,6 +4,7 @@ export default {
   CIRCLE: 'Circle',
   ELLIPSE: 'Ellipse',
   GROUP: 'Group',
+  COMPOUNDPATH: 'CompoundPath',
   LAYER: 'Layer',
   LINE: 'Line',
   PATH: 'Path',

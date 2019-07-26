@@ -1,5 +1,6 @@
 {
   "name": "react-paper-bindings",
+  "version": "0.0.1",
   "description": "Paper.js bindings for React",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com>",
   "license": "MIT",

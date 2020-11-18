@@ -59,7 +59,7 @@
     "jest": "^23.6.0",
     "jsdom": "^9.4.0",
     "prettier": "^1.13.3",
-    "semantic-release": "^15.10.5",
+    "semantic-release": "^17.2.3",
     "sinon": "^7.1.0",
     "travis-deploy-once": "^5.0.0"
   },

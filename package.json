@@ -57,7 +57,7 @@
     "flow-bin": "^0.84.0",
     "flow-copy-source": "^2.0.2",
     "jest": "^23.6.0",
-    "jsdom": "^9.4.0",
+    "jsdom": "^16.5.0",
     "prettier": "^1.13.3",
     "semantic-release": "^15.10.5",
     "sinon": "^7.1.0",

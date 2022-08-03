@@ -5,7 +5,7 @@ node_js: '10'
 cache: yarn
 env: 
   #- CXX=g++-4.9
-  - NPM_TOKEN=0b1bd709-e1fc-49b6-8bc6-d12a4fa2bf86
+  - NPM_TOKEN=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
 notifications:
   email: false
 addons:

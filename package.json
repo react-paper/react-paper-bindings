@@ -17,11 +17,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc --importHelpers",
-    "clean": "rimraf -rf ./dist",
+    "build": "tsc",
     "watch": "tsc -w",
-    "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once",
+    "clean": "rimraf -rf ./dist",
     "test": "jest --env=jsdom"
   },
   "dependencies": {
@@ -48,8 +46,6 @@
     "prettier": "^2.7.1",
     "react-test-renderer": "^18.2.0",
     "rimraf": "^3.0.2",
-    "semantic-release": "^19.0.3",
-    "travis-deploy-once": "^5.0.11",
     "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"

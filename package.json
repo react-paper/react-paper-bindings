@@ -1,15 +1,16 @@
 {
-  "name": "react-paper-renderer",
+  "name": "react-paper-bindings",
+  "version": "3.0.0-beta.1",
   "description": "Paper.js renderer for React",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/react-paper/react-paper-renderer",
+  "homepage": "https://github.com/react-paper/react-paper-bindings",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-paper/react-paper-renderer.git"
+    "url": "https://github.com/react-paper/react-paper-bindings.git"
   },
   "bugs": {
-    "url": "https://github.com/react-paper/react-paper-renderer/issues"
+    "url": "https://github.com/react-paper/react-paper-bindings/issues"
   },
   "files": [
     "dist"

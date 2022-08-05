@@ -1,128 +1,61 @@
 {
-  "name": "react-paper-bindings",
-  "description": "Paper.js bindings for React",
+  "name": "react-paper-renderer",
+  "description": "Paper.js renderer for React",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/react-paper/react-paper-bindings",
+  "homepage": "https://github.com/react-paper/react-paper-renderer",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-paper/react-paper-bindings.git"
+    "url": "https://github.com/react-paper/react-paper-renderer.git"
   },
   "bugs": {
-    "url": "https://github.com/react-paper/react-paper-bindings/issues"
+    "url": "https://github.com/react-paper/react-paper-renderer/issues"
   },
   "files": [
-    "lib"
+    "dist"
   ],
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "NODE_ENV=development babel src -w -d lib",
-    "build:lib": "NODE_ENV=production babel src -d lib",
-    "build:flow": "NODE_ENV=production flow-copy-source -v src lib",
-    "build": "yarn build:lib && yarn build:flow",
-    "lint": "NODE_ENV=development eslint src/**",
-    "format": "prettier --trailing-comma es5 --no-semi --single-quote --write \"src/**/*.js\"",
-    "test": "jest --env=jsdom",
-    "prepublish": "yarn build",
+    "build": "tsc --importHelpers",
+    "clean": "rimraf -rf ./dist",
+    "watch": "tsc -w",
     "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "test": "jest --env=jsdom"
   },
   "dependencies": {
-    "fbjs": "^1.0.0",
-    "paper": "^0.11.8",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-reconciler": "^0.16.0",
-    "scheduler": "^0.10.0"
+    "paper": "^0.12.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-reconciler": "^0.29.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "=9.0.0",
-    "babel-jest": "^23.6.0",
-    "canvas": "^1.3.5",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.6.0",
-    "eslint": "=5.6.0",
-    "eslint-plugin-flowtype": "^3.0.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.8.2",
-    "flow-bin": "^0.84.0",
-    "flow-copy-source": "^2.0.2",
-    "jest": "^23.6.0",
-    "jsdom": "^9.4.0",
-    "prettier": "^1.13.3",
-    "semantic-release": "^15.10.5",
-    "sinon": "^7.1.0",
-    "travis-deploy-once": "^5.0.0"
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^28.1.6",
+    "@types/node": "^16.10.0",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@types/react-reconciler": "^0.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "canvas": "^2.9.3",
+    "eslint": "^8.20.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "prettier": "^2.7.1",
+    "react-test-renderer": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^19.0.3",
+    "travis-deploy-once": "^5.0.11",
+    "ts-jest": "^28.0.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
   },
-  "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/test/setup.js",
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}",
-      "<rootDir>/test/**/?(*.)(spec|test).{js,jsx,mjs}"
-    ],
-    "testEnvironment": "node",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>[/\\\\](__test|__test2|demo|node_modules)[/\\\\]"
-    ],
-    "modulePathIgnorePatterns": [
-      "<rootDir>[/\\\\](__test|__test2|demo|node_modules)[/\\\\]"
-    ],
-    "moduleDirectories": [
-      "<rootDir>/node_modules",
-      "<rootDir>/src"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ],
-    "parser": "babel-eslint",
-    "settings": {
-      "react": {
-        "createClass": "createReactClass",
-        "pragma": "React",
-        "version": "16.6.0",
-        "flowVersion": "0.84.0"
-      }
-    },
-    "env": {
-      "browser": true,
-      "node": true,
-      "jest": true,
-      "es6": true
-    },
-    "rules": {
-      "semi": 0,
-      "strict": 0,
-      "no-console": 0,
-      "no-unused-vars": [
-        "warn",
-        {
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ]
-    }
-  },
-  "eslintIgnore": [
-    "/node_modules/"
-  ]
+  "resolutions": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  }
 }

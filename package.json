@@ -19,6 +19,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "build:demo": "cd demo && npm run build",
+    "publish:demo": "npm run build:demo && gh-pages -d ./demo/out",
     "watch": "tsc -w",
     "clean": "rimraf -rf ./dist",
     "test": "jest --env=jsdom"
@@ -42,6 +44,7 @@
     "eslint": "^8.20.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^4.0.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "prettier": "^2.7.1",

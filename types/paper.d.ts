@@ -21,12 +21,6 @@ declare namespace paper {
     props: Props;
     type: string;
   }
-  class Rectangle {
-    center: any;
-  }
-  interface Rectangle {
-    center: any;
-  }
   interface Item {
     props: Props;
     type: string;

@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Tool } from "react-paper-renderer";
+import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 
 const NAME = "Delete";
@@ -24,5 +24,11 @@ export const Delete: FC = () => {
     [dispatch, state.scope]
   );
 
-  return <Tool name={NAME} active={state.tool === NAME} onMouseDown={handleMouseDown} />;
+  return (
+    <Tool
+      name={NAME}
+      active={state.tool === NAME}
+      onMouseDown={handleMouseDown}
+    />
+  );
 };

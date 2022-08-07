@@ -16,7 +16,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "react-paper-renderer": ["../src"]
+      "react-paper-bindings": ["../src"]
     },
     "typeRoots": ["types", "node_modules/@types"]
   },

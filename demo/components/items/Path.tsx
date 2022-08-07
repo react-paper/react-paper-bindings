@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Path as PaperPath } from "react-paper-renderer";
+import { Path as PaperPath } from "react-paper-bindings";
 
 type Props = {
   id?: string;
@@ -24,5 +24,11 @@ export const Path: FC<Props> = (props) => {
     }
   }, []);
 
-  return <PaperPath {...props} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />;
+  return (
+    <PaperPath
+      {...props}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    />
+  );
 };

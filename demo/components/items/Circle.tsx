@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Circle as PaperCircle } from "react-paper-renderer";
+import { Circle as PaperCircle } from "react-paper-bindings";
 
 type Props = {
   id?: string;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import type { NextPage } from "next";
-import { Canvas, View, Layer, Rectangle } from "react-paper-renderer";
+import { Canvas, View, Layer, Rectangle } from "react-paper-bindings";
 import styles from "../styles/Styles.module.css";
 
 function move(arr: any[], from: number, to: number) {
@@ -29,8 +29,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>react-paper-renderer</title>
-        <meta name="description" content="react-paper-renderer demo" />
+        <title>react-paper-bindings</title>
+        <meta name="description" content="react-paper-bindings demo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href="/editor">Editor</Link>

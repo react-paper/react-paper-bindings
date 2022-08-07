@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useRef } from "react";
-import { Tool } from "react-paper-renderer";
+import { Tool } from "react-paper-bindings";
 import { ItemName } from "../items";
 import { usePaper } from "../context";
 import { createItem, defaultProps } from "./utils/item";

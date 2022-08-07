@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useContext } from "react";
-import { Canvas as PaperCanvas, CanvasProps, View } from "react-paper-renderer";
+import { Canvas as PaperCanvas, CanvasProps, View } from "react-paper-bindings";
 
 import { Context } from "./context";
 import { Image, ImageLayer } from "./image";

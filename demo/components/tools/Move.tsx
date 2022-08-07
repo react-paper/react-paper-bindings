@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Tool } from "react-paper-renderer";
+import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 import { usePan, usePinch, useMouseWheel } from "./utils";
 import { ToolName } from "./types";

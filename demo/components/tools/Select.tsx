@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useRef } from "react";
 import { Path, PathItem } from "paper/dist/paper-core";
 import * as paper from "paper";
-import { Tool } from "react-paper-renderer";
+import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 
 const NAME = "Select";

@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from "react";
-import { Layer, Raster } from "react-paper-renderer";
+import { Layer, Raster } from "react-paper-bindings";
 
 import { Image } from "./types";
 import { usePaper } from "../context";

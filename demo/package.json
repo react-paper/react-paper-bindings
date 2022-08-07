@@ -1,5 +1,5 @@
 {
-  "name": "react-paper-renderer-demo",
+  "name": "react-paper-bindings-demo",
   "description": "Paper.js renderer for React demo",
   "author": "Bojan Hribernik <bojan.hribernik@gmail.com>",
   "version": "0.1.0",

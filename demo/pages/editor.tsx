@@ -59,8 +59,11 @@ const Editor: NextPage = () => {
   return (
     <>
       <Head>
-        <title>react-paper-renderer</title>
-        <meta name="description" content="react-paper-renderer demo" />
+        <title>react-paper-bindings demo</title>
+        <meta
+          name="description"
+          content="Demo for react-paper-bindings library built with Next.js."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Link href="/">Home</Link>

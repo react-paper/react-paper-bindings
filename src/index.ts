@@ -1,5 +1,6 @@
 export { Renderer } from "./Renderer";
-export { Canvas, Props as CanvasProps } from "./Canvas";
+export { Canvas } from "./Canvas";
+export type { Props as CanvasProps } from "./Canvas";
 export {
   View,
   Group,

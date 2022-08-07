@@ -4,6 +4,7 @@ export const View: Component = "View";
 export const Group: Component = "Group";
 export const Layer: Component = "Layer";
 export const Path: Component = "Path";
+export const CompoundPath: Component = "CompoundPath";
 export const Line: Component = "Line";
 export const Circle: Component = "Circle";
 export const Rectangle: Component = "Rectangle";

@@ -5,6 +5,7 @@ export {
   Group,
   Layer,
   Path,
+  CompoundPath,
   Line,
   Circle,
   Rectangle,

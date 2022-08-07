@@ -12,6 +12,7 @@ type Instance =
   | paper.Layer
   | paper.Group
   | paper.Path
+  | paper.CompoundPath
   | paper.SymbolItem
   | paper.PointText
   | paper.Raster;
@@ -164,6 +165,9 @@ export const Renderer = Reconciler({
       case Item.Path:
         instance = new scope.Path(props);
         break;
+      case Item.CompoundPath:
+        instance = new scope.CompoundPath(props);
+        break;
       case Item.Arc:
         instance = new scope.Path.Arc(props);
         break;
@@ -242,6 +246,9 @@ export const Renderer = Reconciler({
 
   appendInitialChild: (parent: Instance, child: Instance) => {
     if (parent instanceof paper.Group && child instanceof paper.Item) {
+      child.addTo(parent);
+    }
+    if (parent instanceof paper.CompoundPath && child instanceof paper.Item) {
       child.addTo(parent);
     }
     if (parent instanceof paper.View && child instanceof paper.Item) {

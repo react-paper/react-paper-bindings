@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
+      - run: cd demo && npm ci
       - run: npm run build:demo
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

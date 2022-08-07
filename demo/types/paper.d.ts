@@ -22,9 +22,13 @@ declare namespace paper {
   type Props = {
     [key: string]: any;
   };
+  interface PaperScope {
+    symbols?: { [key: string]: SymbolDefinition };
+  }
   interface View {
     props: Props;
     type: string;
+    project: Project;
     scale(scale: number, center?: Point): void;
     scale(scale: number, center?: number[]): void;
     scale(hor: number, ver: number, center?: Point): void;

@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: "npm"
       - run: npm ci
       - run: npm test
 
@@ -26,6 +27,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: "npm"
       - run: npm ci
       - run: cd demo && npm ci
       - run: npm run build:demo
@@ -34,4 +36,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./demo/out
-          publish_branch: v3

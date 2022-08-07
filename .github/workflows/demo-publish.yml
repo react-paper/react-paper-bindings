@@ -29,10 +29,10 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run build:demo
-      - run: touch ./demo/out/.nojekyll
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./demo/out
+          publish_branch: v3

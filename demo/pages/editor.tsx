@@ -6,11 +6,13 @@ import styles from "../styles/Styles.module.css";
 
 import Link from "next/link";
 
+const prefix = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const data = {
   id: "37ag863f-8530-4716-512d-5jr2bd3be5d2",
   width: 1920,
   height: 870,
-  url: "/mr-bubbles.jpg",
+  url: `${prefix}/mr-bubbles.jpg`,
   routes: [
     {
       id: "47dea029-5470-4c5a-a94a-61967cc46854",

@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 
-//const prod = process.env.NODE_ENV === "production";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const nextConfig = {
-  basePath: "/react-paper-bindings",
-  assetPrefix: "/react-paper-bindings",
+  basePath,
+  assetPrefix: basePath,
   reactStrictMode: true,
   swcMinify: true,
   experimental: {

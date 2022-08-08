@@ -16,7 +16,6 @@ export const Paper: FC<Props> = ({ image }) => {
   return (
     <div className={styles.container}>
       <Toolbar className={styles.toolbar} />
-      <div className={styles.routes}>Routes</div>
       <div className={styles.paper} ref={ref}>
         {width > 0 && height > 0 && (
           <Canvas image={image} width={width} height={height} />

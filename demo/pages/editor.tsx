@@ -1,10 +1,9 @@
 import React from "react";
 import Head from "next/head";
-import type { NextPage } from "next";
-import { Provider, Paper } from "components";
-import styles from "../styles/Styles.module.css";
-
 import Link from "next/link";
+import type { NextPage } from "next";
+import { Provider, Paper } from "components/paper";
+import styles from "../styles/Styles.module.css";
 
 const prefix = process.env.NEXT_PUBLIC_BASE_PATH || "";
 

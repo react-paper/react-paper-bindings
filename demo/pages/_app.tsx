@@ -1,12 +1,15 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Layout from "components/layout";
+import { Theme } from "react-daisyui";
+import { Layout } from "components/layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <Theme dataTheme="bumblebee">
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </Theme>
   );
 }
 

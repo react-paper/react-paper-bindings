@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC } from "react";
+import React, { ComponentProps } from "react";
 import { usePaper } from "../context";
 import { ToolName } from "../tools";
 
@@ -21,7 +21,7 @@ type Props = ComponentProps<"button"> & {
   tool: ToolName;
 };
 
-export const ToolButton: FC<Props> = ({ className, tool, ...props }) => {
+export const ToolButton = ({ tool, ...props }: Props) => {
   const [state, dispatch] = usePaper();
   const Icon = icons[tool];
   return (

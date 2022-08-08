@@ -1,12 +1,11 @@
-import React, { FC, useCallback, useRef } from "react";
-import { Path, PathItem } from "paper/dist/paper-core";
-import * as paper from "paper";
+import React, { useCallback, useRef } from "react";
+//import { Path, PathItem } from "paper/dist/paper-core";
 import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 
 const NAME = "Select";
 
-export const Select: FC = () => {
+export const Select = () => {
   const [state, dispatch] = usePaper();
   const item = useRef<paper.Item>();
   const point = useRef<paper.Point>();

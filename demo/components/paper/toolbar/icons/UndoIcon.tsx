@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { Svg, Props } from "./Svg";
 
-export const UndoIcon: FC<Props> = (props) => {
+export const UndoIcon = (props: Props) => {
   return (
     <Svg {...props}>
       <title>Undo</title>

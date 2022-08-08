@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Layer, Raster } from "react-paper-bindings";
 
 import { Image } from "./types";
@@ -9,7 +9,7 @@ type Props = {
   image: Image;
 };
 
-export const ImageLayer: FC<Props> = ({ image }) => {
+export const ImageLayer = ({ image }: Props) => {
   const [state, dispatch] = usePaper();
 
   const handleImageLoad = useCallback(

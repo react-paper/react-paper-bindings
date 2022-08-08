@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 import { usePan, usePinch, useMouseWheel } from "./utils";
@@ -6,7 +6,7 @@ import { ToolName } from "./types";
 
 const NAME = ToolName.Move;
 
-export const Move: FC = () => {
+export const Move = () => {
   const [state] = usePaper();
   const pinch = usePinch();
   const pan = usePan();

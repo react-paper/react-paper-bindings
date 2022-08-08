@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Layer } from "react-paper-bindings";
 import { Route } from "./types";
 import { usePaper } from "../context";
@@ -9,7 +9,7 @@ type Props = {
   index: number;
 };
 
-export const RouteLayer: FC<Props> = ({ route, index }) => {
+export const RouteLayer = ({ route, index }: Props) => {
   const [state] = usePaper();
   return (
     <Layer

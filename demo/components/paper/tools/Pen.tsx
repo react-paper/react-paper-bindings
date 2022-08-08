@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Tool } from "react-paper-bindings";
 import { ItemName } from "../items";
 import { usePaper } from "../context";
@@ -6,7 +6,7 @@ import { createItem, defaultProps } from "./utils/item";
 
 const NAME = "Pen";
 
-export const Pen: FC = () => {
+export const Pen = () => {
   const [state, dispatch] = usePaper();
   const path = useRef<paper.Path>();
 

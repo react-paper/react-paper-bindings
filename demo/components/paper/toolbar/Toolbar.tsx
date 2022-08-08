@@ -1,4 +1,4 @@
-import React, { ComponentProps, FC } from "react";
+import React, { ComponentProps } from "react";
 import { UndoButton } from "./UndoButton";
 import { RedoButton } from "./RedoButton";
 import { SaveButton } from "./SaveButton";
@@ -7,7 +7,7 @@ import { ToolName } from "../tools";
 
 type Props = ComponentProps<"div">;
 
-export const Toolbar: FC<Props> = (props) => {
+export const Toolbar = (props: Props) => {
   return (
     <div {...props}>
       <ToolButton tool={ToolName.Move} />

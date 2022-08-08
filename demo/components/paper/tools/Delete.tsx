@@ -1,10 +1,10 @@
-import React, { FC, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Tool } from "react-paper-bindings";
 import { usePaper } from "../context";
 
 const NAME = "Delete";
 
-export const Delete: FC = () => {
+export const Delete = () => {
   const [state, dispatch] = usePaper();
 
   const handleMouseDown = useCallback(

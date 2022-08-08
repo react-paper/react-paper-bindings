@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Path as PaperPath } from "react-paper-bindings";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   strokeWidth?: number;
 };
 
-export const Path: FC<Props> = (props) => {
+export const Path = (props: Props) => {
   const handleMouseEnter = useCallback(() => {
     if (document.body) {
       document.body.style.cursor = "pointer";

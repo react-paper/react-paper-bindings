@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { Svg, Props } from "./Svg";
 
-export const SaveIcon: FC<Props> = (props) => {
+export const SaveIcon = (props: Props) => {
   return (
     <Svg {...props}>
       <title>Save</title>

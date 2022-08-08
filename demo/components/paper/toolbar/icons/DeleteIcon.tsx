@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { Svg, Props } from "./Svg";
 
-export const DeleteIcon: FC<Props> = (props) => {
+export const DeleteIcon = (props: Props) => {
   return (
     <Svg {...props}>
       <title>Delete</title>

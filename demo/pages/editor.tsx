@@ -1,9 +1,7 @@
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
 import type { NextPage } from "next";
 import { Provider, Paper } from "components/paper";
-import styles from "../styles/Styles.module.css";
 
 const prefix = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -67,12 +65,9 @@ const Editor: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Link href="/">Home</Link>
-      <div className={styles.container}>
-        <Provider>
-          <Paper image={data} />
-        </Provider>
-      </div>
+      <Provider>
+        <Paper image={data} />
+      </Provider>
     </>
   );
 };

@@ -1,10 +1,10 @@
-import React, { ComponentProps, FC, ReactNode } from "react";
+import React, { ComponentProps } from "react";
 
 export type Props = ComponentProps<"svg"> & {
   size?: number;
 };
 
-export const Svg: FC<Props> = ({ size = 24, ...props }) => {
+export const Svg = ({ size = 24, ...props }: Props) => {
   return (
     <svg
       viewBox="0 0 512 512"

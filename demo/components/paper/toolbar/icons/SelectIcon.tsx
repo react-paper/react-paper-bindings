@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { Svg, Props } from "./Svg";
 
-export const SelectIcon: FC<Props> = (props) => {
+export const SelectIcon = (props: Props) => {
   return (
     <Svg {...props}>
       <title>Select</title>

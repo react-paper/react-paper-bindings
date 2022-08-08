@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Circle as PaperCircle } from "react-paper-bindings";
 
 type Props = {
@@ -20,7 +20,7 @@ const pathProps = {
 }
 */
 
-export const Circle: FC<Props> = (props) => {
+export const Circle = (props: Props) => {
   //const ctx = useContext(Context)
   //const hit = useRef<any>(null)
 

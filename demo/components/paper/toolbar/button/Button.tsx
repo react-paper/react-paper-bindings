@@ -1,11 +1,11 @@
-import React, { ComponentProps, FC } from "react";
+import React, { ComponentProps } from "react";
 import styles from "./Button.module.css";
 
 type Props = ComponentProps<"button"> & {
   active?: boolean;
 };
 
-export const Button: FC<Props> = ({ active = false, className, ...props }) => {
+export const Button = ({ active = false, className, ...props }: Props) => {
   return (
     <button
       {...props}

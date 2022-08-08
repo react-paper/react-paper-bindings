@@ -1,3 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.drawer-toggle ~ .drawer-content {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 1024px) {
+  .drawer-mobile > .drawer-toggle ~ .drawer-side {
+    border-right: 1px solid #d1d5db;
+  }
+}
+/*
 html,
 body {
   padding: 0;
@@ -26,3 +41,4 @@ a {
     background: black;
   }
 }
+*/

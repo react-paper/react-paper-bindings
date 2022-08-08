@@ -1,11 +1,11 @@
-import React, { ComponentProps, FC } from "react";
+import React, { ComponentProps } from "react";
 import { usePaper } from "../context";
 import { RedoIcon } from "./icons/RedoIcon";
 import { Button } from "./button";
 
 type Props = ComponentProps<"button">;
 
-export const RedoButton: FC<Props> = ({ className, ...props }) => {
+export const RedoButton = (props: Props) => {
   const [{ history, historyIndex }, dispatch] = usePaper();
   return (
     <Button

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import useMeasure from "react-use-measure";
 
 import { Image } from "./image";
@@ -11,7 +11,7 @@ type Props = {
   image: Image;
 };
 
-export const Paper: FC<Props> = ({ image }) => {
+export const Paper = ({ image }: Props) => {
   const [ref, { width, height }] = useMeasure({ debounce: 150 });
   return (
     <div className={styles.container}>

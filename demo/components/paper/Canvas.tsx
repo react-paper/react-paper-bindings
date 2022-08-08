@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { Canvas as PaperCanvas, CanvasProps, View } from "react-paper-bindings";
 
 import { Context } from "./context";
@@ -12,7 +12,7 @@ type Props = CanvasProps & {
   height: number;
 };
 
-export const Canvas: FC<Props> = ({ image, width, height, ...other }) => {
+export const Canvas = ({ image, width, height, ...other }: Props) => {
   const value = useContext(Context);
   const [state, dispatch] = value;
   const img = state.history[state.historyIndex];

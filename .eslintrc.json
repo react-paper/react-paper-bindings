@@ -1,23 +1,26 @@
 {
+  "root": true,
   "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "prettier"],
   "extends": [
     "eslint:recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
+    //"no-console": 1,
+    "prettier/prettier": 2,
     "semi": ["warn", "always"],
-    "quotes": ["warn", "double"],
-    //"@typescript-eslint/explicit-function-return-type": "off",
-    //"@typescript-eslint/explicit-module-boundary-types": "off",
+    "quotes": ["warn", "single"],
     "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",

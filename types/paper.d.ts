@@ -1,6 +1,21 @@
 /// <reference path="../node_modules/paper/dist/paper.d.ts" />
 
 /**
+ * Add custom paper.js attributes to <canvas> element
+ *
+ * @see http://paperjs.org/tutorials/getting-started/working-with-paper-js/#canvas-configuration
+ */
+declare namespace react {
+  interface CanvasHTMLAttributes<T> extends React.HTMLAttributes<T> {
+    height?: number | string;
+    width?: number | string;
+    resize?: 'true';
+    hidpi?: 'off';
+    keepalive?: 'true';
+  }
+}
+
+/**
  * Add custom paper.js types related to renderer
  *
  * @see http://paperjs.org/reference/paperscope/

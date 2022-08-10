@@ -11,8 +11,8 @@ http://react-paper.github.io/react-paper-bindings/
 ## Example
 
 ```jsx
-import React from "react";
-import { Canvas, View, Layer, Rectangle } from "react-paper-bindings";
+import React from 'react';
+import { Canvas, View, Layer, Rectangle } from 'react-paper-bindings';
 
 const Example = () => {
   return (
@@ -21,9 +21,9 @@ const Example = () => {
         <Layer>
           <Rectangle
             center={[100, 100]}
-            fillColor={"red"}
+            fillColor={'red'}
             size={[50, 50]}
-            onClick={() => console.log("onClick")}
+            onClick={() => console.log('onClick')}
           />
         </Layer>
       </View>
@@ -39,19 +39,13 @@ export default Example;
 ```
 cd react-paper-bindings
 npm install
-npm run dev
+npm run watch
 ```
 
 ## Build
 
 ```
-npm run dev
-```
-
-## Watch
-
-```
-npm run dev
+npm run build
 ```
 
 ## Test

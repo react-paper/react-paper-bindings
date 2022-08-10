@@ -1,8 +1,8 @@
-import React from "react";
-import { Layer } from "react-paper-bindings";
-import { Route } from "./types";
-import { usePaper } from "../context";
-import { Items } from "../items";
+import React from 'react';
+import { Layer } from 'react-paper-bindings';
+import { Route } from './types';
+import { usePaper } from '../context';
+import { Items } from '../items';
 
 type Props = {
   route: Route;

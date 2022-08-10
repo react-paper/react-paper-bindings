@@ -1,6 +1,6 @@
-import React, { useReducer } from "react";
-import { PaperContext } from "./PaperContext";
-import { Reducer, reducer, initialState } from "./reducer";
+import React, { useReducer } from 'react';
+import { PaperContext } from './PaperContext';
+import { Reducer, reducer, initialState } from './reducer';
 
 type Props = {
   children: React.ReactNode;

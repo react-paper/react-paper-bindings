@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
-import { usePaper } from "../../context";
-import { ToolName } from "../types";
+import { useCallback, useEffect } from 'react';
+import { usePaper } from '../../context';
+import { ToolName } from '../types';
 
 const ZOOM_RATIO = 1.1;
 
@@ -27,18 +27,18 @@ export const useMouseWheel = (tool: ToolName) => {
       // transform view
       view.scale(newZoom, center);
       // dispatch new zoom
-      dispatch({ type: "setZoom", zoom: view.zoom });
+      dispatch({ type: 'setZoom', zoom: view.zoom });
     },
     [dispatch, state.scope]
   );
 
   useEffect(() => {
     if (state.scope && state.tool === tool) {
-      document.addEventListener("wheel", handleMouseWheel);
+      document.addEventListener('wheel', handleMouseWheel);
     }
     return () => {
       if (state.tool === tool) {
-        document.removeEventListener("wheel", handleMouseWheel);
+        document.removeEventListener('wheel', handleMouseWheel);
       }
     };
   }, [handleMouseWheel, state.scope, state.tool, tool]);

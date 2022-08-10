@@ -7,9 +7,9 @@ declare namespace react {
   interface CanvasHTMLAttributes<T> extends React.HTMLAttributes<T> {
     height?: number | string;
     width?: number | string;
-    resize?: "true";
-    hidpi?: "off";
-    keepalive?: "true";
+    resize?: 'true';
+    hidpi?: 'off';
+    keepalive?: 'true';
   }
 }
 
@@ -52,15 +52,11 @@ declare namespace paper {
     tool: Tool;
     event: PointerEvent;
   }
-  //interface Rectangle {
-  //  center: Point;
-  //  fillColor: Color | string;
-  //  size: any;
-  //}
   interface Item {
     props: Props;
     type: string;
     pathData?: string;
+    selectionKey?: string | number;
     translate(delta: Point): void;
     translate(delta: [number, number]): void;
     fitBounds(rectangle: Rectangle, fill?: boolean): void;

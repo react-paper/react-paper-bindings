@@ -1,10 +1,10 @@
-import React, { useCallback, useContext } from "react";
-import { Canvas as PaperCanvas, CanvasProps, View } from "react-paper-bindings";
+import React, { useCallback, useContext } from 'react';
+import { Canvas as PaperCanvas, CanvasProps, View } from 'react-paper-bindings';
 
-import { Context } from "./context";
-import { Image, ImageLayer } from "./image";
-import { RouteLayer } from "./route";
-import { Tool } from "./tools";
+import { Context } from './context';
+import { Image, ImageLayer } from './image';
+import { RouteLayer } from './route';
+import { Tool } from './tools';
 
 type Props = CanvasProps & {
   image: Image;
@@ -18,7 +18,7 @@ export const Canvas = ({ image, width, height, ...other }: Props) => {
   const img = state.history[state.historyIndex];
 
   const handleScopeReady = useCallback(
-    (scope: paper.PaperScope) => dispatch({ type: "setScope", scope: scope }),
+    (scope: paper.PaperScope) => dispatch({ type: 'setScope', scope: scope }),
     [dispatch]
   );
 

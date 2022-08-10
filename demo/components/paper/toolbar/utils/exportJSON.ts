@@ -15,7 +15,7 @@ export const exportJSON = (scope: paper.PaperScope) => {
     return {
       id: layer.props.id,
       name: layer.props.name,
-      type: "Layer",
+      type: 'Layer',
       items,
     };
   });

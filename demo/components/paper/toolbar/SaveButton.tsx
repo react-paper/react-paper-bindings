@@ -1,10 +1,10 @@
-import React, { ComponentProps, useCallback } from "react";
-import { usePaper } from "../context";
-import { exportJSON } from "./utils";
-import { Button } from "./button";
-import { SaveIcon } from "./icons/SaveIcon";
+import React, { ComponentProps, useCallback } from 'react';
+import { usePaper } from '../context';
+import { exportJSON } from './utils';
+import { Button } from './button';
+import { SaveIcon } from './icons/SaveIcon';
 
-type Props = ComponentProps<"button">;
+type Props = ComponentProps<'button'>;
 
 export const SaveButton = (props: Props) => {
   const [state] = usePaper();

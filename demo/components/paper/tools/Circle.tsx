@@ -1,10 +1,10 @@
-import React, { useCallback, useRef } from "react";
-import { Tool } from "react-paper-bindings";
-import { ItemName } from "../items";
-import { usePaper } from "../context";
-import { createItem, defaultProps } from "./utils";
+import React, { useCallback, useRef } from 'react';
+import { Tool } from 'react-paper-bindings';
+import { ItemName } from '../items';
+import { usePaper } from '../context';
+import { createItem, defaultProps } from './utils';
 
-const NAME = "Circle";
+const NAME = 'Circle';
 
 export const Circle = () => {
   const [state, dispatch] = usePaper();
@@ -44,7 +44,7 @@ export const Circle = () => {
   const handleMouseUp = useCallback(() => {
     if (state.image && circle.current) {
       dispatch({
-        type: "addItem",
+        type: 'addItem',
         item: createItem(ItemName.Circle, {
           pathData: circle.current.pathData,
         }),

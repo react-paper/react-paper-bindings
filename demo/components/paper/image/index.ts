@@ -1,2 +1,2 @@
-export { ImageLayer } from "./ImageLayer";
-export * from "./types";
+export { ImageLayer } from './ImageLayer';
+export * from './types';

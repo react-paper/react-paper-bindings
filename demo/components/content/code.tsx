@@ -1,4 +1,4 @@
-import { CodeBlock, nord } from "react-code-blocks";
+import { CodeBlock, nord } from 'react-code-blocks';
 
 // https://github.com/rajinwonderland/react-code-blocks
 

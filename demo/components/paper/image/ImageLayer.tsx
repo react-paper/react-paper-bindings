@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
-import { Layer, Raster } from "react-paper-bindings";
+import React, { useCallback } from 'react';
+import { Layer, Raster } from 'react-paper-bindings';
 
-import { Image } from "./types";
-import { usePaper } from "../context";
-import { fitImage } from "./fitImage";
+import { Image } from './types';
+import { usePaper } from '../context';
+import { fitImage } from './fitImage';
 
 type Props = {
   image: Image;
@@ -17,7 +17,7 @@ export const ImageLayer = ({ image }: Props) => {
       if (raster && raster.view) {
         raster.fitBounds(0, 0, image.width, image.height);
         fitImage(raster.view, image);
-        dispatch({ type: "setImage", image });
+        dispatch({ type: 'setImage', image });
       }
     },
     [image, dispatch]

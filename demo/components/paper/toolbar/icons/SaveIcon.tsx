@@ -1,5 +1,5 @@
-import React from "react";
-import { Svg, Props } from "./Svg";
+import React from 'react';
+import { Svg, Props } from './Svg';
 
 export const SaveIcon = (props: Props) => {
   return (

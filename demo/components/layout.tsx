@@ -1,7 +1,18 @@
-import Link from "next/link";
-import { useCallback, useState } from "react";
-import { Drawer, Menu, Navbar } from "react-daisyui";
-import { GitHubButton, MenuButton, TitleButton } from "./header";
+import { useCallback, useState } from 'react';
+import { Drawer, Menu, Navbar } from 'react-daisyui';
+import { GitHubButton, MenuButton, MenuItem, TitleButton } from './header';
+
+const menuItems = [
+  { name: 'Editor', url: '/editor' },
+  { name: 'Multi Canvas', url: '/multi-canvas' },
+  { name: 'Animations', url: '/animations' },
+  { name: 'Layers', url: '/layers' },
+  { name: 'Tools', url: '/tools' },
+  { name: 'Events', url: '/events' },
+  { name: 'Selection', url: '/selection' },
+  { name: 'Reorder', url: '/reorder' },
+  { name: 'CompoundPath', url: '/compound-path' },
+];
 
 type Props = {
   children: React.ReactNode;
@@ -21,16 +32,11 @@ export const Layout = ({ children }: Props) => {
             <TitleButton />
           </div>
           <Menu className="flex-1 p-2 overflow-y-auto w-80">
-            <Menu.Item>
-              <Link href="/examples" passHref>
-                <a onClick={toggleVisible}>Examples</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link href="/editor" passHref>
-                <a onClick={toggleVisible}>Editor</a>
-              </Link>
-            </Menu.Item>
+            {menuItems.map((item) => (
+              <MenuItem key={item.url} href={item.url} onClick={toggleVisible}>
+                {item.name}
+              </MenuItem>
+            ))}
           </Menu>
         </aside>
       }

@@ -1,9 +1,9 @@
-import React, { ComponentProps } from "react";
-import { usePaper } from "../context";
-import { UndoIcon } from "./icons/UndoIcon";
-import { Button } from "./button";
+import React, { ComponentProps } from 'react';
+import { usePaper } from '../context';
+import { UndoIcon } from './icons/UndoIcon';
+import { Button } from './button';
 
-type Props = ComponentProps<"button">;
+type Props = ComponentProps<'button'>;
 
 export const UndoButton = (props: Props) => {
   const [{ historyIndex }, dispatch] = usePaper();
@@ -11,7 +11,7 @@ export const UndoButton = (props: Props) => {
     <Button
       {...props}
       disabled={historyIndex === 0}
-      onClick={() => dispatch({ type: "undo" })}
+      onClick={() => dispatch({ type: 'undo' })}
     >
       <UndoIcon />
     </Button>

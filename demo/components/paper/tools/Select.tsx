@@ -1,9 +1,9 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef } from 'react';
 //import { Path, PathItem } from "paper/dist/paper-core";
-import { Tool } from "react-paper-bindings";
-import { usePaper } from "../context";
+import { Tool } from 'react-paper-bindings';
+import { usePaper } from '../context';
 
-const NAME = "Select";
+const NAME = 'Select';
 
 export const Select = () => {
   const [state, dispatch] = usePaper();
@@ -29,7 +29,7 @@ export const Select = () => {
         } else {
           item.current = undefined;
           point.current = undefined;
-          dispatch({ type: "setSelection", selection: undefined });
+          dispatch({ type: 'setSelection', selection: undefined });
         }
       }
     },
@@ -46,9 +46,9 @@ export const Select = () => {
 
   const handleMouseUp = useCallback(() => {
     if (item.current && changed.current) {
-      dispatch({ type: "setSelection", selection: item.current.props.id });
+      dispatch({ type: 'setSelection', selection: item.current.props.id });
       dispatch({
-        type: "updateItem",
+        type: 'updateItem',
         index: item.current.index,
         item: {
           pathData: item.current.pathData,

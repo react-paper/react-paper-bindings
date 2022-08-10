@@ -1,10 +1,10 @@
-import React, { useCallback, useRef } from "react";
-import { Tool } from "react-paper-bindings";
-import { ItemName } from "../items";
-import { usePaper } from "../context";
-import { createItem, defaultProps } from "./utils/item";
+import React, { useCallback, useRef } from 'react';
+import { Tool } from 'react-paper-bindings';
+import { ItemName } from '../items';
+import { usePaper } from '../context';
+import { createItem, defaultProps } from './utils/item';
 
-const NAME = "Pen";
+const NAME = 'Pen';
 
 export const Pen = () => {
   const [state, dispatch] = usePaper();
@@ -12,7 +12,7 @@ export const Pen = () => {
 
   const handleMouseDown = useCallback(() => {
     if (state.selection !== null) {
-      dispatch({ type: "setSelection", selection: undefined });
+      dispatch({ type: 'setSelection', selection: undefined });
     }
   }, [dispatch, state.selection]);
 
@@ -37,7 +37,7 @@ export const Pen = () => {
     if (state.image && path.current) {
       path.current.simplify(10);
       dispatch({
-        type: "addItem",
+        type: 'addItem',
         item: createItem(ItemName.Path, {
           pathData: path.current.pathData,
         }),

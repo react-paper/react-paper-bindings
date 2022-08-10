@@ -1,6 +1,6 @@
-import React, { ComponentProps } from "react";
+import React, { ComponentProps } from 'react';
 
-export type Props = ComponentProps<"svg"> & {
+export type Props = ComponentProps<'svg'> & {
   size?: number;
 };
 

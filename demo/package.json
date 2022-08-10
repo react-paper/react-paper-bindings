@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"(components|pages)/**/*.+(ts|tsx)\""
   },
   "dependencies": {
     "clsx": "^1.2.1",

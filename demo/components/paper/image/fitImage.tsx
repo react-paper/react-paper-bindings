@@ -1,4 +1,4 @@
-import { Image } from "./types";
+import { Image } from './types';
 
 export const fitImage = (view: paper.View, image: Image) => {
   const { viewSize: vs } = view;

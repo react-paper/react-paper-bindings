@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
-import { Tool } from "react-paper-bindings";
-import { usePaper } from "../context";
+import React, { useCallback } from 'react';
+import { Tool } from 'react-paper-bindings';
+import { usePaper } from '../context';
 
-const NAME = "Delete";
+const NAME = 'Delete';
 
 export const Delete = () => {
   const [state, dispatch] = usePaper();
@@ -19,7 +19,7 @@ export const Delete = () => {
       });
       if (!hit || !hit.item) return;
 
-      dispatch({ type: "removeItem", index: hit.item.index });
+      dispatch({ type: 'removeItem', index: hit.item.index });
     },
     [dispatch, state.scope]
   );

@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import { Path as PaperPath } from "react-paper-bindings";
+import React, { useCallback } from 'react';
+import { Path as PaperPath } from 'react-paper-bindings';
 
 type Props = {
   id?: string;
@@ -14,13 +14,13 @@ type Props = {
 export const Path = (props: Props) => {
   const handleMouseEnter = useCallback(() => {
     if (document.body) {
-      document.body.style.cursor = "pointer";
+      document.body.style.cursor = 'pointer';
     }
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     if (document.body) {
-      document.body.style.cursor = "auto";
+      document.body.style.cursor = 'auto';
     }
   }, []);
 

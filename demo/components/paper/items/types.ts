@@ -1,6 +1,6 @@
 export enum ItemName {
-  Circle = "Circle",
-  Path = "Path",
+  Circle = 'Circle',
+  Path = 'Path',
 }
 
 export type Item = {

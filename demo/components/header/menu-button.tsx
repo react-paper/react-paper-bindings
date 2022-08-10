@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "react-daisyui";
+import { Button, ButtonProps } from 'react-daisyui';
 
 export const MenuButton = (props: ButtonProps) => (
   <Button {...props} shape="square" color="ghost">

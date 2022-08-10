@@ -1,1 +1,1 @@
-export { exportJSON } from "./exportJSON";
+export { exportJSON } from './exportJSON';

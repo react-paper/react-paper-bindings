@@ -1,7 +1,7 @@
-import update, { Spec } from "immutability-helper";
-import { Item, ItemData } from "../items";
-import { ToolName } from "../tools";
-import { Image } from "../image";
+import update, { Spec } from 'immutability-helper';
+import { Item, ItemData } from '../items';
+import { ToolName } from '../tools';
+import { Image } from '../image';
 
 export type Selection = string | undefined;
 
@@ -18,18 +18,18 @@ export type State = {
 };
 
 export type Action =
-  | { type: "setLoading"; loading?: boolean }
-  | { type: "setScope"; scope?: paper.PaperScope }
-  | { type: "setImage"; image?: Image }
-  | { type: "setTool"; tool: ToolName }
-  | { type: "setSelection"; selection: Selection }
-  | { type: "setZoom"; zoom: number }
-  | { type: "addItem"; item: Item }
-  | { type: "updateItem"; item: ItemData; index: number }
-  | { type: "removeItem"; index: number }
-  | { type: "undo" }
-  | { type: "redo" }
-  | { type: "reset" };
+  | { type: 'setLoading'; loading?: boolean }
+  | { type: 'setScope'; scope?: paper.PaperScope }
+  | { type: 'setImage'; image?: Image }
+  | { type: 'setTool'; tool: ToolName }
+  | { type: 'setSelection'; selection: Selection }
+  | { type: 'setZoom'; zoom: number }
+  | { type: 'addItem'; item: Item }
+  | { type: 'updateItem'; item: ItemData; index: number }
+  | { type: 'removeItem'; index: number }
+  | { type: 'undo' }
+  | { type: 'redo' }
+  | { type: 'reset' };
 
 export type Reducer = React.Reducer<State, Action>;
 export type Dispatch = React.Dispatch<Action>;
@@ -59,21 +59,21 @@ const updateHistory = (state: State, spec: Spec<Item[]>) => {
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "setLoading": {
+    case 'setLoading': {
       return update(state, {
         loading: {
           $set: action.loading,
         },
       });
     }
-    case "setScope": {
+    case 'setScope': {
       return update(state, {
         scope: {
           $set: action.scope,
         },
       });
     }
-    case "setImage": {
+    case 'setImage': {
       const image = action.image;
       return update(state, {
         $merge: {
@@ -85,43 +85,43 @@ export const reducer = (state: State, action: Action): State => {
         },
       });
     }
-    case "setTool": {
+    case 'setTool': {
       return update(state, {
         tool: {
           $set: action.tool,
         },
       });
     }
-    case "setSelection": {
+    case 'setSelection': {
       return update(state, {
         selection: {
           $set: action.selection,
         },
       });
     }
-    case "setZoom": {
+    case 'setZoom': {
       return update(state, {
         zoom: {
           $set: action.zoom,
         },
       });
     }
-    case "addItem": {
+    case 'addItem': {
       return updateHistory(state, {
         $push: [action.item],
       });
     }
-    case "updateItem": {
+    case 'updateItem': {
       return updateHistory(state, {
         [action.index]: { $merge: action.item },
       });
     }
-    case "removeItem": {
+    case 'removeItem': {
       return updateHistory(state, {
         $splice: [[action.index, 1]],
       });
     }
-    case "undo": {
+    case 'undo': {
       if (state.historyIndex <= 0) {
         return state;
       }
@@ -132,7 +132,7 @@ export const reducer = (state: State, action: Action): State => {
         },
       });
     }
-    case "redo": {
+    case 'redo': {
       if (state.historyIndex >= state.history.length - 1) {
         return state;
       }
@@ -143,7 +143,7 @@ export const reducer = (state: State, action: Action): State => {
         },
       });
     }
-    case "reset": {
+    case 'reset': {
       return update(state, {
         $merge: {
           history: [],

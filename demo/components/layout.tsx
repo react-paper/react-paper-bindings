@@ -9,6 +9,7 @@ const menuItems = [
   { name: 'Layers', url: '/layers' },
   { name: 'Tools', url: '/tools' },
   { name: 'Events', url: '/events' },
+  { name: 'Refs', url: '/refs' },
   { name: 'Selection', url: '/selection' },
   { name: 'Reorder', url: '/reorder' },
   { name: 'CompoundPath', url: '/compound-path' },

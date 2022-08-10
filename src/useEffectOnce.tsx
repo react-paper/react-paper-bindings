@@ -4,7 +4,7 @@
  * https://blog.ag-grid.com/avoiding-react-18-double-mount/
  */
 
-import { EffectCallback, useEffect, useRef, useState } from "react";
+import { EffectCallback, useEffect, useRef, useState } from 'react';
 
 export const useEffectOnce = (effect: EffectCallback) => {
   const effectFn = useRef<EffectCallback>(effect);

@@ -1,6 +1,6 @@
-export { Renderer } from "./Renderer";
-export { Canvas } from "./Canvas";
-export type { Props as CanvasProps } from "./Canvas";
+export { Renderer } from './Renderer';
+export { Canvas } from './Canvas';
+export type { Props as CanvasProps } from './Canvas';
 export {
   View,
   Group,
@@ -17,4 +17,4 @@ export {
   Raster,
   SymbolItem,
   Tool,
-} from "./Items";
+} from './Items';

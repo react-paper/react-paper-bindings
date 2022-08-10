@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { FiberRoot } from "react-reconciler";
-import { ConcurrentRoot } from "react-reconciler/constants";
-import { PaperScope } from "paper/dist/paper-core";
+import React, { useEffect, useRef } from 'react';
+import { FiberRoot } from 'react-reconciler';
+import { ConcurrentRoot } from 'react-reconciler/constants';
+import { PaperScope } from 'paper/dist/paper-core';
 
-import { Renderer } from "./Renderer";
-import { useEffectOnce } from "./useEffectOnce";
+import { Renderer } from './Renderer';
+import { useEffectOnce } from './useEffectOnce';
 
 type PaperScopeSettings = {
   insertItems?: boolean;
@@ -13,7 +13,7 @@ type PaperScopeSettings = {
   hitTolerance?: number;
 };
 
-export type Props = React.ComponentProps<"canvas"> & {
+export type Props = React.ComponentProps<'canvas'> & {
   width: number;
   height: number;
   settings?: PaperScopeSettings;
@@ -47,12 +47,12 @@ export const Canvas = ({
         null,
         false,
         null,
-        "",
+        '',
         console.error,
         null
       );
       Renderer.updateContainer(null, fiber.current, null, () => null);
-      if (typeof onScopeReady === "function") {
+      if (typeof onScopeReady === 'function') {
         onScopeReady(scope.current);
       }
     }

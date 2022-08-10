@@ -1,8 +1,8 @@
-import Reconciler from "react-reconciler";
-import { DefaultEventPriority } from "react-reconciler/constants";
-import paper from "paper/dist/paper-core";
+import Reconciler from 'react-reconciler';
+import { DefaultEventPriority } from 'react-reconciler/constants';
+import paper from 'paper/dist/paper-core';
 
-import * as Item from "./Items";
+import * as Item from './Items';
 
 type Container = paper.PaperScope;
 
@@ -107,7 +107,7 @@ const applyProps = (
   // https://stackoverflow.com/a/7252102
   while (i < len) {
     const prop = keys[i];
-    if (prop !== "id" && prop !== "children") {
+    if (prop !== 'id' && prop !== 'children') {
       if (applyProp[prop]) {
         applyProp[prop](instance, props, prevProps);
       } else {
@@ -120,8 +120,8 @@ const applyProps = (
 
 const getSymbolDefinition = (scope: Container, { id, name, svg }: Props) => {
   const key = id || name;
-  if (!key) throw new Error("Missing id or name prop on SymbolItem");
-  if (!svg) throw new Error("Missing svg prop on SymbolItem");
+  if (!key) throw new Error('Missing id or name prop on SymbolItem');
+  if (!svg) throw new Error('Missing svg prop on SymbolItem');
 
   // return cached definition
   if (scope.symbols && scope.symbols[key]) {
@@ -197,7 +197,7 @@ export const Renderer = Reconciler({
       case Item.Raster: {
         const { onLoad, ...other } = props;
         instance = new scope.Raster(other);
-        if (typeof onLoad === "function") {
+        if (typeof onLoad === 'function') {
           instance.onLoad = () => onLoad(instance);
         }
         break;
@@ -213,7 +213,7 @@ export const Renderer = Reconciler({
   },
 
   createTextInstance: () => {
-    throw new Error("PaperRenderer does not support text children");
+    throw new Error('PaperRenderer does not support text children');
   },
 
   getPublicInstance: (instance: Instance) => instance,
@@ -274,7 +274,7 @@ export const Renderer = Reconciler({
 
   appendChildToContainer: (container: Container, child: Instance) => {
     if (!(child instanceof paper.View || child instanceof paper.Tool)) {
-      throw new Error("Container can only hold View and Tool nodes");
+      throw new Error('Container can only hold View and Tool nodes');
     }
   },
 
@@ -297,18 +297,18 @@ export const Renderer = Reconciler({
       !(child instanceof paper.View || child instanceof paper.Tool) ||
       !(before instanceof paper.View || before instanceof paper.Tool)
     ) {
-      throw new Error("Container can only hold View and Tool nodes");
+      throw new Error('Container can only hold View and Tool nodes');
     }
   },
 
   removeChild: (parent: Instance, child: Instance) => {
-    if (typeof child.remove === "function") {
+    if (typeof child.remove === 'function') {
       child.remove();
     }
   },
 
   removeChildFromContainer: (container: Container, child: Instance) => {
-    if (typeof child.remove === "function") {
+    if (typeof child.remove === 'function') {
       child.remove();
     }
   },

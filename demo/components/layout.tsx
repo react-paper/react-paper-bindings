@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
-import { Drawer, Menu, Navbar } from 'react-daisyui';
-import { GitHubButton, MenuButton, MenuItem, TitleButton } from './header';
+import { useCallback } from 'react';
+import { Drawer, Menu } from 'react-daisyui';
+import { MenuItem, TitleButton } from './header';
+import { useAppContext } from './context';
 
 const menuItems = [
   { name: 'Editor', url: '/editor' },
@@ -20,13 +21,18 @@ type Props = {
 };
 
 export const Layout = ({ children }: Props) => {
-  const [visible, setVisible] = useState(false);
-  const toggleVisible = useCallback(() => setVisible(!visible), [visible]);
+  const [state, dispatch] = useAppContext();
+
+  const toggleDrawer = useCallback(
+    () => dispatch({ type: 'toggleDrawer' }),
+    [dispatch]
+  );
+
   return (
     <Drawer
       mobile
-      open={visible}
-      onClickOverlay={toggleVisible}
+      open={state.drawerOpen}
+      onClickOverlay={toggleDrawer}
       side={
         <aside className="flex flex-1 flex-col w-80 bg-base-100">
           <div className="navbar">
@@ -34,7 +40,7 @@ export const Layout = ({ children }: Props) => {
           </div>
           <Menu className="flex-1 p-2 overflow-y-auto w-80">
             {menuItems.map((item) => (
-              <MenuItem key={item.url} href={item.url} onClick={toggleVisible}>
+              <MenuItem key={item.url} href={item.url} onClick={toggleDrawer}>
                 {item.name}
               </MenuItem>
             ))}
@@ -42,16 +48,7 @@ export const Layout = ({ children }: Props) => {
         </aside>
       }
     >
-      <Navbar className="border-b border-gray-300">
-        <div className="flex-1 px-2 lg:hidden">
-          <MenuButton onClick={toggleVisible} />
-          <TitleButton />
-        </div>
-        <div className="md:flex-1 justify-end">
-          <GitHubButton />
-        </div>
-      </Navbar>
-      <main className="flex-1 flex flex-col">{children}</main>
+      {children}
     </Drawer>
   );
 };

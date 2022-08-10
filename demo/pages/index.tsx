@@ -1,6 +1,6 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import { Container, Title, Code } from 'components/content';
+import { Page, Container, Title, Code } from 'components/content';
 
 const code = {
   install: `npm install react-paper-renderer`,
@@ -26,12 +26,14 @@ export default MyCanvas`,
 
 const Home: NextPage = () => {
   return (
-    <Container className="pb-8">
-      <Title>Installation</Title>
-      <Code text={code.install} language="bash" />
-      <Title>Usage</Title>
-      <Code text={code.usage} language="jsx" />
-    </Container>
+    <Page title="Documentation">
+      <Container className="pb-8">
+        <Title>Installation</Title>
+        <Code text={code.install} language="bash" />
+        <Title>Usage</Title>
+        <Code text={code.usage} language="jsx" />
+      </Container>
+    </Page>
   );
 };
 

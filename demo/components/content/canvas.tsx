@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-
 import { Canvas as PaperCanvas, CanvasProps } from 'react-paper-bindings';
 
 type Props = Omit<CanvasProps, 'width' | 'height'> & {
@@ -18,7 +17,7 @@ export const Canvas = ({
     {...props}
     width={width}
     height={height}
-    className={clsx('border border-gray-200', className)}
+    className={clsx('inline-block mr-4 mb-4 border border-gray-600', className)}
   >
     {children}
   </PaperCanvas>

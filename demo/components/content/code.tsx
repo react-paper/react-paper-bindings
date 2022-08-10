@@ -1,4 +1,4 @@
-import { CodeBlock, nord } from 'react-code-blocks';
+import { CodeBlock, monokaiSublime } from 'react-code-blocks';
 
 // https://github.com/rajinwonderland/react-code-blocks
 
@@ -15,9 +15,9 @@ export const Code = ({
   language,
   showLineNumbers = true,
   wrapLongLines = true,
-  theme = nord,
+  theme = monokaiSublime,
 }: Props) => (
-  <div className="text-sm">
+  <div className="text-sm font-fira bg-gray-500">
     <CodeBlock
       text={text}
       language={language}

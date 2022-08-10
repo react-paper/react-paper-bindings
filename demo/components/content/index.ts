@@ -1,3 +1,4 @@
+export { Page } from './page';
 export { Container } from './container';
 export { Toolbar } from './toolbar';
 export { Title } from './title';

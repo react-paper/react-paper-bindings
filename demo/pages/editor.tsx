@@ -1,9 +1,14 @@
 import React from 'react';
 import type { NextPage } from 'next';
+import { Page } from 'components/content';
 import { Paper } from 'components/paper';
 
 const Editor: NextPage = () => {
-  return <Paper image={data} />;
+  return (
+    <Page title="Editor">
+      <Paper image={data} />
+    </Page>
+  );
 };
 
 export default Editor;

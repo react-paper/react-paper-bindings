@@ -17,7 +17,7 @@ export const Code = ({
   wrapLongLines = true,
   theme = monokaiSublime,
 }: Props) => (
-  <div className="text-sm font-fira bg-gray-500">
+  <div className="text-sm font-fira">
     <CodeBlock
       text={text}
       language={language}

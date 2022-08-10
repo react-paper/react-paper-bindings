@@ -1,5 +1,5 @@
 import { Navbar } from 'react-daisyui';
-import { GitHubButton, MenuButton, TitleButton } from '../header';
+import { GitHubButton, MenuButton, ThemeButton, TitleButton } from '../header';
 
 type Props = {
   children?: React.ReactNode;
@@ -15,6 +15,7 @@ export const Page = ({ children, title }: Props) => {
           {title ? <h1 className="mx-2 text-xl">{title}</h1> : <TitleButton />}
         </div>
         <div className="md:flex-1 justify-end">
+          <ThemeButton />
           <GitHubButton />
         </div>
       </Navbar>

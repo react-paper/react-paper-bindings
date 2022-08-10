@@ -2,11 +2,13 @@ import { createContext, useContext, useReducer } from 'react';
 
 type State = {
   drawerOpen: boolean;
+  theme: 'light' | 'dark';
 };
 
 type Action =
   | { type: 'setDrawerOpen'; open: boolean }
-  | { type: 'toggleDrawer' };
+  | { type: 'toggleDrawer' }
+  | { type: 'toggleTheme' };
 
 type Reducer = React.Reducer<State, Action>;
 type Dispatch = React.Dispatch<Action>;
@@ -14,11 +16,14 @@ type Value = [State, Dispatch];
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case 'setDrawerOpen': {
+      return { ...state, drawerOpen: action.open };
+    }
     case 'toggleDrawer': {
       return { ...state, drawerOpen: !state.drawerOpen };
     }
-    case 'setDrawerOpen': {
-      return { ...state, drawerOpen: action.open };
+    case 'toggleTheme': {
+      return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
     }
     default: {
       return state;
@@ -28,6 +33,7 @@ const reducer = (state: State, action: Action): State => {
 
 const initialState: State = {
   drawerOpen: false,
+  theme: 'dark',
 };
 
 export const AppContext = createContext<Value>(undefined!);

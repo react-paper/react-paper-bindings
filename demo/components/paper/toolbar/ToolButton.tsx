@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useCallback } from 'react';
 import { usePaper } from '../context';
 import { ToolName } from '../tools';
 
@@ -24,12 +24,12 @@ type Props = ComponentProps<'button'> & {
 export const ToolButton = ({ tool, ...props }: Props) => {
   const [state, dispatch] = usePaper();
   const Icon = icons[tool];
+  const handleClick = useCallback(
+    () => dispatch({ type: 'setTool', tool }),
+    [dispatch, tool]
+  );
   return (
-    <Button
-      {...props}
-      active={state.tool === tool}
-      onClick={() => dispatch({ type: 'setTool', tool })}
-    >
+    <Button {...props} active={state.tool === tool} onClick={handleClick}>
       <Icon />
     </Button>
   );

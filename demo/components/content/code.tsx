@@ -1,4 +1,5 @@
-import { CodeBlock, monokaiSublime } from 'react-code-blocks';
+import { useAppContext } from 'components/context';
+import { CodeBlock, anOldHope, hybrid } from 'react-code-blocks';
 
 // https://github.com/rajinwonderland/react-code-blocks
 
@@ -7,7 +8,6 @@ type Props = {
   language: string;
   showLineNumbers?: boolean;
   wrapLongLines?: boolean;
-  theme?: any;
 };
 
 export const Code = ({
@@ -15,15 +15,18 @@ export const Code = ({
   language,
   showLineNumbers = true,
   wrapLongLines = true,
-  theme = monokaiSublime,
-}: Props) => (
-  <div className="text-sm font-fira">
-    <CodeBlock
-      text={text}
-      language={language}
-      showLineNumbers={showLineNumbers}
-      wrapLongLines={wrapLongLines}
-      theme={theme}
-    />
-  </div>
-);
+}: Props) => {
+  const [state] = useAppContext();
+  return (
+    <div className="text-sm font-fira">
+      <CodeBlock
+        text={text}
+        language={language}
+        showLineNumbers={showLineNumbers}
+        wrapLongLines={wrapLongLines}
+        theme={state.theme === 'light' ? hybrid : anOldHope}
+        //theme={tomorrowNight}
+      />
+    </div>
+  );
+};

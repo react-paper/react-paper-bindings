@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
-import { useAppContext } from './context';
+import Head from 'next/head';
 import { Drawer, Menu } from 'react-daisyui';
 import { MenuItem, TitleButton } from './header';
+import { useAppContext } from './context';
 
 const menuItems = [
   { name: 'Editor', url: '/editor' },
@@ -29,26 +30,32 @@ export const Layout = ({ children }: Props) => {
   );
 
   return (
-    <Drawer
-      mobile
-      open={state.drawerOpen}
-      onClickOverlay={toggleDrawer}
-      side={
-        <aside className="flex flex-1 flex-col w-80 bg-base-100">
-          <div className="navbar">
-            <TitleButton />
-          </div>
-          <Menu className="flex-1 p-2 overflow-y-auto w-80">
-            {menuItems.map((item) => (
-              <MenuItem key={item.url} href={item.url} onClick={toggleDrawer}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Menu>
-        </aside>
-      }
-    >
-      {children}
-    </Drawer>
+    <>
+      <Head>
+        <title>react-paper-bindings</title>
+        <meta name="description" content="Examples for react-paper-bindings library." />
+      </Head>
+      <Drawer
+        mobile
+        open={state.drawerOpen}
+        onClickOverlay={toggleDrawer}
+        side={
+          <aside className="flex flex-1 flex-col w-80 bg-base-100">
+            <div className="navbar">
+              <TitleButton />
+            </div>
+            <Menu className="flex-1 p-2 overflow-y-auto w-80">
+              {menuItems.map((item) => (
+                <MenuItem key={item.url} href={item.url} onClick={toggleDrawer}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Menu>
+          </aside>
+        }
+      >
+        {children}
+      </Drawer>
+    </>
   );
 };

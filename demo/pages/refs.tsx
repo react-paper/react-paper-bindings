@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas, Code } from 'components/content';
 import { View, Layer, Rectangle, Circle } from 'react-paper-bindings';
@@ -9,8 +9,24 @@ const radiusMax = 80;
 const hueMin = 0;
 const hueMax = 360;
 
+const MyRectangle = () => {
+  const myRectangleRef = useRef<paper.Path.Rectangle | null>(null);
+  useEffect(() => {
+    console.log('myRectangleRef', myRectangleRef.current);
+  }, []);
+  return (
+    <Rectangle
+      ref={myRectangleRef}
+      center={[125, 125]}
+      size={[100, 100]}
+      fillColor="green"
+    />
+  );
+};
+
 const Refs: NextPage = () => {
-  const rectangle = useRef<paper.Path.Rectangle | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rectangleRef = useRef<paper.Path.Rectangle | null>(null);
   const [radius, setRadius] = useState(10);
   const radiusForward = useRef(true);
   const [hue, setHue] = useState(0);
@@ -18,12 +34,11 @@ const Refs: NextPage = () => {
 
   const handleFrame = useCallback(() => {
     // you can bypass react by manipulating paper objects directly
-    if (rectangle.current && rectangle.current.fillColor) {
-      rectangle.current.fillColor.hue += 1;
+    if (rectangleRef.current && rectangleRef.current.fillColor) {
+      rectangleRef.current.fillColor.hue += 1;
     }
 
     // or you can do it react way by setting state
-
     if (radius <= radiusMin) radiusForward.current = true;
     if (radius >= radiusMax) radiusForward.current = false;
     setRadius(radius + (radiusForward.current ? 1 : -1));
@@ -33,18 +48,24 @@ const Refs: NextPage = () => {
     setHue(hue + (hueForward.current ? 1 : -1));
   }, [radius, hue]);
 
+  useEffect(() => {
+    console.log('canvasRef', canvasRef.current);
+    console.log('rectangleRef', rectangleRef.current);
+  }, []);
+
   return (
     <Page title="Refs">
       <Container>
-        <Canvas>
+        <Canvas ref={canvasRef}>
           <View onFrame={handleFrame}>
             <Layer>
               <Rectangle
-                ref={rectangle}
+                ref={rectangleRef}
                 center={[75, 75]}
                 size={[100, 100]}
                 fillColor="red"
               />
+              <MyRectangle />
               <Circle
                 center={[225, 100]}
                 radius={radius}
@@ -61,7 +82,7 @@ const Refs: NextPage = () => {
 
 export default Refs;
 
-const code = `import React, { useCallback, useRef, useState } from 'react';
+const code = `import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas } from 'components/content';
 import { View, Layer, Rectangle, Circle } from 'react-paper-bindings';
@@ -73,7 +94,8 @@ const hueMin = 0;
 const hueMax = 360;
 
 const Refs: NextPage = () => {
-  const rectangle = useRef<paper.Path.Rectangle | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const rectangleRef = useRef<paper.Path.Rectangle | null>(null);
   const [radius, setRadius] = useState(10);
   const radiusForward = useRef(true);
   const [hue, setHue] = useState(0);
@@ -81,8 +103,8 @@ const Refs: NextPage = () => {
 
   const handleFrame = useCallback(() => {
     // you can bypass react by manipulating paper objects directly
-    if (rectangle.current && rectangle.current.fillColor) {
-      rectangle.current.fillColor.hue += 1;
+    if (rectangleRef.current && rectangleRef.current.fillColor) {
+      rectangleRef.current.fillColor.hue += 1;
     }
 
     // or you can do it react way by setting state
@@ -96,14 +118,19 @@ const Refs: NextPage = () => {
     setHue(hue + (hueForward.current ? 1 : -1));
   }, [radius, hue]);
 
+  useEffect(() => {
+    console.log(canvasRef);
+    console.log(rectangleRef);
+  }, []);
+
   return (
     <Page title="Refs">
       <Container>
-        <Canvas>
+        <Canvas ref={canvasRef}>
           <View onFrame={handleFrame}>
             <Layer>
               <Rectangle
-                ref={rectangle}
+                ref={rectangleRef}
                 center={[75, 75]}
                 size={[100, 100]}
                 fillColor="red"

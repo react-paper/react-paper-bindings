@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas, Code } from 'components/content';
-import {
-  View,
-  Layer,
-  Rectangle as Rect,
-  Circle as Circ,
-} from 'react-paper-bindings';
+import { View, Layer, Rectangle as Rect, Circle as Circ } from 'react-paper-bindings';
 
 type RectangleProps = {
   center: [number, number];
@@ -18,9 +13,10 @@ const Rectangle = (props: RectangleProps) => {
   return (
     <Rect
       {...props}
+      fillColor={hovered ? 'green' : 'red'}
+      onClick={() => alert('Clicked on Rectangle')}
       onMouseEnter={() => set(true)}
       onMouseLeave={() => set(false)}
-      fillColor={hovered ? 'green' : 'red'}
     />
   );
 };
@@ -35,9 +31,10 @@ const Circle = (props: CircleProps) => {
   return (
     <Circ
       {...props}
+      fillColor={hovered ? 'orange' : 'blue'}
+      onClick={() => alert('Clicked on Circle')}
       onMouseEnter={() => set(true)}
       onMouseLeave={() => set(false)}
-      fillColor={hovered ? 'orange' : 'blue'}
     />
   );
 };
@@ -82,9 +79,10 @@ const Rectangle = (props: RectangleProps) => {
   return (
     <Rect
       {...props}
+      fillColor={hovered ? 'green' : 'red'}
+      onClick={() => alert('Clicked on Rectangle')}
       onMouseEnter={() => set(true)}
       onMouseLeave={() => set(false)}
-      fillColor={hovered ? 'green' : 'red'}
     />
   );
 };
@@ -99,9 +97,10 @@ const Circle = (props: CircleProps) => {
   return (
     <Circ
       {...props}
+      fillColor={hovered ? 'orange' : 'blue'}
+      onClick={() => alert('Clicked on Circle')}
       onMouseEnter={() => set(true)}
       onMouseLeave={() => set(false)}
-      fillColor={hovered ? 'orange' : 'blue'}
     />
   );
 };

@@ -1,5 +1,4 @@
-import { useAppContext } from 'components/context';
-import { CodeBlock, anOldHope, hybrid } from 'react-code-blocks';
+import { CopyBlock, anOldHope } from 'react-code-blocks';
 
 // https://github.com/rajinwonderland/react-code-blocks
 
@@ -16,16 +15,14 @@ export const Code = ({
   showLineNumbers = true,
   wrapLongLines = true,
 }: Props) => {
-  const [state] = useAppContext();
   return (
     <div className="text-sm font-fira">
-      <CodeBlock
+      <CopyBlock
         text={text}
         language={language}
         showLineNumbers={showLineNumbers}
         wrapLongLines={wrapLongLines}
-        theme={state.theme === 'light' ? hybrid : anOldHope}
-        //theme={tomorrowNight}
+        theme={anOldHope}
       />
     </div>
   );

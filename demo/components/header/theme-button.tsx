@@ -1,21 +1,26 @@
-import { useAppContext } from 'components/context';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
 import { Button } from 'react-daisyui';
 import { ButtonProps } from 'react-daisyui/dist/Button';
 
 type Props = ButtonProps;
 
 export const ThemeButton = (props: Props) => {
-  const [state, dispatch] = useAppContext();
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const handleClick = useCallback(
-    () => dispatch({ type: 'toggleTheme' }),
-    [dispatch]
+    () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+    [theme, setTheme]
   );
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || !theme) return null;
 
   return (
     <Button {...props} shape="square" color="ghost" onClick={handleClick}>
-      {state.theme === 'light' ? <SunnyIcon /> : <MoonIcon />}
+      {theme === 'dark' ? <MoonIcon /> : <SunnyIcon />}
     </Button>
   );
 };

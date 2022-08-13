@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { Page, Container, Title, Code } from 'components/content';
 
 const code = {
-  install: `npm install react-paper-renderer`,
+  install: `npm install react-paper-bindings`,
   usage: `import { Canvas, View, Layer, Rectangle } from 'react-paper-bindings'
 
 const MyCanvas = () =>(

@@ -1,10 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { FiberRoot } from 'react-reconciler';
+import React, { useEffect, useRef, useState } from 'react';
 import { ConcurrentRoot } from 'react-reconciler/constants';
+import { FiberRoot } from 'react-reconciler';
 import { PaperScope } from 'paper/dist/paper-core';
-
 import { Renderer } from './Renderer';
-import { useEffectOnce } from './useEffectOnce';
 
 type PaperScopeSettings = {
   insertItems?: boolean;
@@ -28,21 +26,22 @@ export const Canvas = ({
   onScopeReady,
   ...other
 }: Props) => {
-  const canvas = useRef<HTMLCanvasElement | null>(null);
-  const scope = useRef<paper.PaperScope | null>(null);
-  const fiber = useRef<FiberRoot | null>(null);
+  const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const scopeRef = useRef<paper.PaperScope | null>(null);
+  const fiberRef = useRef<FiberRoot | null>(null);
 
-  useEffectOnce(() => {
+  useEffect(() => {
     // create
-    if (canvas.current instanceof HTMLCanvasElement) {
-      scope.current = new PaperScope();
-      Object.assign(scope.current.settings, {
+    if (canvas instanceof HTMLCanvasElement) {
+      scopeRef.current = new PaperScope();
+      Object.assign(scopeRef.current.settings, {
         ...settings,
         insertItems: false,
       });
-      scope.current.setup(canvas.current);
-      fiber.current = Renderer.createContainer(
-        scope.current,
+      scopeRef.current.setup(canvas);
+      fiberRef.current = Renderer.createContainer(
+        scopeRef.current,
         ConcurrentRoot,
         null,
         false,
@@ -51,36 +50,44 @@ export const Canvas = ({
         console.error,
         null
       );
-      Renderer.updateContainer(null, fiber.current, null, () => null);
+      Renderer.updateContainer(null, fiberRef.current, null, () => null);
       if (typeof onScopeReady === 'function') {
-        onScopeReady(scope.current);
+        onScopeReady(scopeRef.current);
       }
     }
 
     // destroy
     return () => {
-      if (fiber.current) {
-        Renderer.updateContainer(null, fiber.current, null, () => null);
+      if (canvas) {
+        if (fiberRef.current) {
+          Renderer.updateContainer(null, fiberRef.current, null, () => null);
+        }
+        scopeRef.current = null;
+        canvasRef.current = null;
+        fiberRef.current = null;
       }
-      canvas.current = null;
-      scope.current = null;
-      fiber.current = null;
     };
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvas]);
 
   // update
   useEffect(() => {
-    if (scope.current && fiber.current) {
-      Renderer.updateContainer(children, fiber.current, null, () => null);
+    if (scopeRef.current && fiberRef.current) {
+      Renderer.updateContainer(children, fiberRef.current, null, () => null);
     }
-  }, [children]);
+  }, [canvas, children]);
 
   // resize
   useEffect(() => {
-    if (scope.current) {
-      scope.current.view.viewSize = new scope.current.Size(width, height);
+    if (scopeRef.current) {
+      scopeRef.current.view.viewSize = new scopeRef.current.Size(width, height);
     }
-  }, [width, height]);
+  }, [canvas, width, height]);
 
-  return <canvas {...other} ref={canvas} />;
+  // mounted
+  useEffect(() => {
+    setCanvas(canvasRef.current);
+  }, []);
+
+  return <canvas {...other} ref={canvasRef} />;
 };

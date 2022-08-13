@@ -11,7 +11,7 @@ export const MenuButton = (props: ButtonProps) => {
   );
 
   return (
-    <Button {...props} onClick={handleClick} shape="square" color="ghost">
+    <Button {...props} onClick={handleClick} shape="circle" color="ghost">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

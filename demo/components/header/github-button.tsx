@@ -5,7 +5,7 @@ type Props = React.ComponentProps<'a'>;
 export const GitHubButton = ({ className, ...props }: Props) => (
   <a
     {...props}
-    className={clsx('btn btn-ghost btn-square', className)}
+    className={clsx('btn btn-ghost btn-circle', className)}
     href="https://github.com/react-paper/react-paper-bindings"
     target="_blank"
     rel="noopener noreferrer"

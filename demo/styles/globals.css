@@ -2,48 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --rounded-btn: 9999px;
+}
+
 .drawer-toggle ~ .drawer-content {
   display: flex;
   flex-direction: column;
 }
 
+/*
 @media only screen and (min-width: 1024px) {
   .drawer-mobile > .drawer-toggle ~ .drawer-side {
-    /*border-right: 1px solid #d1d5db;*/
+    border-right: 1px solid #d1d5db;
   }
 }
+*/
 
 .font-fira {
   font-family: 'Fira Code', monospace;
 }
-
-/*
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-}
-*/

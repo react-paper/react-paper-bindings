@@ -19,7 +19,7 @@ export const ThemeButton = (props: Props) => {
   if (!mounted || !theme) return null;
 
   return (
-    <Button {...props} shape="square" color="ghost" onClick={handleClick}>
+    <Button {...props} shape="circle" color="ghost" onClick={handleClick}>
       {theme === 'dark' ? <MoonIcon /> : <SunnyIcon />}
     </Button>
   );

@@ -1,4 +1,4 @@
-import { CopyBlock, anOldHope } from 'react-code-blocks';
+import { CodeBlock, anOldHope } from 'react-code-blocks';
 
 // https://github.com/rajinwonderland/react-code-blocks
 
@@ -17,7 +17,7 @@ export const Code = ({
 }: Props) => {
   return (
     <div className="text-sm font-fira">
-      <CopyBlock
+      <CodeBlock
         text={text}
         language={language}
         showLineNumbers={showLineNumbers}

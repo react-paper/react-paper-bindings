@@ -23,7 +23,7 @@
     "watch": "tsc -w",
     "clean": "rimraf -rf dist",
     "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
-    "test": "jest --env=jsdom",
+    "test": "jest src",
     "format": "prettier --write \"src/**/*.+(ts|tsx)\""
   },
   "dependencies": {

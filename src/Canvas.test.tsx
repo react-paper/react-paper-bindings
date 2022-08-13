@@ -23,15 +23,10 @@ test('render canvas', () => {
   expect(scope).toBeInstanceOf(PaperScope);
 });
 
-test('render canvas with children', () => {
+test('canvas with children', () => {
   let scope: any = null;
   render(
-    <Canvas
-      role="img"
-      width={400}
-      height={300}
-      onScopeReady={(s) => (scope = s)}
-    >
+    <Canvas width={400} height={300} onScopeReady={(s) => (scope = s)}>
       <View>
         <Layer>
           <Rectangle
@@ -50,8 +45,6 @@ test('render canvas with children', () => {
       </View>
     </Canvas>
   );
-  const el = screen.getByRole('img');
-  expect(el).toBeInstanceOf(HTMLCanvasElement);
   expect(scope).toBeInstanceOf(PaperScope);
   expect(scope?.projects.length).toEqual(1);
   expect(scope?.project.layers.length).toEqual(2);
@@ -62,4 +55,10 @@ test('render canvas with children', () => {
     fillColor: '#222222',
     size: [200, 100],
   });
+});
+
+test('canvas ref', () => {
+  const ref = { current: null };
+  render(<Canvas ref={ref} width={400} height={300} />);
+  expect(ref.current).toBeInstanceOf(HTMLCanvasElement);
 });

@@ -1,8 +1,8 @@
-import React, { ComponentProps, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { usePaper } from '../context';
 import { ToolName } from '../tools';
 
-import { Button } from './button';
+import { IconButton, Props as IconButtonProps } from './IconButton';
 import { MoveIcon } from './icons/MoveIcon';
 import { PenIcon } from './icons/PenIcon';
 import { CircleIcon } from './icons/CircleIcon';
@@ -17,7 +17,7 @@ const icons = {
   [ToolName.Delete]: DeleteIcon,
 };
 
-type Props = ComponentProps<'button'> & {
+type Props = IconButtonProps & {
   tool: ToolName;
 };
 
@@ -29,8 +29,8 @@ export const ToolButton = ({ tool, ...props }: Props) => {
     [dispatch, tool]
   );
   return (
-    <Button {...props} active={state.tool === tool} onClick={handleClick}>
+    <IconButton {...props} active={state.tool === tool} onClick={handleClick}>
       <Icon />
-    </Button>
+    </IconButton>
   );
 };

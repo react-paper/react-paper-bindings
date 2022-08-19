@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { forwardRef, useCallback, useContext } from 'react';
 import { Canvas as PaperCanvas, CanvasProps, View } from 'react-paper-bindings';
 
 import { Context } from './context';
@@ -12,7 +12,10 @@ type Props = CanvasProps & {
   height: number;
 };
 
-export const Canvas = ({ image, width, height, ...other }: Props) => {
+export const Canvas = forwardRef<HTMLCanvasElement | null, Props>(function Canvas(
+  { image, width, height, ...other },
+  forwardedRef
+) {
   const value = useContext(Context);
   const [state, dispatch] = value;
   const img = state.history[state.historyIndex];
@@ -25,6 +28,7 @@ export const Canvas = ({ image, width, height, ...other }: Props) => {
   return (
     <PaperCanvas
       {...other}
+      ref={forwardedRef}
       width={width}
       height={height}
       onScopeReady={handleScopeReady}
@@ -48,4 +52,4 @@ export const Canvas = ({ image, width, height, ...other }: Props) => {
       </Context.Provider>
     </PaperCanvas>
   );
-};
+});

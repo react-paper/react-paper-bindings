@@ -6,8 +6,6 @@ import { Toolbar } from './toolbar';
 import { Canvas } from './Canvas';
 import { Image } from './image';
 
-import styles from './Paper.module.css';
-
 type Props = {
   image: Image;
 };
@@ -16,9 +14,9 @@ export const Paper = ({ image }: Props) => {
   const [ref, { width, height }] = useMeasure({ debounce: 150 });
   return (
     <Provider>
-      <div className={styles.container}>
-        <Toolbar className={styles.toolbar} />
-        <div className={styles.paper} ref={ref}>
+      <div className="relative flex flex-1 flex-col w-full h-full">
+        <Toolbar className="flex w-full h-12 justify-center items-center" />
+        <div className="flex-1 overflow-hidden" ref={ref}>
           {width > 0 && height > 0 && (
             <Canvas image={image} width={width} height={height} />
           )}

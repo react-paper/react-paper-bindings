@@ -15,10 +15,10 @@ export const Toolbar = (props: Props) => {
       <ToolButton tool={ToolName.Circle} />
       <ToolButton tool={ToolName.Select} />
       <ToolButton tool={ToolName.Delete} />
-      <span>|</span>
+      <span className="mx-1">|</span>
       <UndoButton />
       <RedoButton />
-      <span>|</span>
+      <span className="mx-1">|</span>
       <SaveButton />
     </div>
   );

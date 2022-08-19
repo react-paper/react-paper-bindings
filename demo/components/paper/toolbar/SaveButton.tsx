@@ -1,10 +1,8 @@
-import React, { ComponentProps, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { usePaper } from '../context';
-import { exportJSON } from './utils';
-import { Button } from './button';
+import { exportJSON } from '../utils';
+import { IconButton, Props } from './IconButton';
 import { SaveIcon } from './icons/SaveIcon';
-
-type Props = ComponentProps<'button'>;
 
 export const SaveButton = (props: Props) => {
   const [state] = usePaper();
@@ -17,8 +15,8 @@ export const SaveButton = (props: Props) => {
   }, [state.scope]);
 
   return (
-    <Button {...props} onClick={handleClick}>
+    <IconButton {...props} onClick={handleClick}>
       <SaveIcon />
-    </Button>
+    </IconButton>
   );
 };

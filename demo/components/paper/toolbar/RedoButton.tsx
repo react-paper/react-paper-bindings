@@ -1,20 +1,18 @@
-import React, { ComponentProps, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { usePaper } from '../context';
 import { RedoIcon } from './icons/RedoIcon';
-import { Button } from './button';
-
-type Props = ComponentProps<'button'>;
+import { IconButton, Props } from './IconButton';
 
 export const RedoButton = (props: Props) => {
   const [{ history, historyIndex }, dispatch] = usePaper();
   const handleClick = useCallback(() => dispatch({ type: 'redo' }), [dispatch]);
   return (
-    <Button
+    <IconButton
       {...props}
       disabled={historyIndex >= history.length - 1}
       onClick={handleClick}
     >
       <RedoIcon />
-    </Button>
+    </IconButton>
   );
 };

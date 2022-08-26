@@ -10,7 +10,7 @@ import { FiberRoot } from 'react-reconciler';
 import { PaperScope } from 'paper/dist/paper-core';
 import { Renderer } from './Renderer';
 
-type PaperScopeSettings = {
+export type PaperScopeSettings = {
   insertItems?: boolean;
   applyMatrix?: boolean;
   handleSize?: number;
@@ -24,74 +24,78 @@ export type Props = React.ComponentProps<'canvas'> & {
   onScopeReady?: (scope: paper.PaperScope) => void;
 };
 
-export const Canvas = forwardRef<HTMLCanvasElement | null, Props>(
-  ({ children, width, height, settings, onScopeReady, ...other }, forwardedRef) => {
-    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const scopeRef = useRef<paper.PaperScope | null>(null);
-    const fiberRef = useRef<FiberRoot | null>(null);
-    useImperativeHandle<HTMLCanvasElement | null, HTMLCanvasElement | null>(
-      forwardedRef,
-      () => canvasRef.current
-    );
+export type CanvasRef = HTMLCanvasElement | null;
+export type ScopeRef = paper.PaperScope | null;
+export type FiberRef = FiberRoot | null;
 
-    // create
-    useEffect(() => {
-      if (canvas instanceof HTMLCanvasElement) {
-        if (!scopeRef.current) {
-          scopeRef.current = new PaperScope();
-        }
-        Object.assign(scopeRef.current.settings, {
-          ...settings,
-          insertItems: false,
-        });
-        scopeRef.current.setup(canvas);
-        fiberRef.current = Renderer.createContainer(
-          scopeRef.current,
-          ConcurrentRoot,
-          null,
-          false,
-          null,
-          '',
-          console.error,
-          null
-        );
-        Renderer.updateContainer(null, fiberRef.current, null, () => null);
-        if (typeof onScopeReady === 'function') {
-          onScopeReady(scopeRef.current);
-        }
-      } else if (canvasRef.current) {
-        setCanvas(canvasRef.current);
+export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
+  props,
+  forwardedRef
+) {
+  const { children, width, height, settings, onScopeReady, ...other } = props;
+  const [canvas, setCanvas] = useState<CanvasRef>(null);
+  const canvasRef = useRef<CanvasRef>(null);
+  const scopeRef = useRef<ScopeRef>(null);
+  const fiberRef = useRef<FiberRef>(null);
+
+  useImperativeHandle<CanvasRef, CanvasRef>(forwardedRef, () => canvasRef.current);
+
+  // create
+  useEffect(() => {
+    if (canvas instanceof HTMLCanvasElement) {
+      if (!scopeRef.current) {
+        scopeRef.current = new PaperScope();
       }
+      Object.assign(scopeRef.current.settings, {
+        ...settings,
+        insertItems: false,
+      });
+      scopeRef.current.setup(canvas);
+      fiberRef.current = Renderer.createContainer(
+        scopeRef.current,
+        ConcurrentRoot,
+        null,
+        false,
+        null,
+        '',
+        console.error,
+        null
+      );
+      Renderer.updateContainer(null, fiberRef.current, null, () => null);
+      if (typeof onScopeReady === 'function') {
+        onScopeReady(scopeRef.current);
+      }
+    } else if (canvasRef.current) {
+      setCanvas(canvasRef.current);
+    }
 
-      // destroy
-      return () => {
-        if (canvas) {
-          if (fiberRef.current) {
-            Renderer.updateContainer(null, fiberRef.current, null, () => null);
-          }
-          scopeRef.current = null;
-          canvasRef.current = null;
-          fiberRef.current = null;
+    // destroy
+    return () => {
+      if (canvas) {
+        if (fiberRef.current) {
+          Renderer.updateContainer(null, fiberRef.current, null, () => null);
         }
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [canvas]);
-
-    // update
-    useEffect(() => {
-      if (fiberRef.current) {
-        Renderer.updateContainer(children, fiberRef.current, null, () => null);
+        scopeRef.current = null;
+        canvasRef.current = null;
+        fiberRef.current = null;
       }
-    }, [canvas, children]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvas]);
 
-    // resize
-    useEffect(() => {
-      if (scopeRef.current) {
-        scopeRef.current.view.viewSize = new scopeRef.current.Size(width, height);
-      }
-    }, [canvas, width, height]);
+  // update
+  useEffect(() => {
+    if (fiberRef.current) {
+      Renderer.updateContainer(children, fiberRef.current, null, () => null);
+    }
+  }, [canvas, children]);
 
-    return <canvas {...other} ref={canvasRef} />;
-  }
-);
+  // resize
+  useEffect(() => {
+    if (scopeRef.current) {
+      scopeRef.current.view.viewSize = new scopeRef.current.Size(width, height);
+    }
+  }, [canvas, width, height]);
+
+  return <canvas {...other} ref={canvasRef} />;
+});

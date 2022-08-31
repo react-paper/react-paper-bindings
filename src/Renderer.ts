@@ -51,7 +51,7 @@ const applyProp: Index<ApplyProp> = {
     if (
       props.active &&
       props.active !== prev.active &&
-      instance instanceof paper.Tool
+      (instance instanceof paper.Tool || instance instanceof paper.Layer)
     ) {
       instance.activate();
     }
@@ -257,7 +257,11 @@ export const Renderer = Reconciler({
   },
 
   finalizeInitialChildren: (instance: Instance, type: Type, props: Props) => {
-    if (instance instanceof paper.View || instance instanceof paper.Tool) {
+    if (
+      instance instanceof paper.View ||
+      instance instanceof paper.Tool ||
+      instance instanceof paper.Layer
+    ) {
       applyProps(instance, props);
     }
     return false;

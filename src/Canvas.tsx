@@ -17,7 +17,7 @@ export type PaperScopeSettings = {
   hitTolerance?: number;
 };
 
-export type Props = React.ComponentProps<'canvas'> & {
+export type CanvasProps = React.ComponentProps<'canvas'> & {
   width: number;
   height: number;
   settings?: PaperScopeSettings;
@@ -29,7 +29,7 @@ export type CanvasRef = HTMLCanvasElement | null;
 export type ScopeRef = paper.PaperScope | null | undefined;
 export type FiberRef = FiberRoot | null;
 
-export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
+export const Canvas = forwardRef<CanvasRef, CanvasProps>(function Canvas(
   { children, width, height, settings, scope, onScopeReady, ...props },
   forwardedRef
 ) {

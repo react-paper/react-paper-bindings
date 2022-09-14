@@ -53,3 +53,10 @@ npm run build
 ```
 npm run test
 ```
+
+## Demo
+
+```
+cd demo
+npm run dev
+```

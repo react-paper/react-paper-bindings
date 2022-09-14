@@ -8,7 +8,7 @@ import { Canvas } from './Canvas';
 import { View, Layer, Rectangle } from './Items';
 import { PaperScope, Path } from 'paper/dist/paper-core';
 
-test('render canvas', () => {
+test('canvas', () => {
   let scope: any = null;
   render(
     <Canvas
@@ -23,10 +23,17 @@ test('render canvas', () => {
   expect(scope).toBeInstanceOf(PaperScope);
 });
 
+test('canvas with custom scope', () => {
+  const scope = new PaperScope();
+  render(<Canvas scope={scope} role="img" width={400} height={300} />);
+  const el = screen.getByRole('img');
+  expect(el).toBeInstanceOf(HTMLCanvasElement);
+});
+
 test('canvas with children', () => {
-  let scope: any = null;
+  const scope = new PaperScope();
   render(
-    <Canvas width={400} height={300} onScopeReady={(s) => (scope = s)}>
+    <Canvas scope={scope} width={400} height={300}>
       <View>
         <Layer>
           <Rectangle
@@ -45,7 +52,6 @@ test('canvas with children', () => {
       </View>
     </Canvas>
   );
-  expect(scope).toBeInstanceOf(PaperScope);
   expect(scope?.projects.length).toEqual(1);
   expect(scope?.project.layers.length).toEqual(2);
   expect(scope?.project.layers[0].children.length).toEqual(1);
@@ -57,7 +63,7 @@ test('canvas with children', () => {
   });
 });
 
-test('canvas ref', () => {
+test('canvas with ref', () => {
   const ref = { current: null };
   render(<Canvas ref={ref} width={400} height={300} />);
   expect(ref.current).toBeInstanceOf(HTMLCanvasElement);

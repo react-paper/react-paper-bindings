@@ -4,7 +4,7 @@ import { Form, Toggle } from 'react-daisyui';
 import { Page, Container, Canvas, Toolbar, Code } from 'components/content';
 import { View, Layer, Rectangle } from 'react-paper-bindings';
 
-const Animations: NextPage = () => {
+const AnimationsPage: NextPage = () => {
   const [animating, setAnimating] = useState(true);
   const [rotation, setRotation] = useState(0);
   const [position, setPosition] = useState([75, 50]);
@@ -53,7 +53,7 @@ const Animations: NextPage = () => {
   );
 };
 
-export default Animations;
+export default AnimationsPage;
 
 const code = `import React, { useCallback, useState } from 'react';
 import type { NextPage } from 'next';
@@ -61,7 +61,7 @@ import { Form, Toggle } from 'react-daisyui';
 import { Page, Container, Canvas, Toolbar } from 'components/content';
 import { View, Layer, Rectangle } from 'react-paper-bindings';
 
-const Animations: NextPage = () => {
+const AnimationsPage: NextPage = () => {
   const [animating, setAnimating] = useState(true);
   const [rotation, setRotation] = useState(0);
   const [position, setPosition] = useState([75, 50]);
@@ -109,4 +109,4 @@ const Animations: NextPage = () => {
   );
 };
 
-export default Animations;`;
+export default AnimationsPage;`;

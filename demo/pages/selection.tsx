@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { Page, Container, Canvas, Code } from 'components/content';
 import { View, Layer, Rectangle, Circle } from 'react-paper-bindings';
 
-const Selection: NextPage = () => {
+const SelectionPage: NextPage = () => {
   const [selection, setSelection] = useState<number | undefined>();
 
   const handleClick = useCallback((e: paper.MouseEvent) => {
@@ -69,14 +69,14 @@ const Selection: NextPage = () => {
   );
 };
 
-export default Selection;
+export default SelectionPage;
 
 const code = `import React, { useCallback, useState } from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas } from 'components/content';
 import { View, Layer, Rectangle, Circle } from 'react-paper-bindings';
 
-const Selection: NextPage = () => {
+const SelectionPage: NextPage = () => {
   const [selection, setSelection] = useState<number | undefined>();
 
   const handleClick = useCallback((e: paper.MouseEvent) => {
@@ -141,4 +141,4 @@ const Selection: NextPage = () => {
   );
 };
 
-export default Selection;`;
+export default SelectionPage;`;

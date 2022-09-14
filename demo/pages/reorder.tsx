@@ -14,7 +14,7 @@ function move(arr: any[], from: number, to: number) {
   }, []);
 }
 
-const Reorder: NextPage = () => {
+const ReorderPage: NextPage = () => {
   const [rects, setRects] = useState([
     { id: 1, center: [100, 50], size: [50, 50], fillColor: 'red' },
     { id: 2, center: [125, 75], size: [50, 50], fillColor: 'green' },
@@ -39,7 +39,7 @@ const Reorder: NextPage = () => {
   );
 };
 
-export default Reorder;
+export default ReorderPage;
 
 const code = `import React, { useState } from 'react';
 import type { NextPage } from 'next';
@@ -57,7 +57,7 @@ function move(arr: any[], from: number, to: number) {
   }, []);
 }
 
-const Reorder: NextPage = () => {
+const ReorderPage: NextPage = () => {
   const [rects, setRects] = useState([
     { id: 1, center: [100, 50], size: [50, 50], fillColor: 'red' },
     { id: 2, center: [125, 75], size: [50, 50], fillColor: 'green' },
@@ -81,4 +81,4 @@ const Reorder: NextPage = () => {
   );
 };
 
-export default Reorder;`;
+export default ReorderPage;`;

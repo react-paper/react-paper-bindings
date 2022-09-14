@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { Form, Toggle } from 'react-daisyui';
 import { Page, Container, Toolbar, Canvas, Code } from 'components/content';
-import { View, Layer, Rectangle } from 'react-paper-bindings';
+import { PaperScope, View, Layer, Rectangle } from 'react-paper-bindings';
 
-const MultiCanvas: NextPage = () => {
+const MultiCanvasPage: NextPage = () => {
+  const [scope1] = useState(new PaperScope());
+  const scope2 = useRef(new PaperScope());
+
   const [visible1, setVisible1] = useState(true);
   const [visible2, setVisible2] = useState(true);
+
   const [color1, setColor1] = useState('blue');
   const [color2, setColor2] = useState('red');
+
   return (
     <Page title="Multi Canvas">
       <Container>
@@ -29,7 +34,7 @@ const MultiCanvas: NextPage = () => {
           </Form.Label>
         </Toolbar>
         {visible1 && (
-          <Canvas>
+          <Canvas scope={scope1}>
             <View>
               <Layer>
                 <Rectangle
@@ -43,7 +48,7 @@ const MultiCanvas: NextPage = () => {
           </Canvas>
         )}
         {visible2 && (
-          <Canvas>
+          <Canvas scope={scope2.current}>
             <View>
               <Layer>
                 <Rectangle
@@ -62,19 +67,24 @@ const MultiCanvas: NextPage = () => {
   );
 };
 
-export default MultiCanvas;
+export default MultiCanvasPage;
 
-const code = `import React, { useState } from 'react';
+const code = `import React, { useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { Form, Toggle } from 'react-daisyui';
-import { Page, Container, Toolbar, Canvas } from 'components/content';
-import { View, Layer, Rectangle } from 'react-paper-bindings';
+import { Page, Container, Toolbar, Canvas, Code } from 'components/content';
+import { Scope, View, Layer, Rectangle } from 'react-paper-bindings';
 
-const MultiCanvas: NextPage = () => {
+const MultiCanvasPage: NextPage = () => {
+  const [scope1] = useState(new Scope());
+  const scope2 = useRef(new Scope());
+
   const [visible1, setVisible1] = useState(true);
   const [visible2, setVisible2] = useState(true);
+  
   const [color1, setColor1] = useState('blue');
   const [color2, setColor2] = useState('red');
+  
   return (
     <Page title="Multi Canvas">
       <Container>
@@ -95,7 +105,7 @@ const MultiCanvas: NextPage = () => {
           </Form.Label>
         </Toolbar>
         {visible1 && (
-          <Canvas>
+          <Canvas scope={scope1}>
             <View>
               <Layer>
                 <Rectangle
@@ -109,7 +119,7 @@ const MultiCanvas: NextPage = () => {
           </Canvas>
         )}
         {visible2 && (
-          <Canvas>
+          <Canvas scope={scope2.current}>
             <View>
               <Layer>
                 <Rectangle
@@ -127,4 +137,4 @@ const MultiCanvas: NextPage = () => {
   );
 };
 
-export default MultiCanvas;`;
+export default MultiCanvasPage;`;

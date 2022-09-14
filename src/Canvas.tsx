@@ -21,24 +21,27 @@ export type Props = React.ComponentProps<'canvas'> & {
   width: number;
   height: number;
   settings?: PaperScopeSettings;
+  scope?: paper.PaperScope;
   onScopeReady?: (scope: paper.PaperScope) => void;
 };
 
 export type CanvasRef = HTMLCanvasElement | null;
-export type ScopeRef = paper.PaperScope | null;
+export type ScopeRef = paper.PaperScope | null | undefined;
 export type FiberRef = FiberRoot | null;
 
 export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
-  props,
+  { children, width, height, settings, scope, onScopeReady, ...props },
   forwardedRef
 ) {
-  const { children, width, height, settings, onScopeReady, ...other } = props;
   const [canvas, setCanvas] = useState<CanvasRef>(null);
   const canvasRef = useRef<CanvasRef>(null);
-  const scopeRef = useRef<ScopeRef>(null);
+  const scopeRef = useRef<ScopeRef>(scope);
   const fiberRef = useRef<FiberRef>(null);
 
-  useImperativeHandle<CanvasRef, CanvasRef>(forwardedRef, () => canvasRef.current);
+  useImperativeHandle<CanvasRef, CanvasRef>(
+    forwardedRef,
+    () => canvasRef.current
+  );
 
   // create
   useEffect(() => {
@@ -46,11 +49,14 @@ export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
       if (!scopeRef.current) {
         scopeRef.current = new PaperScope();
       }
+
       Object.assign(scopeRef.current.settings, {
         ...settings,
         insertItems: false,
       });
+
       scopeRef.current.setup(canvas);
+
       fiberRef.current = Renderer.createContainer(
         scopeRef.current,
         ConcurrentRoot,
@@ -61,7 +67,9 @@ export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
         console.error,
         null
       );
+
       Renderer.updateContainer(null, fiberRef.current, null, () => null);
+
       if (typeof onScopeReady === 'function') {
         onScopeReady(scopeRef.current);
       }
@@ -85,17 +93,17 @@ export const Canvas = forwardRef<CanvasRef, Props>(function Canvas(
 
   // update
   useEffect(() => {
-    if (fiberRef.current) {
+    if (canvas && fiberRef.current) {
       Renderer.updateContainer(children, fiberRef.current, null, () => null);
     }
   }, [canvas, children]);
 
   // resize
   useEffect(() => {
-    if (scopeRef.current) {
+    if (canvas && scopeRef.current && scopeRef.current.view) {
       scopeRef.current.view.viewSize = new scopeRef.current.Size(width, height);
     }
   }, [canvas, width, height]);
 
-  return <canvas {...other} ref={canvasRef} />;
+  return <canvas {...props} ref={canvasRef} />;
 });

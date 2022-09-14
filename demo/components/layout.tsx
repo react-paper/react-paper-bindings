@@ -6,6 +6,7 @@ import { useAppContext } from './context';
 
 const menuItems = [
   { name: 'Editor', url: '/editor' },
+  { name: 'Scope', url: '/scope' },
   { name: 'Multi Canvas', url: '/multi-canvas' },
   { name: 'Animations', url: '/animations' },
   { name: 'Layers', url: '/layers' },
@@ -33,7 +34,10 @@ export const Layout = ({ children }: Props) => {
     <>
       <Head>
         <title>react-paper-bindings</title>
-        <meta name="description" content="Examples for react-paper-bindings library." />
+        <meta
+          name="description"
+          content="Examples for react-paper-bindings library."
+        />
       </Head>
       <Drawer
         mobile

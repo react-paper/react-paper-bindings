@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas, Code } from 'components/content';
-import { View, Layer, Rectangle as Rect, Circle as Circ } from 'react-paper-bindings';
+import {
+  View,
+  Layer,
+  Rectangle as Rect,
+  Circle as Circ,
+} from 'react-paper-bindings';
 
 type RectangleProps = {
   center: [number, number];
@@ -39,7 +44,7 @@ const Circle = (props: CircleProps) => {
   );
 };
 
-const Events: NextPage = () => {
+const EventsPage: NextPage = () => {
   return (
     <Page title="Events">
       <Container>
@@ -57,7 +62,7 @@ const Events: NextPage = () => {
   );
 };
 
-export default Events;
+export default EventsPage;
 
 const code = `import React, { useState } from 'react';
 import type { NextPage } from 'next';
@@ -105,7 +110,7 @@ const Circle = (props: CircleProps) => {
   );
 };
 
-const Events: NextPage = () => {
+const EventsPage: NextPage = () => {
   return (
     <Page title="Events">
       <Container>
@@ -122,4 +127,4 @@ const Events: NextPage = () => {
   );
 };
 
-export default Events;`;
+export default EventsPage;`;

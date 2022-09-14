@@ -24,7 +24,7 @@ const MyCanvas = () =>(
 export default MyCanvas`,
 };
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <Page title="Documentation">
       <Container className="pb-8">
@@ -37,4 +37,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

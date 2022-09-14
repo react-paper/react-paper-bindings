@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { Page, Container, Canvas, Code } from 'components/content';
 import { View, Layer, Circle, CompoundPath } from 'react-paper-bindings';
 
-const Compound: NextPage = () => {
+const CompoundPathPage: NextPage = () => {
   return (
     <Page title="CompoundPath">
       <Container>
@@ -23,14 +23,14 @@ const Compound: NextPage = () => {
   );
 };
 
-export default Compound;
+export default CompoundPathPage;
 
 const code = `import React from 'react';
 import type { NextPage } from 'next';
 import { Page, Container, Canvas } from 'components/content';
 import { View, Layer, Circle, CompoundPath } from 'react-paper-bindings';
 
-const Compound: NextPage = () => {
+const CompoundPathPage: NextPage = () => {
   return (
     <Page title="CompoundPath">
       <Container>
@@ -49,4 +49,4 @@ const Compound: NextPage = () => {
   );
 };
 
-export default Compound;`;
+export default CompoundPathPage;`;

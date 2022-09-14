@@ -14,7 +14,7 @@ function randomColor() {
   return new Color(rgb).toCSS(true);
 }
 
-type ICircle = {
+type CircleItem = {
   id: number;
   type: 'Circle';
   center: paper.Point | [number, number];
@@ -22,7 +22,7 @@ type ICircle = {
   fillColor: any;
 };
 
-type IRectangle = {
+type RectangleItem = {
   id: number;
   type: 'Rectangle';
   center: paper.Point | [number, number];
@@ -30,10 +30,10 @@ type IRectangle = {
   fillColor: any;
 };
 
-type Item = ICircle | IRectangle;
+type Item = CircleItem | RectangleItem;
 type Tool = 'Rectangle' | 'Circle';
 
-const Tools: NextPage = () => {
+const ToolsPage: NextPage = () => {
   const [activeTool, setActiveTool] = useState<Tool>('Rectangle');
   const [items, setItems] = useState<Item[]>([]);
 
@@ -119,7 +119,7 @@ const Tools: NextPage = () => {
   );
 };
 
-export default Tools;
+export default ToolsPage;
 
 const code = `import React, { useCallback, useState } from 'react';
 import type { NextPage } from 'next';
@@ -156,7 +156,7 @@ type IRectangle = {
 type Item = ICircle | IRectangle;
 type Tool = 'Rectangle' | 'Circle';
 
-const Tools: NextPage = () => {
+const ToolsPage: NextPage = () => {
   const [activeTool, setActiveTool] = useState<Tool>('Rectangle');
   const [items, setItems] = useState<Item[]>([]);
 
@@ -241,4 +241,4 @@ const Tools: NextPage = () => {
   );
 };
 
-export default Tools;`;
+export default ToolsPage;`;

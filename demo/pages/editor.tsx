@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { Page } from 'components/content';
 import { Paper } from 'components/paper';
 
-const Editor: NextPage = () => {
+const EditorPage: NextPage = () => {
   return (
     <Page title="Editor">
       <Paper image={data} />
@@ -11,7 +11,7 @@ const Editor: NextPage = () => {
   );
 };
 
-export default Editor;
+export default EditorPage;
 
 const prefix = process.env.NEXT_PUBLIC_BASE_PATH || '';
 

@@ -28,7 +28,7 @@ const CircleLayer = ({ set }: LayerProps) => (
   </Layer>
 );
 
-const Layers: NextPage = () => {
+const LayersPage: NextPage = () => {
   const [first, set] = useState<First>('rectangle');
   return (
     <Page title="Layers">
@@ -53,7 +53,7 @@ const Layers: NextPage = () => {
   );
 };
 
-export default Layers;
+export default LayersPage;
 
 const code = `import React, { useState } from 'react';
 import type { NextPage } from 'next';
@@ -85,7 +85,7 @@ const CircleLayer = ({ set }: LayerProps) => (
   </Layer>
 );
 
-const Layers: NextPage = () => {
+const LayersPage: NextPage = () => {
   const [first, set] = useState<First>('rectangle');
   return (
     <Page title="Layers">
@@ -109,4 +109,4 @@ const Layers: NextPage = () => {
   );
 };
 
-export default Layers;`;
+export default LayersPage;`;

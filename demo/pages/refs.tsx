@@ -24,7 +24,7 @@ const MyRectangle = () => {
   );
 };
 
-const Refs: NextPage = () => {
+const RefsPage: NextPage = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rectangleRef = useRef<paper.Path.Rectangle | null>(null);
   const [radius, setRadius] = useState(10);
@@ -80,7 +80,7 @@ const Refs: NextPage = () => {
   );
 };
 
-export default Refs;
+export default RefsPage;
 
 const code = `import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
@@ -93,7 +93,7 @@ const radiusMax = 80;
 const hueMin = 0;
 const hueMax = 360;
 
-const Refs: NextPage = () => {
+const RefsPage: NextPage = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rectangleRef = useRef<paper.Path.Rectangle | null>(null);
   const [radius, setRadius] = useState(10);
@@ -148,4 +148,4 @@ const Refs: NextPage = () => {
   );
 };
 
-export default Refs;`;
+export default RefsPage;`;

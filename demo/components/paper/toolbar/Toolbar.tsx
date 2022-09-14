@@ -7,6 +7,8 @@ import { ToolName } from '../tools';
 
 type Props = ComponentProps<'div'>;
 
+const Separator = () => <span className="mx-1 pointer-events-none">|</span>;
+
 export const Toolbar = (props: Props) => {
   return (
     <div {...props}>
@@ -15,10 +17,10 @@ export const Toolbar = (props: Props) => {
       <ToolButton tool={ToolName.Circle} />
       <ToolButton tool={ToolName.Select} />
       <ToolButton tool={ToolName.Delete} />
-      <span className="mx-1">|</span>
+      <Separator />
       <UndoButton />
       <RedoButton />
-      <span className="mx-1">|</span>
+      <Separator />
       <SaveButton />
     </div>
   );

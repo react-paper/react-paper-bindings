@@ -3,25 +3,34 @@ import type { NextPage } from 'next';
 import { Page, Container, Title, Code } from 'components/content';
 
 const code = {
-  install: `npm install react-paper-bindings`,
-  usage: `import { Canvas, View, Layer, Rectangle } from 'react-paper-bindings'
+  install: `npm install paper react-reconciler react-paper-bindings`,
+  usage: `import React, { useCallback, useState } from "react";
+  import { Canvas, View, Layer, Rectangle } from 'react-paper-bindings';
 
-const MyCanvas = () =>(
-  <Canvas width={800} height={600}>
-    <View>
-      <Layer>
-        <Rectangle
-          center={[200, 200]}
-          size={[100, 100]}
-          fillColor={'red'}
-          onClick={() => console.log('click')}
-        />
-      </Layer>
-    </View>
-  </Canvas>
-)
+function App() {
+  const [color, setColor] = useState('red');
 
-export default MyCanvas`,
+  const toggleColor = useCallback(() => {
+    setColor(color === 'red' ? 'blue' : 'red');
+  }, [color]);
+
+  return (
+    <Canvas width={400} height={300}>
+      <View>
+        <Layer>
+          <Rectangle
+            center={[100, 100]}
+            fillColor={color}
+            size={[50, 50]}
+            onClick={toggleColor}
+          />
+        </Layer>
+      </View>
+    </Canvas>
+  );
+}
+
+export default App;`,
 };
 
 const HomePage: NextPage = () => {

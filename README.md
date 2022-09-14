@@ -8,30 +8,57 @@ http://react-paper.github.io/react-paper-bindings/
 
 - [react-paperjs](https://github.com/psychobolt/react-paperjs)
 
-## Example
+## Example with Create React App
+
+Install create-react-app
+
+```bash
+npx create-react-app my-app
+cd my-app
+```
+
+Install react-paper-bindings
+
+```bash
+npm install paper react-reconciler react-paper-bindings
+```
+
+Edit `src/App.js` and paste:
 
 ```jsx
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Canvas, View, Layer, Rectangle } from 'react-paper-bindings';
 
-const Example = () => {
+function App() {
+  const [color, setColor] = useState('red');
+
+  const toggleColor = useCallback(() => {
+    setColor(color === 'red' ? 'blue' : 'red');
+  }, [color]);
+
   return (
     <Canvas width={400} height={300}>
       <View>
         <Layer>
           <Rectangle
             center={[100, 100]}
-            fillColor={'red'}
+            fillColor={color}
             size={[50, 50]}
-            onClick={() => console.log('onClick')}
+            onClick={toggleColor}
           />
         </Layer>
       </View>
     </Canvas>
   );
-};
+}
 
-export default Example;
+export default App;
+```
+
+Run app
+
+```bash
+npm run start
 ```
 
 ## Development
